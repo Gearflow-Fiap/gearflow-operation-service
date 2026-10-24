@@ -1,0 +1,118 @@
+{
+  "status": "proposed",
+  "version": "1.0.0-draft",
+  "messages": [
+    {
+      "name": "StartDiagnostic",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": "operation-start-diagnostic",
+      "schema": "operation.schema.json#/$defs/StartDiagnostic",
+      "example": "examples/StartDiagnostic.json"
+    },
+    {
+      "name": "StartExecution",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": "operation-start-execution",
+      "schema": "operation.schema.json#/$defs/StartExecution",
+      "example": "examples/StartExecution.json"
+    },
+    {
+      "name": "CancelOperation",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": "operation-cancel-operation",
+      "schema": "operation.schema.json#/$defs/CancelOperation",
+      "example": "examples/CancelOperation.json"
+    },
+    {
+      "name": "DiagnosticQueued",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/DiagnosticQueued",
+      "example": "examples/DiagnosticQueued.json"
+    },
+    {
+      "name": "DiagnosticStarted",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/DiagnosticStarted",
+      "example": "examples/DiagnosticStarted.json"
+    },
+    {
+      "name": "DiagnosticFinished",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/DiagnosticFinished",
+      "example": "examples/DiagnosticFinished.json"
+    },
+    {
+      "name": "DiagnosticFailed",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/DiagnosticFailed",
+      "example": "examples/DiagnosticFailed.json"
+    },
+    {
+      "name": "ExecutionAuthorized",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/ExecutionAuthorized",
+      "example": "examples/ExecutionAuthorized.json"
+    },
+    {
+      "name": "ExecutionStarted",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/ExecutionStarted",
+      "example": "examples/ExecutionStarted.json"
+    },
+    {
+      "name": "JobExecuted",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/JobExecuted",
+      "example": "examples/JobExecuted.json"
+    },
+    {
+      "name": "ExecutionFinished",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/ExecutionFinished",
+      "example": "examples/ExecutionFinished.json"
+    },
+    {
+      "name": "OperationCanceled",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/OperationCanceled",
+      "example": "examples/OperationCanceled.json"
+    },
+    {
+      "name": "OperationCancellationRejected",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/OperationCancellationRejected",
+      "example": "examples/OperationCancellationRejected.json"
+    },
+    {
+      "name": "OperationCommandRejected",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "destinationQueue": null,
+      "schema": "operation.schema.json#/$defs/OperationCommandRejected",
+      "example": "examples/OperationCommandRejected.json"
+    }
+  ]
+}

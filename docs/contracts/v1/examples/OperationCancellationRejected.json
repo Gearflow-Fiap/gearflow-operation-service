@@ -1,0 +1,10 @@
+{
+  "correlationId": "10000000-0000-4000-8000-000000000001",
+  "messageId": "60000000-0000-4000-8000-000000000013",
+  "occurredOn": "2026-10-24T17:00:00Z",
+  "causationId": "60000000-0000-4000-8000-000000000002",
+  "operationVersion": 10,
+  "actorId": "system:saga",
+  "code": "ExecutionAlreadyStarted",
+  "reason": "Reparo já iniciado; requer recuperação"
+}

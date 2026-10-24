@@ -1,0 +1,1024 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Proposed GearFlow Operation contracts v1",
+  "$defs": {
+    "CommercialLine": {
+      "type": "object",
+      "properties": {
+        "lineId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "itemType": {
+          "enum": [
+            "Labor",
+            "Part",
+            "Consumable"
+          ]
+        },
+        "itemId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "quantity": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "multipleOf": 0.001
+        },
+        "unitPriceCents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "lineTotalCents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "lineId",
+        "itemType",
+        "itemId",
+        "name",
+        "quantity",
+        "unitPriceCents",
+        "lineTotalCents"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "itemType": {
+                "const": "Labor"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "quantity": {
+                "const": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "itemType": {
+                "const": "Part"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "quantity": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "StartDiagnostic": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "vehicleId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "requestedJobIds": {
+          "type": "array",
+          "maxItems": 200,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "not": {
+              "const": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "vehicleId",
+        "requestedJobIds"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.StartDiagnostic; logical body, not MassTransit envelope."
+    },
+    "StartExecution": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetRevision": {
+          "const": 1
+        },
+        "currency": {
+          "const": "BRL"
+        },
+        "approvedItems": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 200,
+          "items": {
+            "$ref": "#/$defs/CommercialLine"
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "diagnosticId",
+        "budgetId",
+        "budgetRevision",
+        "currency",
+        "approvedItems"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.StartExecution; logical body, not MassTransit envelope."
+    },
+    "CancelOperation": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "reason"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.CancelOperation; logical body, not MassTransit envelope."
+    },
+    "DiagnosticQueued": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.DiagnosticQueued; logical body, not MassTransit envelope."
+    },
+    "DiagnosticStarted": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.DiagnosticStarted; logical body, not MassTransit envelope."
+    },
+    "DiagnosticFinished": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "currency": {
+          "const": "BRL"
+        },
+        "pricedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 200,
+          "items": {
+            "$ref": "#/$defs/CommercialLine"
+          }
+        },
+        "totalPriceCents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId",
+        "currency",
+        "pricedAt",
+        "items",
+        "totalPriceCents"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.DiagnosticFinished; logical body, not MassTransit envelope."
+    },
+    "DiagnosticFailed": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "code": {
+          "enum": [
+            "DiagnosticNotPossible"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId",
+        "code",
+        "reason"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.DiagnosticFailed; logical body, not MassTransit envelope."
+    },
+    "ExecutionAuthorized": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetRevision": {
+          "const": 1
+        },
+        "authorizationMessageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId",
+        "budgetId",
+        "budgetRevision",
+        "authorizationMessageId"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.ExecutionAuthorized; logical body, not MassTransit envelope."
+    },
+    "ExecutionStarted": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "authorizationMessageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId",
+        "budgetId",
+        "authorizationMessageId"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.ExecutionStarted; logical body, not MassTransit envelope."
+    },
+    "JobExecuted": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "lineId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId",
+        "budgetId",
+        "lineId"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.JobExecuted; logical body, not MassTransit envelope."
+    },
+    "ExecutionFinished": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "budgetId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "authorizationMessageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "executedLineIds": {
+          "type": "array",
+          "maxItems": 200,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "uuid",
+            "not": {
+              "const": "00000000-0000-0000-0000-000000000000"
+            }
+          }
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "diagnosticId",
+        "budgetId",
+        "authorizationMessageId",
+        "executedLineIds"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.ExecutionFinished; logical body, not MassTransit envelope."
+    },
+    "OperationCanceled": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "reason"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.OperationCanceled; logical body, not MassTransit envelope."
+    },
+    "OperationCancellationRejected": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "code": {
+          "enum": [
+            "ExecutionAlreadyStarted",
+            "ExecutionAlreadyCompleted"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "code",
+        "reason"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.OperationCancellationRejected; logical body, not MassTransit envelope."
+    },
+    "OperationCommandRejected": {
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "messageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "occurredOn": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "causationId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "operationVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "commandMessageId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "code": {
+          "enum": [
+            "OperationNotFound",
+            "OperationCanceled",
+            "InvalidState",
+            "SnapshotMismatch",
+            "ConflictingCommand"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "correlationId",
+        "messageId",
+        "occurredOn",
+        "causationId",
+        "operationVersion",
+        "actorId",
+        "commandMessageId",
+        "code",
+        "reason"
+      ],
+      "additionalProperties": true,
+      "description": "Proposed GearFlow.Contracts.Operation.V1.OperationCommandRejected; logical body, not MassTransit envelope."
+    }
+  }
+}

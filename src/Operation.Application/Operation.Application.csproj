@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../Operation.Domain/Operation.Domain.csproj" /></ItemGroup></Project>

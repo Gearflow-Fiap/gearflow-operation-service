@@ -1,0 +1,9 @@
+{
+  "correlationId": "10000000-0000-4000-8000-000000000001",
+  "messageId": "60000000-0000-4000-8000-000000000012",
+  "occurredOn": "2026-10-24T17:00:00Z",
+  "causationId": "60000000-0000-4000-8000-000000000002",
+  "operationVersion": 9,
+  "actorId": "system:saga",
+  "reason": "Cancelamento confirmado antes do início físico"
+}

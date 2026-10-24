@@ -1,0 +1,29 @@
+{
+  "correlationId": "10000000-0000-4000-8000-000000000001",
+  "messageId": "60000000-0000-4000-8000-000000000002",
+  "occurredOn": "2026-10-24T17:00:00Z",
+  "diagnosticId": "20000000-0000-4000-8000-000000000001",
+  "budgetId": "30000000-0000-4000-8000-000000000001",
+  "budgetRevision": 1,
+  "currency": "BRL",
+  "approvedItems": [
+    {
+      "lineId": "40000000-0000-4000-8000-000000000001",
+      "itemType": "Labor",
+      "itemId": "50000000-0000-4000-8000-000000000001",
+      "name": "Troca de óleo",
+      "quantity": 1,
+      "unitPriceCents": 8000,
+      "lineTotalCents": 8000
+    },
+    {
+      "lineId": "40000000-0000-4000-8000-000000000002",
+      "itemType": "Consumable",
+      "itemId": "50000000-0000-4000-8000-000000000002",
+      "name": "Óleo por litro",
+      "quantity": 3.5,
+      "unitPriceCents": 4000,
+      "lineTotalCents": 14000
+    }
+  ]
+}
