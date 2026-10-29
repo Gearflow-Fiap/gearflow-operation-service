@@ -32,7 +32,7 @@ public sealed class OperationQueries(IOperationReadStore store)
     private async Task<PageResult<OperationListItem>> ReadPage(OperationSearch search, int page, int pageSize, CancellationToken ct)
     {
         var result = await store.GetPage(search, PageRequest.Normalize(page, pageSize), ct);
-        return new(Array.AsReadOnly(result.Items.Select(OperationListItem.From).ToArray()), result.Page, result.PageSize, result.TotalCount);
+        return new(Array.AsReadOnly(result.Items.ToArray()), result.Page, result.PageSize, result.TotalCount);
     }
 
     private static void ValidateId(Guid id)

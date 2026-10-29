@@ -46,7 +46,7 @@ public sealed record OperationSearch(OperationListScope Scope, OperationStatus? 
 public interface IOperationReadStore
 {
     Task<WorkOperation?> Find(Guid serviceOrderId, CancellationToken ct);
-    Task<PageResult<WorkOperation>> GetPage(OperationSearch search, PageRequest page, CancellationToken ct);
+    Task<PageResult<OperationListItem>> GetPage(OperationSearch search, PageRequest page, CancellationToken ct);
     Task<PageResult<OperationHistory>?> GetHistory(Guid serviceOrderId, PageRequest page, CancellationToken ct);
     Task<DurationSummary> GetDurationSummary(CancellationToken ct);
 }

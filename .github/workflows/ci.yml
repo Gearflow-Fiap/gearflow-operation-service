@@ -1,4 +1,4 @@
-name: Core CI
+name: Operation CI
 on:
   pull_request:
   push:
@@ -8,6 +8,19 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: operation_test_admin
+          POSTGRES_USER: operation_test
+          POSTGRES_PASSWORD: operation_ci_only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U operation_test -d operation_test_admin"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      OPERATION_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=operation_test_admin;Username=operation_test;Password=operation_ci_only
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -23,5 +36,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: core-test-coverage
+          name: operation-test-coverage
           path: TestResults

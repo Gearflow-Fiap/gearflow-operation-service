@@ -2,8 +2,10 @@
   <Folder Name="/src/">
     <Project Path="src/Operation.Domain/Operation.Domain.csproj" />
     <Project Path="src/Operation.Application/Operation.Application.csproj" />
+    <Project Path="src/Operation.Infrastructure/Operation.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Operation.Tests/Operation.Tests.csproj" />
+    <Project Path="tests/Operation.IntegrationTests/Operation.IntegrationTests.csproj" />
   </Folder>
 </Solution>

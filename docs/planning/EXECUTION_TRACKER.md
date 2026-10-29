@@ -93,3 +93,13 @@ Storage e catálogo concretos desta etapa existem somente em tests. Não há Pos
 Implementar persistência exclusiva PostgreSQL/EF: migrations, mapeamento/rehidratação do agregado, receipt persistente, índices únicos, concorrência otimista/CAS e outbox/inbox; executar testes contra banco real para falhas/restart e disputas de criação/atualização/intenção. Definir retenção e migração de fingerprint/journals/tombstones. Depois host HTTP/JWT/clients de preço, contratos publicados e broker/Saga/BDD, CI/CD e observabilidade.
 
 Os três passos solicitados terminaram o núcleo local de domínio/aplicação. Não declarar serviço completo enquanto os adapters/integrações e critérios de entrega da fase 4 não estiverem validados.
+
+## Sequência posterior autorizada
+
+Usuário autorizou iniciar próximos incrementos. O [plano](NEXT_INCREMENTS.md) começa pelo incremento 4 de persistência e testes reais. Estado atual: em execução; próximos adapters ainda não concluídos.
+
+## Incremento 4 — concluído
+
+Persistência exclusiva PostgreSQL/EF implementada, com migrations, reidratação validada, consultas SQL, histórico, receipt e outbox transacionais. Conflitos por intenção/versão e rollback comprovados contra banco real. 130 testes unitários + 14 de integração aprovados; cobertura por assembly >=98%. [Evidências e limites](evidence/increment-4/RESULTS.md), [ADR-008](../architecture/adr-008-persistencia-postgresql.md), [guia local](../development/POSTGRESQL.md).
+
+O texto de limites do passo 3 registra o estado histórico daquele checkpoint. Estado atual inclui PostgreSQL, mas ainda não API ou broker. Próximo incremento: 5, host HTTP/JWT e adapter de preços, com testes HTTP e validação dos contratos comerciais. Antes de fechar o adapter, confirmar com Inventory a política de consumíveis e autenticação/contrato de cotação. Contratos públicos de eventos devem ser revisados coletivamente no incremento 6.

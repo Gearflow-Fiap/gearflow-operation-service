@@ -100,6 +100,56 @@ public sealed class WorkOperation
         jobs.AddRange(source.jobs);
     }
 
+    internal OperationState CaptureState() => new(1, ServiceOrderId, ServiceOrderCode, InitialVehicleId, DiagnosticId,
+        RequestedJobs.ToArray(), RequestedParts.ToArray(), Consumables.ToArray(),
+        Diagnostic is null ? null : new(Diagnostic.DiagnosticId, Diagnostic.Lines.ToArray(), Diagnostic.PricedAt, Diagnostic.PricingPolicyId),
+        Authorization is null ? null : new(Authorization.AuthorizationId, Authorization.BudgetId, Authorization.BudgetRevision, Authorization.Jobs.ToArray()));
+
+    // Reconstrói por ações auditadas, aplicando os MESMOS guards; dados inválidos não viram agregado por reflexão.
+    internal static WorkOperation Restore(OperationState state, IReadOnlyList<OperationHistory> history)
+    {
+        if (state.FormatVersion != 1) throw new NotSupportedException("Formato de operação não suportado.");
+        if (history.Count == 0 || history.Where((item, i) => item.Version != i + 1).Any())
+            throw new InvalidDataException("Histórico ausente ou com versões descontínuas.");
+        var first = history[0];
+        var operation = first.Action == OperationAction.Canceled
+            ? CreateCanceled(state.ServiceOrderId, first.Description, first.Actor, first.At)
+            : new WorkOperation(state.ServiceOrderId, state.InitialVehicleId ?? throw new InvalidDataException("Veículo inicial ausente."),
+                state.RequestedJobs, state.RequestedParts, first.Actor, first.At, state.ServiceOrderCode,
+                state.DiagnosticId ?? throw new InvalidDataException("Diagnóstico ausente."));
+        var snapshot = state.Diagnostic is null ? null : new DiagnosticSnapshot(state.Diagnostic.DiagnosticId,
+            state.Diagnostic.Lines, state.Diagnostic.PricedAt, state.Diagnostic.PricingPolicyId);
+        foreach (var item in history.Skip(1))
+        {
+            switch (item.Action)
+            {
+                case OperationAction.VehicleUpdated: operation.UpdateVehicle(Subject(item), item.Actor, item.At); break;
+                case OperationAction.DiagnosticStarted: operation.StartDiagnostic(item.Actor, item.At); break;
+                case OperationAction.DiagnosticCompleted: operation.CompleteDiagnostic(snapshot ?? throw new InvalidDataException("Snapshot ausente."), state.Consumables, item.Actor, item.At); break;
+                case OperationAction.DiagnosticFailed: operation.FailDiagnostic(item.Description, item.Actor, item.At); break;
+                case OperationAction.ExecutionAuthorized:
+                    var authorization = state.Authorization ?? throw new InvalidDataException("Autorização ausente.");
+                    operation.AuthorizeExecution(new(authorization.AuthorizationId, authorization.BudgetId, authorization.BudgetRevision,
+                        snapshot ?? throw new InvalidDataException("Snapshot aprovado ausente."), authorization.Jobs), item.Actor, item.At); break;
+                case OperationAction.ExecutionStarted: operation.StartExecution(item.Actor, item.At); break;
+                case OperationAction.JobExecuted: operation.ExecuteJob(Subject(item), item.Actor, item.At); break;
+                case OperationAction.ExecutionCompleted: operation.FinalizeExecution(item.Actor, item.At); break;
+                case OperationAction.Deactivated: operation.Deactivate(item.Description, item.Actor, item.At); break;
+                case OperationAction.Canceled: operation.CancelOperation(item.Description, item.Actor, item.At); break;
+                default: throw new InvalidDataException("Ação persistida inválida.");
+            }
+        }
+        if (!operation.History.SequenceEqual(history) || !operation.RequestedJobs.SequenceEqual(state.RequestedJobs) ||
+            !operation.RequestedParts.SequenceEqual(state.RequestedParts) || !operation.Consumables.SequenceEqual(state.Consumables) ||
+            operation.InitialVehicleId != state.InitialVehicleId || operation.ServiceOrderCode != state.ServiceOrderCode ||
+            operation.DiagnosticId != state.DiagnosticId || (operation.Diagnostic is null) != (state.Diagnostic is null) ||
+            (operation.Authorization is null) != (state.Authorization is null))
+            throw new InvalidDataException("Estado persistido diverge das ações auditadas.");
+        return operation;
+    }
+
+    private static Guid Subject(OperationHistory item) => item.SubjectId ?? throw new InvalidDataException("Objeto da ação ausente.");
+
     // Fence sem inventar veículo/serviços; persistência e unicidade por OS virão em outro incremento.
     public static WorkOperation CreateCanceled(Guid serviceOrderId, string reason, string actor, DateTimeOffset now) =>
         new(serviceOrderId, reason, actor, now);

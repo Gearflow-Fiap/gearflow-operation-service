@@ -87,7 +87,7 @@ internal sealed class IsolatedStore : IOperationUnitOfWork, IOperationReadStore
         }
     }
 
-    public Task<PageResult<WorkOperation>> GetPage(OperationSearch search, PageRequest page, CancellationToken ct)
+    public Task<PageResult<OperationListItem>> GetPage(OperationSearch search, PageRequest page, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested(); LastSearch = search; LastPage = page;
         WorkOperation[] all;
@@ -96,7 +96,7 @@ internal sealed class IsolatedStore : IOperationUnitOfWork, IOperationReadStore
             .Where(item => !search.Status.HasValue || item.Status == search.Status.Value);
         var ordered = search.Scope == OperationListScope.ActionableQueue ? ExecutionQueue.Order(selected).ToArray()
             : selected.OrderByDescending(item => item.CreatedAt).ThenBy(item => item.ServiceOrderId).ToArray();
-        return Task.FromResult(Page(ordered, page));
+        return Task.FromResult(Page(ordered.Select(OperationListItem.From).ToArray(), page));
     }
 
     public Task<PageResult<OperationHistory>?> GetHistory(Guid id, PageRequest page, CancellationToken ct)

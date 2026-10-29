@@ -42,35 +42,31 @@ O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [ac
 
 ## Último checkpoint
 
-Passos 1, 2 e 3 concluídos no núcleo local. [Casos de uso/limites](docs/planning/STEP_3_APPLICATION.md), [evidência](docs/planning/evidence/step-3/RESULTS.md) e [acompanhamento](docs/planning/EXECUTION_TRACKER.md). Resultado: 120 aprovados; 632/632 linhas (100%) e 278/283 branches (98,23%). Isso não comprova funcionamento com banco/broker/API reais.
+Incremento 4 concluído: persistência PostgreSQL/EF, migrations, histórico, receipts idempotentes, concorrência e outbox interna transacional. **144 testes aprovados** (130 unitários e 14 de integração no PostgreSQL real), sem falhas/ignorados. Cobertura consolidada: Application 100%, Domain 98,93%, Infrastructure 98,50% (inclui migrations geradas).
 
-## Executar o que existe hoje
-
-Requer SDK .NET 10; testes do núcleo usam portas e doubles isolados, sem exigir banco/broker.
-
-```powershell
-dotnet restore GearFlow.Operation.slnx
-dotnet test GearFlow.Operation.slnx --no-restore --collect:"XPlat Code Coverage" --results-directory TestResults
-```
-
-No ambiente restrito usado na primeira execução, foi necessário DOTNET_CLI_HOME gravável e `-m:1 -nr:false`. O VSTest precisa de comunicação local entre processos.
-
-[Validação inicial](docs/coverage/README.md): 19 testes passaram; 101/101 linhas e 44/44 branches instrumentados. São somente Domain/Application existentes; não comprovam API, banco, broker ou BDD distribuído.
+- [Evidências](docs/planning/evidence/increment-4/RESULTS.md).
+- [Decisão de persistência](docs/architecture/adr-008-persistencia-postgresql.md).
+- [Execução local e CI](docs/development/POSTGRESQL.md).
+- [Próximos incrementos](docs/planning/NEXT_INCREMENTS.md) e [acompanhamento](docs/planning/EXECUTION_TRACKER.md).
 
 ## Estrutura
 
 ```text
 src/
-  Operation.Domain/          # implementado
-  Operation.Application/     # implementado
+  Operation.Domain/
+  Operation.Application/
+  Operation.Infrastructure/
 tests/
-  Operation.Tests/           # implementado
+  Operation.Tests/
+  Operation.IntegrationTests/
 docs/
-  architecture/              # visão, diagramas, Saga e ADRs
-  contracts/                 # especificação, schemas e exemplos v1 propostos
-  development/               # API, qualidade e operação
-  planning/                  # sequência de implementação e critérios de aceite
-  rfcs/                      # propostas para revisão do grupo
+  architecture/
+  contracts/
+  development/
+  planning/
+  rfcs/
 ```
 
-Operation.Infrastructure, Operation.Api e o pacote de contratos serão adicionados nos incrementos previstos. O passo 3 implementou os casos de uso/consultas/precificação por portas e validou intenções/CAS com storage isolado de teste. A implementação persistente dessas garantias e a integração em rede são o próximo trabalho. OperationEvent é registro interno de outbox com kind tipado e projeção congelada, não um contrato RabbitMQ homologado.
+O slnx organiza projetos nas pastas src e tests. Requer SDK .NET 10; integração requer PostgreSQL 17, via Docker/Testcontainers ou OPERATION_TEST_POSTGRES. Consulte o guia acima para comandos e migrations.
+
+Ainda faltam host HTTP/JWT, catálogo real, contratos homologados, RabbitMQ/MassTransit, dispatcher da outbox e integração da Saga. OperationEvent é registro interno persistido, não um contrato RabbitMQ já publicado. Os outros serviços e gearflow-app não foram alterados neste incremento.
