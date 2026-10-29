@@ -4,7 +4,7 @@
 
 ## Sequência ativa de execução
 
-Em 28/10/2026, o usuário solicitou três passos locais: (1) paridade/escopo, (2) modelo operacional, (3) casos de uso. A conclusão e a evidência de cada um ficam no [acompanhamento](EXECUTION_TRACKER.md). O passo 1 foi concluído e o usuário autorizou o passo 2; retornar novamente ao concluir o modelo antes de executar o passo 3. Esta sequência precede/complementa os marcos P0-P8 abaixo e não exige fingir que houve acordo externo para testar domínio local.
+Em 28/10/2026, o usuário solicitou três passos locais: (1) paridade/escopo, (2) modelo operacional, (3) casos de uso. A conclusão e a evidência de cada um ficam no [acompanhamento](EXECUTION_TRACKER.md). Passos 1, 2 e 3 concluídos no núcleo local, com checkpoints e evidências separados. Próximo incremento: persistência real (banco/journal/CAS/outbox). Esta sequência precede/complementa os marcos P0-P8 abaixo e não exige fingir que houve acordo externo para testar domínio local.
 
 ## Estado de partida
 
@@ -26,7 +26,11 @@ Operation tem Domain/Application e 19 testes locais. Inventory tem implementaç�
 
 P2/P3 podem ser desenvolvidos com fixtures locais e simulador, sem esperar OS completo. Não prometer integração enquanto tipos/semântica estiverem divergentes. Estimativas dependem da divisão de tarefas e prazo do grupo, ainda não informados.
 
-## Situação após o passo 2
+## Situação após o passo 3
+
+Casos de uso/queries e portas de preço/storage estão implementados e testados com doubles isolados. Os marcos de contratos executáveis, banco, API/broker e entrega distribuída abaixo continuam pendentes. [Aplicação do passo 3](STEP_3_APPLICATION.md).
+
+## Histórico: situação após o passo 2
 
 As mudanças de modelo da tabela abaixo foram implementadas no domínio local, com mapeamento explícito de linhas e adaptação das assinaturas da aplicação para compilar. A tabela registra as lacunas da baseline inicial; não prova que integração, casos de uso completos ou persistência já existem. Ver [modelo implementado](STEP_2_MODEL.md) e [acompanhamento](EXECUTION_TRACKER.md).
 

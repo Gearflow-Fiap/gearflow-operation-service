@@ -41,3 +41,7 @@ Não usar apenas mocks para comprovar atomicidade e concorrência. Na validaçã
 Gate >=80% de linhas por serviço, incluindo código de produção das camadas adicionadas; documentar exclusões legítimas sem ocultar comportamento. Manter teste de contrato e cenário BDD com resultados reproduzíveis. SonarQube/Cloud ou similar precisa de projeto/credenciais configurados e gate obrigatório; ainda pendente. Build/test/qualidade antes de imagem e deploy Kubernetes. Branch main protegida com PR/checks no host Git, não apenas arquivo YAML.
 
 Evidências para entrega: relatório de cobertura, resultado BDD, CI com qualidade/deploy, screenshot/trace da Saga, caso de compensação e vídeo <=15 minutos. Dados de demonstração sem credenciais/dados pessoais reais.
+
+## Checkpoint local mais recente
+
+O [passo 3](../planning/evidence/step-3/RESULTS.md) tem 120 testes aprovados de domínio/aplicação, incluindo falhas de preço, replay, rollback e contrato de CAS com doubles. Ainda faltam todos os testes de adapters reais (banco, broker, HTTP/auth, Saga/BDD). O baseline de 19 testes no início deste documento é histórico.

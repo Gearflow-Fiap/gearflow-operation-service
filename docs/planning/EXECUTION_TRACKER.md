@@ -1,12 +1,12 @@
 # Acompanhamento dos passos 1 a 3
 
-Atualizado em 28/10/2026. **Ponto de retomada: passos 1 e 2 concluídos; passo 3 não iniciado.** Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
+Atualizado em 28/10/2026. **Ponto de retomada: passos 1, 2 e 3 concluídos no núcleo local. Próximo: persistência real.** Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
 
 | Passo solicitado | Escopo | Situação | Evidência |
 |---|---|---|---|
 | 1 — Paridade e escopo | Inventário fase 3, donos novos, lacunas e critérios de teste | **Concluído em 28/10/2026** | [Matriz](STEP_1_PARITY.md), [manifesto](PARITY_MANIFEST.json), [testes](evidence/step-1/RESULTS.md) |
 | 2 — Modelo operacional | Implementar dados/identidades/estados necessários ao Operation, com testes de domínio | **Concluído em 28/10/2026** | [Modelo](STEP_2_MODEL.md), [testes](evidence/step-2/RESULTS.md), [aceite](STEP_2_ACCEPTANCE.json) |
-| 3 — Casos de uso | Implementar fluxo local completo com portas e testes de aplicação | **Não iniciado** | Aguardar retorno ao usuário após passo 2 |
+| 3 — Casos de uso | Implementar fluxo local completo com portas e testes de aplicação | **Concluído em 28/10/2026** | [Aplicação](STEP_3_APPLICATION.md), [testes](evidence/step-3/RESULTS.md), [aceite](STEP_3_ACCEPTANCE.json) |
 
 ## Regra de trabalho
 
@@ -61,8 +61,35 @@ Não foram implementados consultas/paginação, fonte de preço por portas, jour
 
 **Passo 2 concluído. Parar e informar ao usuário antes de iniciar o passo 3.**
 
+## Passo 3 — registro de conclusão
+
+### Implementado
+
+- Casos de uso locais de recebimento, diagnóstico, falha explícita, alteração de veículo, desativação, autorização, início físico, execução por linha, conclusão e cancelamento pré-criação/tombstone.
+- Precificação via IPriceCatalog com duas políticas explícitas (sem default), resposta completa validada e ausência/indisponibilidade sem preço zero inventado.
+- CommandContext, fingerprint canônico e receipts para replay, reuso divergente de chave e checagem de versão. Commit de estado/receipt/eventos com contrato de CAS e atomicidade.
+- WorkOperation.Copy e InitialVehicleId para trabalhar com estado destacado e não reverter atualização posterior num recebimento repetido.
+- OperationQueries/DTOs congelados, paginação/filtros, histórico e durações/amostras por fase.
+- Eventos pendentes internos com enum de tipo, causa, versão e projeção congelada; não são contratos públicos do broker.
+- [ADR-007](../architecture/adr-007-casos-de-uso-e-intencoes.md), [aceite por critério](STEP_3_ACCEPTANCE.json) e documentação dos [casos de uso](STEP_3_APPLICATION.md).
+
+### Validado
+
+- **120 testes aprovados em Release**, 0 falhas, 0 ignorados.
+- **632/632 linhas (100%) e 278/283 branches (98,23%)** instrumentados; gate >=80% por assembly aprovado.
+- Falhas de cotação e commit após mutação de cópia não tornam estado/receipts/eventos visíveis parcialmente no double de teste.
+- Replay devolve resultado original antes de preço/precondição; protocolo de commits simultâneos modelado com CAS no storage isolado.
+- Consultas, filas, DTOs e cálculo de métricas validados com dados locais. Formatação/diff/links/referências conferidos.
+- Resultado individual e cobertura em [evidence/step-3](evidence/step-3/RESULTS.md).
+
+### Limites
+
+Storage e catálogo concretos desta etapa existem somente em tests. Não há PostgreSQL/EF, HTTP/JWT, client de preço real, MassTransit/RabbitMQ, Saga/BDD real, exporter de telemetria ou deploy. Política de consumíveis e contratos OS/Budget ainda exigem revisão coletiva. Teste de CAS em memória não comprova isolamento/constraints do banco. Nenhum runtime dos outros repositórios foi alterado.
+
+**Passo 3 concluído. Encerrar este checkpoint e informar o próximo incremento, sem iniciar banco/API/mensageria automaticamente.**
+
 ## Próximo incremento — somente após retorno ao usuário
 
-**Passo 3:** completar casos de uso locais sobre o novo domínio, com portas de consulta de preços/política explícita, DTOs/queries, métricas de duração, autorizações/cancelamentos e tratamento de intenções repetidas. Criar unidade de trabalho de teste isolada para provar falha de commit sem deixar mutação persistida; não confundir com transação real de banco. Registrar testes/evidência novos e avisar a conclusão.
+Implementar persistência exclusiva PostgreSQL/EF: migrations, mapeamento/rehidratação do agregado, receipt persistente, índices únicos, concorrência otimista/CAS e outbox/inbox; executar testes contra banco real para falhas/restart e disputas de criação/atualização/intenção. Definir retenção e migração de fingerprint/journals/tombstones. Depois host HTTP/JWT/clients de preço, contratos publicados e broker/Saga/BDD, CI/CD e observabilidade.
 
-Contratos reais OS/Budget, cálculo financeiro e dono do catálogo continuam em revisão coletiva. Banco/API/mensageria serão incrementos próprios depois do núcleo funcional.
+Os três passos solicitados terminaram o núcleo local de domínio/aplicação. Não declarar serviço completo enquanto os adapters/integrações e critérios de entrega da fase 4 não estiverem validados.

@@ -45,3 +45,7 @@ Propor GET /api/catalog/jobs e /{id}; POST para criar; PUT /{id} para atualizar;
 ProblemDetails com código estável e traceId: 400 validação; 401 sem credencial válida; 403 sem autorização staff; 404 operação inexistente; 409 conflito de estado/intenção; 412 versão; 428 precondição; 503 dependência de preço indisponível. Não retornar stack trace, JWT ou segredos.
 
 Validar staff por política explícita acordada na RFC-002; RequireAuthorization sozinho não distingue cliente de mecânico. Autenticação de integração de preço é questão separada. Rate limit/CORS na borda não substituem autorização na API.
+
+## Suporte local implementado no passo 3
+
+OperationService e OperationQueries agora fornecem ações/queries por interfaces. Nenhuma rota deste arquivo foi exposta em HTTP. O host futuro deve mapear Idempotency-Key para CommandContext.IntentId, ator de identidade confiável e If-Match para ExpectedVersion (obrigatoriedade HTTP continua no host; comandos de broker podem omitir versão). Mapear exceções/DTOs e não aceitar preço do cliente. Replay devolve resultado histórico; consulta Get devolve estado atual. Ver [casos de uso](../planning/STEP_3_APPLICATION.md).

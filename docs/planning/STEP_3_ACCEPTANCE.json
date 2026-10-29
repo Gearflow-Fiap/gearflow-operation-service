@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-28",
+  "step": 3,
+  "criteria": [
+    {
+      "id": "AT-01",
+      "status": "Atendido no núcleo local; contrato OS e adapter pendentes",
+      "representativeTest": "FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData"
+    },
+    {
+      "id": "AT-02",
+      "status": "Validação local atendida",
+      "representativeTest": "MissingOperationAndInvalidInputsHaveNoSideEffects"
+    },
+    {
+      "id": "AT-03",
+      "status": "Cópias/DTOs isolados atendidos",
+      "representativeTest": "DetailsAreFrozenAndDoNotExposeMutableStoredAggregate"
+    },
+    {
+      "id": "AT-04",
+      "status": "Caso de uso e guard locais atendidos",
+      "representativeTest": "FailedDiagnosticAndDeactivationBlockFurtherWorkWithoutFakeFinancialEffects"
+    },
+    {
+      "id": "AT-05",
+      "status": "Precificação por porta e snapshot locais atendidos; fonte real posterior",
+      "representativeTest": "FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData"
+    },
+    {
+      "id": "AT-06",
+      "status": "Falhas/zero explícito atendidos por testes de porta",
+      "representativeTest": "TransientPricingFailureCanRetrySameIntentAndExplicitZeroIsAccepted"
+    },
+    {
+      "id": "AT-07",
+      "status": "Políticas explícitas testadas; acordo financeiro com Budget pendente",
+      "representativeTest": "SelectedPolicyIsExplicitAndFrozenWithPriceSnapshot"
+    },
+    {
+      "id": "AT-08",
+      "status": "Atualização e preservação de entrada locais atendidas; propagação externa pendente",
+      "representativeTest": "RepeatedBusinessReceiveUsesInitialVehicleAndNeverRegressesWork"
+    },
+    {
+      "id": "AT-09",
+      "status": "Caso de uso/tombstone locais atendidos; persistência real posterior",
+      "representativeTest": "CancelBeforeReceiveCreatesFenceAndRejectsLateWork"
+    },
+    {
+      "id": "AT-10",
+      "status": "Autorização local atendida; pagamento/reserva pela coordenação externa",
+      "representativeTest": "AuthorizationChecksIdentityTermsAndPreservesOriginalAuthorizationOnRetry"
+    },
+    {
+      "id": "AT-11",
+      "status": "Mapeamento/progresso por linha atendidos localmente",
+      "representativeTest": "FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData"
+    },
+    {
+      "id": "AT-12",
+      "status": "Replay e repetição semântica sem duplicação atendidos no protocolo local",
+      "representativeTest": "NewIntentForAlreadyPerformedWorkDoesNotDuplicateProgressOrReprice"
+    },
+    {
+      "id": "AT-13",
+      "status": "Conclusão local atendida; sem consumo/entrega global",
+      "representativeTest": "FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData"
+    },
+    {
+      "id": "AT-14",
+      "status": "Auditoria e projeção congelada atendidas localmente",
+      "representativeTest": "FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData"
+    },
+    {
+      "id": "AT-15",
+      "status": "DTOs/queries/paginação locais atendidos; read adapter real posterior",
+      "representativeTest": "HistoryIsPaginatedByVersionAndQueriesFailExplicitlyWhenAbsent"
+    },
+    {
+      "id": "AT-16",
+      "status": "Fila/filtros/páginas atendidos localmente; executar no banco pelo adapter futuro",
+      "representativeTest": "QueueAndAllListsHaveDifferentScopesWithNormalizedPagesAndStableOrder"
+    },
+    {
+      "id": "AT-17",
+      "status": "Duração/média por fase atendidas; exporter/dashboard posterior",
+      "representativeTest": "PhaseDurationsSeparateQueueAndPhysicalWorkAndDoNotInventMissingSamples"
+    },
+    {
+      "id": "AT-18",
+      "status": "Rollback e receipt/eventos isolados atendidos no double; ACID real posterior",
+      "representativeTest": "FailedCommitAfterPricingOrProgressLeavesOriginalSnapshotUntouched"
+    },
+    {
+      "id": "AT-19",
+      "status": "Journal/replay/CAS contratados e testados localmente; journal persistente posterior",
+      "representativeTest": "ReusingIntentWithDifferentMeaningIsRejected"
+    },
+    {
+      "id": "AT-20",
+      "status": "Fence e protocolo CAS locais atendidos; corrida em banco real posterior",
+      "representativeTest": "DifferentIntentCommandsUsingSameStoredVersionCannotOverwriteOneAnother"
+    },
+    {
+      "id": "AT-21",
+      "status": "Fronteiras locais preservadas; contratos/broker/Saga/BDD posteriores",
+      "representativeTest": "FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData"
+    },
+    {
+      "id": "AT-22",
+      "status": "Porta de preço disponível; CRUD/migração do catálogo continuam suporte posterior",
+      "representativeTest": "PricesAreRequestedOncePerCatalogItemWhileOccurrencesKeepIndependentLines"
+    }
+  ]
+}

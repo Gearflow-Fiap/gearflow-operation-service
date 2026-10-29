@@ -4,9 +4,9 @@ Microsserviço de diagnóstico e execução da oficina, extraído do Workshop do
 
 ## Status real e arquitetura de referência
 
-**Implementado:** modelo operacional .NET 10 com veículo, itens solicitados/diagnosticados, snapshots imutáveis, mapeamento de linhas do orçamento, autorização distinta de início físico, atividade/cancelamento, histórico e versão. São 72 testes locais de domínio e regressão do núcleo Application. CI está preparado, sem execução remota verificada.
+**Implementado:** domínio e casos de uso locais .NET 10, precificação por interface com política obrigatória, snapshot imutável, mapeamento de linhas do orçamento, comandos idempotentes por intenção, contrato de commit com CAS/receipt/eventos, consultas/DTOs/paginação e duração por fase. São 120 testes locais. O storage isolado e o catálogo simulados existem apenas nos testes; não há adapter de produção.
 
-**Planejado:** casos de uso completos, consultas/paginação, fonte/política de preços por portas, catálogo de mão de obra, API autenticada, PostgreSQL próprio, EF/migrations, RabbitMQ/MassTransit, inbox/outbox, simulador, BDD, OpenTelemetry, Docker/Kubernetes, Sonar e deploy. Snapshot de valores no domínio não equivale à consulta de preços real.
+**Planejado:** PostgreSQL/EF e migrations, journal/outbox/inbox persistentes, API autenticada, catálogo e clients de preço reais, contratos wire/RabbitMQ, Saga/BDD integrado, OpenTelemetry, Docker/Kubernetes, Sonar e deploy. Políticas LegacyLinePriceV1 e PerUnitV1 estão implementadas sem default de produção; a escolha deve ser acordada com Budget.
 
 **Contrato em revisão:** a especificação v1 em docs/contracts é uma baseline proposta para os integrantes. Não é um pacote publicado nem garantia de compatibilidade com outros serviços. As dependências e divergências estão na RFC-001. Implementação atual e desenho alvo não são equivalentes; veja o plano de migração.
 
@@ -26,7 +26,7 @@ ADRs registram contexto, alternativas e consequências. Nenhuma aprovação dos 
 
 ## Execução acompanhada — passos 1 a 3
 
-O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [acompanhamento](docs/planning/EXECUTION_TRACKER.md), a [matriz de paridade da fase 3](docs/planning/STEP_1_PARITY.md) e os [critérios de aceite](docs/planning/STEP_ACCEPTANCE.md). O passo 1 fecha inventário/escopo; não implementa o modelo dos passos 2/3. Os contratos propostos anteriormente ainda precisam dos ajustes de paridade registrados na matriz.
+O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [acompanhamento](docs/planning/EXECUTION_TRACKER.md), a [matriz de paridade da fase 3](docs/planning/STEP_1_PARITY.md) e os [critérios de aceite](docs/planning/STEP_ACCEPTANCE.md). Os três passos locais foram concluídos em checkpoints separados; o próximo incremento são adapters de persistência reais. Os contratos propostos anteriormente ainda precisam dos ajustes de paridade registrados na matriz.
 
 ## Navegação
 
@@ -42,11 +42,11 @@ O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [ac
 
 ## Último checkpoint
 
-Passo 2 concluído no modelo local; passo 3 não iniciado funcionalmente. [Modelo e limites](docs/planning/STEP_2_MODEL.md), [evidência](docs/planning/evidence/step-2/RESULTS.md) e [acompanhamento](docs/planning/EXECUTION_TRACKER.md). Resultado: 72 testes aprovados, 100% das 342 linhas e 150/153 branches (98,03%) no código instrumentado atual. O histórico do passo 1 permanece preservado.
+Passos 1, 2 e 3 concluídos no núcleo local. [Casos de uso/limites](docs/planning/STEP_3_APPLICATION.md), [evidência](docs/planning/evidence/step-3/RESULTS.md) e [acompanhamento](docs/planning/EXECUTION_TRACKER.md). Resultado: 120 aprovados; 632/632 linhas (100%) e 278/283 branches (98,23%). Isso não comprova funcionamento com banco/broker/API reais.
 
 ## Executar o que existe hoje
 
-Requer SDK .NET 10; não requer banco/broker porque só há núcleo local.
+Requer SDK .NET 10; testes do núcleo usam portas e doubles isolados, sem exigir banco/broker.
 
 ```powershell
 dotnet restore GearFlow.Operation.slnx
@@ -73,4 +73,4 @@ docs/
   rfcs/                      # propostas para revisão do grupo
 ```
 
-Operation.Infrastructure, Operation.Api e o pacote de contratos serão adicionados nos incrementos previstos. A aplicação existente teve apenas assinaturas/fila adaptadas ao domínio; consultas, resolução de preços, unidade de trabalho isolada e intenções idempotentes ainda são trabalho do passo 3. OperationEvent atual é interno e provisório: não deve ser publicado como contrato RabbitMQ.
+Operation.Infrastructure, Operation.Api e o pacote de contratos serão adicionados nos incrementos previstos. O passo 3 implementou os casos de uso/consultas/precificação por portas e validou intenções/CAS com storage isolado de teste. A implementação persistente dessas garantias e a integração em rede são o próximo trabalho. OperationEvent é registro interno de outbox com kind tipado e projeção congelada, não um contrato RabbitMQ homologado.

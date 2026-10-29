@@ -1,0 +1,3166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<coverage line-rate="1" branch-rate="0.9823000000000001" version="1.9" timestamp="1793240192" lines-covered="632" lines-valid="632" branches-covered="278" branches-valid="283">
+  <sources>
+    <source>C:\WS\gearflow-operation-service\src\</source>
+  </sources>
+  <packages>
+    <package name="Operation.Application" line-rate="1" branch-rate="0.9867" complexity="229">
+      <classes>
+        <class name="GearFlow.Operation.Application.CommandContext" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="12">
+          <methods>
+            <method name="get_IntentId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="8" hits="506" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ServiceOrderId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="414" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Actor" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="460" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExpectedVersion" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="181" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid,System.String,System.Nullable`1&lt;System.Int64&gt;)" line-rate="1" branch-rate="1" complexity="8">
+              <lines>
+                <line number="13" hits="181" branch="False" />
+                <line number="15" hits="183" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="17" type="jump" coverage="100%" />
+                    <condition number="30" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="16" hits="180" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="49" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="17" hits="179" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="91" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="18" hits="177" branch="False" />
+                <line number="19" hits="177" branch="False" />
+                <line number="20" hits="177" branch="False" />
+                <line number="21" hits="177" branch="False" />
+                <line number="22" hits="177" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="8" hits="506" branch="False" />
+            <line number="9" hits="414" branch="False" />
+            <line number="10" hits="460" branch="False" />
+            <line number="11" hits="181" branch="False" />
+            <line number="13" hits="181" branch="False" />
+            <line number="15" hits="183" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="17" type="jump" coverage="100%" />
+                <condition number="30" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="16" hits="180" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="49" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="17" hits="179" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="91" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="18" hits="177" branch="False" />
+            <line number="19" hits="177" branch="False" />
+            <line number="20" hits="177" branch="False" />
+            <line number="21" hits="177" branch="False" />
+            <line number="22" hits="177" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.CommandResult" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_ServiceOrderId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="25" hits="145" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="26" hits="154" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="25" hits="145" branch="False" />
+            <line number="26" hits="154" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.CommandReceipt" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_IntentId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="577" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="28" hits="577" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.IntentConflictException" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(System.String)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="30" hits="6" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="30" hits="6" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationConcurrencyException" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(System.String)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="31" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="31" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.PricingUnavailableException" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(System.String)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="32" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="32" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.InvalidPriceQuoteException" filename="Operation.Application\CommandContext.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(System.String)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="16" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="33" hits="16" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.CommandFingerprint" filename="Operation.Application\CommandFingerprint.cs" line-rate="1" branch-rate="1" complexity="5">
+          <methods>
+            <method name="Create" signature="(System.String,GearFlow.Operation.Application.CommandContext,System.Object)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="12" hits="186" branch="False" />
+                <line number="13" hits="186" branch="False" />
+                <line number="14" hits="186" branch="False" />
+                <line number="15" hits="186" branch="False" />
+                <line number="16" hits="186" branch="False" />
+              </lines>
+            </method>
+            <method name="Consumables" signature="(System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.DiagnosticConsumable&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="281" branch="False" />
+                <line number="19" hits="281" branch="False" />
+              </lines>
+            </method>
+            <method name="Authorization" signature="(GearFlow.Operation.Domain.ExecutionAuthorization)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="9" branch="False" />
+                <line number="22" hits="9" branch="False" />
+                <line number="23" hits="9" branch="False" />
+                <line number="24" hits="9" branch="False" />
+                <line number="25" hits="9" branch="False" />
+                <line number="26" hits="56" branch="False" />
+                <line number="27" hits="28" branch="False" />
+                <line number="28" hits="28" branch="False" />
+                <line number="29" hits="28" branch="False" />
+                <line number="30" hits="24" branch="False" />
+                <line number="31" hits="9" branch="False" />
+              </lines>
+            </method>
+            <method name="Number" signature="(System.Decimal)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="265" branch="False" />
+              </lines>
+            </method>
+            <method name=".cctor" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="186" branch="False" />
+            <line number="13" hits="186" branch="False" />
+            <line number="14" hits="186" branch="False" />
+            <line number="15" hits="186" branch="False" />
+            <line number="16" hits="186" branch="False" />
+            <line number="18" hits="281" branch="False" />
+            <line number="19" hits="281" branch="False" />
+            <line number="21" hits="9" branch="False" />
+            <line number="22" hits="9" branch="False" />
+            <line number="23" hits="9" branch="False" />
+            <line number="24" hits="9" branch="False" />
+            <line number="25" hits="9" branch="False" />
+            <line number="26" hits="56" branch="False" />
+            <line number="27" hits="28" branch="False" />
+            <line number="28" hits="28" branch="False" />
+            <line number="29" hits="28" branch="False" />
+            <line number="30" hits="24" branch="False" />
+            <line number="31" hits="9" branch="False" />
+            <line number="33" hits="265" branch="False" />
+            <line number="10" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.PriceRequest" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_ItemType" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="842" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="842" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.CatalogPrice" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_ItemType" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="735" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="6" hits="735" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.CatalogPriceQuote" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_PricedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="243" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="7" hits="243" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticPricer" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="get_PolicyId" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="23" hits="20" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="6" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name=".ctor" signature="(GearFlow.Operation.Application.IPriceCatalog,GearFlow.Operation.Application.ConsumablePricingMode,System.TimeProvider)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="25" hits="56" branch="False" />
+                <line number="27" hits="56" branch="False" />
+                <line number="28" hits="55" branch="False" />
+                <line number="29" hits="55" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="34" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="30" hits="53" branch="False" />
+                <line number="31" hits="53" branch="False" />
+                <line number="32" hits="53" branch="False" />
+                <line number="33" hits="53" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="23" hits="20" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="6" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="25" hits="56" branch="False" />
+            <line number="27" hits="56" branch="False" />
+            <line number="28" hits="55" branch="False" />
+            <line number="29" hits="55" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="34" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="30" hits="53" branch="False" />
+            <line number="31" hits="53" branch="False" />
+            <line number="32" hits="53" branch="False" />
+            <line number="33" hits="53" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticPricer/LineInput" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="77" hits="1124" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="77" hits="1124" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticPricer/&lt;&gt;c" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="6">
+          <methods>
+            <method name="&lt;Price&gt;b__6_0" signature="(GearFlow.Operation.Domain.RequestedJob)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="39" hits="79" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;Price&gt;b__6_1" signature="(GearFlow.Operation.Domain.RequestedPart)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="40" hits="38" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;Price&gt;b__6_2" signature="(GearFlow.Operation.Domain.DiagnosticConsumable)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="41" hits="271" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;Price&gt;b__6_3" signature="(GearFlow.Operation.Application.DiagnosticPricer/LineInput)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="42" hits="147" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;Price&gt;b__6_4" signature="(GearFlow.Operation.Application.DiagnosticPricer/LineInput)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="44" hits="142" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;Price&gt;b__6_5" signature="(GearFlow.Operation.Application.PriceRequest)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="45" hits="242" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="39" hits="79" branch="False" />
+            <line number="40" hits="38" branch="False" />
+            <line number="41" hits="271" branch="False" />
+            <line number="42" hits="147" branch="False" />
+            <line number="44" hits="142" branch="False" />
+            <line number="45" hits="242" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticPricer/&lt;&gt;c__DisplayClass6_0" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="1" complexity="5">
+          <methods>
+            <method name="&lt;Price&gt;b__7" signature="(GearFlow.Operation.Application.PriceRequest)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="58" hits="84" branch="False" />
+              </lines>
+            </method>
+            <method name="&lt;Price&gt;b__8" signature="(GearFlow.Operation.Application.DiagnosticPricer/LineInput)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="64" hits="62" branch="False" />
+                <line number="65" hits="62" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="36" type="jump" coverage="100%" />
+                    <condition number="49" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="66" hits="62" branch="False" />
+                <line number="67" hits="61" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="58" hits="84" branch="False" />
+            <line number="64" hits="62" branch="False" />
+            <line number="65" hits="62" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="36" type="jump" coverage="100%" />
+                <condition number="49" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="66" hits="62" branch="False" />
+            <line number="67" hits="61" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticPricer/&lt;Price&gt;d__6" filename="Operation.Application\DiagnosticPricer.cs" line-rate="1" branch-rate="0.9736" complexity="38">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="0.9736" complexity="38">
+              <lines>
+                <line number="37" hits="39" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="59" type="jump" coverage="100%" />
+                    <condition number="73" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="38" hits="1" branch="False" />
+                <line number="43" hits="2" branch="False" />
+                <line number="46" hits="36" branch="False" />
+                <line number="47" hits="35" branch="True" condition-coverage="91.66% (11/12)">
+                  <conditions>
+                    <condition number="584" type="jump" coverage="100%" />
+                    <condition number="592" type="jump" coverage="100%" />
+                    <condition number="610" type="jump" coverage="100%" />
+                    <condition number="634" type="jump" coverage="100%" />
+                    <condition number="664" type="jump" coverage="50%" />
+                    <condition number="683" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="48" hits="35" branch="False" />
+                <line number="49" hits="5" branch="False" />
+                <line number="50" hits="30" branch="False" />
+                <line number="51" hits="208" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="860" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="53" hits="77" branch="True" condition-coverage="100% (12/12)">
+                  <conditions>
+                    <condition number="739" type="jump" coverage="100%" />
+                    <condition number="753" type="jump" coverage="100%" />
+                    <condition number="772" type="jump" coverage="100%" />
+                    <condition number="786" type="jump" coverage="100%" />
+                    <condition number="796" type="jump" coverage="100%" />
+                    <condition number="835" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="54" hits="77" branch="False" />
+                <line number="55" hits="77" branch="False" />
+                <line number="56" hits="6" branch="False" />
+                <line number="59" hits="3" branch="False" />
+                <line number="62" hits="21" branch="False" />
+                <line number="63" hits="21" branch="False" />
+                <line number="68" hits="21" branch="False" />
+                <line number="69" hits="20" branch="False" />
+                <line number="71" hits="2" branch="False" />
+                <line number="73" hits="2" branch="False" />
+                <line number="75" hits="19" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="37" hits="39" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="59" type="jump" coverage="100%" />
+                <condition number="73" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="38" hits="1" branch="False" />
+            <line number="43" hits="2" branch="False" />
+            <line number="46" hits="36" branch="False" />
+            <line number="47" hits="35" branch="True" condition-coverage="91.66% (11/12)">
+              <conditions>
+                <condition number="584" type="jump" coverage="100%" />
+                <condition number="592" type="jump" coverage="100%" />
+                <condition number="610" type="jump" coverage="100%" />
+                <condition number="634" type="jump" coverage="100%" />
+                <condition number="664" type="jump" coverage="50%" />
+                <condition number="683" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="48" hits="35" branch="False" />
+            <line number="49" hits="5" branch="False" />
+            <line number="50" hits="30" branch="False" />
+            <line number="51" hits="208" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="860" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="53" hits="77" branch="True" condition-coverage="100% (12/12)">
+              <conditions>
+                <condition number="739" type="jump" coverage="100%" />
+                <condition number="753" type="jump" coverage="100%" />
+                <condition number="772" type="jump" coverage="100%" />
+                <condition number="786" type="jump" coverage="100%" />
+                <condition number="796" type="jump" coverage="100%" />
+                <condition number="835" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="54" hits="77" branch="False" />
+            <line number="55" hits="77" branch="False" />
+            <line number="56" hits="6" branch="False" />
+            <line number="59" hits="3" branch="False" />
+            <line number="62" hits="21" branch="False" />
+            <line number="63" hits="21" branch="False" />
+            <line number="68" hits="21" branch="False" />
+            <line number="69" hits="20" branch="False" />
+            <line number="71" hits="2" branch="False" />
+            <line number="73" hits="2" branch="False" />
+            <line number="75" hits="19" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.PhaseDurations" filename="Operation.Application\DurationCalculator.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_DiagnosticQueueMinutes" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="153" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutionQueueMinutes" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="153" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="153" branch="False" />
+            <line number="6" hits="153" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.PhaseAverage" filename="Operation.Application\DurationCalculator.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_Minutes" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="18" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="7" hits="18" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DurationSummary" filename="Operation.Application\DurationCalculator.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_DiagnosticQueue" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="8" hits="7" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutionQueue" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="8" hits="7" branch="False" />
+            <line number="9" hits="5" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DurationCalculator" filename="Operation.Application\DurationCalculator.cs" line-rate="1" branch-rate="1" complexity="8">
+          <methods>
+            <method name="For" signature="(GearFlow.Operation.Domain.WorkOperation)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="145" branch="False" />
+                <line number="14" hits="145" branch="False" />
+                <line number="15" hits="145" branch="False" />
+                <line number="16" hits="145" branch="False" />
+                <line number="17" hits="145" branch="False" />
+              </lines>
+            </method>
+            <method name="Summarize" signature="(System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.WorkOperation&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="7" branch="False" />
+                <line number="23" hits="9" branch="False" />
+                <line number="24" hits="9" branch="False" />
+              </lines>
+            </method>
+            <method name="Between" signature="(System.Nullable`1&lt;System.DateTimeOffset&gt;,System.Nullable`1&lt;System.DateTimeOffset&gt;)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="28" hits="580" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="7" type="jump" coverage="100%" />
+                    <condition number="16" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Average" signature="(System.Collections.Generic.IEnumerable`1&lt;System.Nullable`1&lt;System.Double&gt;&gt;)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="32" hits="30" branch="False" />
+                <line number="33" hits="12" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="81" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="13" hits="145" branch="False" />
+            <line number="14" hits="145" branch="False" />
+            <line number="15" hits="145" branch="False" />
+            <line number="16" hits="145" branch="False" />
+            <line number="17" hits="145" branch="False" />
+            <line number="22" hits="7" branch="False" />
+            <line number="23" hits="9" branch="False" />
+            <line number="24" hits="9" branch="False" />
+            <line number="28" hits="580" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="7" type="jump" coverage="100%" />
+                <condition number="16" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="32" hits="30" branch="False" />
+            <line number="33" hits="12" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="81" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.ExecutionQueue" filename="Operation.Application\ExecutionQueue.cs" line-rate="1" branch-rate="1" complexity="11">
+          <methods>
+            <method name="Order" signature="(System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.WorkOperation&gt;)" line-rate="1" branch-rate="1" complexity="11">
+              <lines>
+                <line number="8" hits="5" branch="False" />
+                <line number="9" hits="23" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="8" type="jump" coverage="100%" />
+                    <condition number="21" type="jump" coverage="100%" />
+                    <condition number="27" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="10" hits="23" branch="False" />
+                <line number="11" hits="15" branch="True" condition-coverage="100% (5/5)">
+                  <conditions>
+                    <condition number="10" type="switch" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="12" hits="15" branch="False" />
+                <line number="13" hits="3" branch="False" />
+                <line number="14" hits="3" branch="False" />
+                <line number="15" hits="3" branch="False" />
+                <line number="16" hits="6" branch="False" />
+                <line number="17" hits="15" branch="False" />
+                <line number="18" hits="15" branch="False" />
+                <line number="19" hits="15" branch="False" />
+                <line number="20" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="8" hits="5" branch="False" />
+            <line number="9" hits="23" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="8" type="jump" coverage="100%" />
+                <condition number="21" type="jump" coverage="100%" />
+                <condition number="27" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="10" hits="23" branch="False" />
+            <line number="11" hits="15" branch="True" condition-coverage="100% (5/5)">
+              <conditions>
+                <condition number="10" type="switch" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="12" hits="15" branch="False" />
+            <line number="13" hits="3" branch="False" />
+            <line number="14" hits="3" branch="False" />
+            <line number="15" hits="3" branch="False" />
+            <line number="16" hits="6" branch="False" />
+            <line number="17" hits="15" branch="False" />
+            <line number="18" hits="15" branch="False" />
+            <line number="19" hits="15" branch="False" />
+            <line number="20" hits="5" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.RequestedJobDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="155" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="155" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.RequestedPartDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="141" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="6" hits="141" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.ConsumableDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="44" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="7" hits="44" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticLineDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="8" hits="144" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Quantity" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="144" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="8" hits="144" branch="False" />
+            <line number="9" hits="144" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.DiagnosticDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_DiagnosticId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="47" branch="False" />
+              </lines>
+            </method>
+            <method name="get_TotalPriceCents" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="49" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="10" hits="47" branch="False" />
+            <line number="11" hits="49" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.ApprovedJobDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_BudgetJobId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="12" hits="33" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="33" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.AuthorizationDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_AuthorizationId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="28" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="13" hits="28" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.JobProgressDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_BudgetJobId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="33" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="37" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="14" hits="33" branch="False" />
+            <line number="15" hits="37" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.HistoryDto" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Version" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="347" branch="False" />
+              </lines>
+            </method>
+            <method name="get_At" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="17" hits="345" branch="False" />
+              </lines>
+            </method>
+            <method name="From" signature="(GearFlow.Operation.Domain.OperationHistory)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="19" hits="345" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="16" hits="347" branch="False" />
+            <line number="17" hits="345" branch="False" />
+            <line number="19" hits="345" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationListItem" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_ServiceOrderId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="29" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Status" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="16" branch="False" />
+              </lines>
+            </method>
+            <method name="From" signature="(GearFlow.Operation.Domain.WorkOperation)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="24" hits="16" branch="False" />
+                <line number="25" hits="16" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="21" hits="29" branch="False" />
+            <line number="22" hits="16" branch="False" />
+            <line number="24" hits="16" branch="False" />
+            <line number="25" hits="16" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationDetails" filename="Operation.Application\OperationDetails.cs" line-rate="1" branch-rate="1" complexity="12">
+          <methods>
+            <method name="get_ServiceOrderId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="29" hits="151" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="30" hits="13" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CreatedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="31" hits="5" branch="False" />
+              </lines>
+            </method>
+            <method name="get_RequestedJobs" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="32" hits="3" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Consumables" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="8" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Jobs" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="34" hits="7" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticFailureReason" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="35" hits="145" branch="False" />
+              </lines>
+            </method>
+            <method name="From" signature="(GearFlow.Operation.Domain.WorkOperation)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="39" hits="142" branch="False" />
+                <line number="40" hits="142" branch="False" />
+                <line number="41" hits="142" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="222" type="jump" coverage="100%" />
+                    <condition number="310" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="42" hits="142" branch="False" />
+                <line number="43" hits="142" branch="False" />
+                <line number="44" hits="155" branch="False" />
+                <line number="45" hits="140" branch="False" />
+                <line number="46" hits="43" branch="False" />
+                <line number="47" hits="142" branch="False" />
+                <line number="48" hits="144" branch="False" />
+                <line number="49" hits="144" branch="False" />
+                <line number="50" hits="142" branch="False" />
+                <line number="51" hits="33" branch="False" />
+                <line number="52" hits="33" branch="False" />
+                <line number="53" hits="142" branch="False" />
+                <line number="54" hits="142" branch="False" />
+              </lines>
+            </method>
+            <method name="Freeze" signature="(System.Collections.Generic.IEnumerable`1&lt;T&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="57" hits="783" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="29" hits="151" branch="False" />
+            <line number="30" hits="13" branch="False" />
+            <line number="31" hits="5" branch="False" />
+            <line number="32" hits="3" branch="False" />
+            <line number="33" hits="8" branch="False" />
+            <line number="34" hits="7" branch="False" />
+            <line number="35" hits="145" branch="False" />
+            <line number="39" hits="142" branch="False" />
+            <line number="40" hits="142" branch="False" />
+            <line number="41" hits="142" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="222" type="jump" coverage="100%" />
+                <condition number="310" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="42" hits="142" branch="False" />
+            <line number="43" hits="142" branch="False" />
+            <line number="44" hits="155" branch="False" />
+            <line number="45" hits="140" branch="False" />
+            <line number="46" hits="43" branch="False" />
+            <line number="47" hits="142" branch="False" />
+            <line number="48" hits="144" branch="False" />
+            <line number="49" hits="144" branch="False" />
+            <line number="50" hits="142" branch="False" />
+            <line number="51" hits="33" branch="False" />
+            <line number="52" hits="33" branch="False" />
+            <line number="53" hits="142" branch="False" />
+            <line number="54" hits="142" branch="False" />
+            <line number="57" hits="783" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationQueries" filename="Operation.Application\OperationQueries.cs" line-rate="1" branch-rate="1" complexity="8">
+          <methods>
+            <method name="Durations" signature="(System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="30" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="ValidateId" signature="(System.Guid)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="40" hits="17" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="11" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="41" hits="13" branch="False" />
+              </lines>
+            </method>
+            <method name="ValidateStatus" signature="(System.Nullable`1&lt;GearFlow.Operation.Domain.OperationStatus&gt;)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="45" hits="12" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="7" type="jump" coverage="100%" />
+                    <condition number="21" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="46" hits="8" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(GearFlow.Operation.Application.IOperationReadStore)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="53" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="30" hits="2" branch="False" />
+            <line number="40" hits="17" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="11" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="41" hits="13" branch="False" />
+            <line number="45" hits="12" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="7" type="jump" coverage="100%" />
+                <condition number="21" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="46" hits="8" branch="False" />
+            <line number="5" hits="53" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationQueries/&lt;Get&gt;d__2" filename="Operation.Application\OperationQueries.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="9" hits="10" branch="False" />
+                <line number="10" hits="9" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="134" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="11" hits="8" branch="False" />
+                <line number="12" hits="8" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="9" hits="10" branch="False" />
+            <line number="10" hits="9" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="134" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="11" hits="8" branch="False" />
+            <line number="12" hits="8" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationQueries/&lt;History&gt;d__5" filename="Operation.Application\OperationQueries.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="24" hits="5" branch="False" />
+                <line number="25" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="157" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="26" hits="4" branch="False" />
+                <line number="27" hits="3" branch="False" />
+                <line number="28" hits="3" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="24" hits="5" branch="False" />
+            <line number="25" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="157" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="26" hits="4" branch="False" />
+            <line number="27" hits="3" branch="False" />
+            <line number="28" hits="3" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationQueries/&lt;List&gt;d__3" filename="Operation.Application\OperationQueries.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="6" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="16" hits="6" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationQueries/&lt;Queue&gt;d__4" filename="Operation.Application\OperationQueries.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="4" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="20" hits="4" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationQueries/&lt;ReadPage&gt;d__7" filename="Operation.Application\OperationQueries.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="34" hits="8" branch="False" />
+                <line number="35" hits="8" branch="False" />
+                <line number="36" hits="8" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="34" hits="8" branch="False" />
+            <line number="35" hits="8" branch="False" />
+            <line number="36" hits="8" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationService" filename="Operation.Application\OperationService.cs" line-rate="1" branch-rate="0.9782" complexity="51">
+          <methods>
+            <method name="Receive" signature="(GearFlow.Operation.Application.CommandContext,System.Guid,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.RequestedJob&gt;,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.RequestedPart&gt;,System.Nullable`1&lt;System.Int32&gt;,System.Threading.CancellationToken)" line-rate="1" branch-rate="0.9375" complexity="16">
+              <lines>
+                <line number="11" hits="118" branch="False" />
+                <line number="12" hits="58" branch="False" />
+                <line number="13" hits="66" branch="False" />
+                <line number="14" hits="58" branch="False" />
+                <line number="15" hits="58" branch="False" />
+                <line number="16" hits="53" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="17" hits="58" branch="False" />
+                <line number="18" hits="3" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="12" type="jump" coverage="100%" />
+                    <condition number="21" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="19" hits="1" branch="False" />
+                <line number="20" hits="2" branch="True" condition-coverage="90% (9/10)">
+                  <conditions>
+                    <condition number="55" type="jump" coverage="50%" />
+                    <condition number="73" type="jump" coverage="100%" />
+                    <condition number="125" type="jump" coverage="100%" />
+                    <condition number="219" type="jump" coverage="100%" />
+                    <condition number="310" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="21" hits="2" branch="False" />
+                <line number="22" hits="4" branch="False" />
+                <line number="23" hits="1" branch="False" />
+                <line number="24" hits="1" branch="False" />
+                <line number="25" hits="58" branch="False" />
+                <line number="26" hits="50" branch="False" />
+                <line number="27" hits="58" branch="False" />
+              </lines>
+            </method>
+            <method name="StartDiagnostic" signature="(GearFlow.Operation.Application.CommandContext,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="31" hits="46" branch="False" />
+                <line number="32" hits="46" branch="False" />
+                <line number="33" hits="41" branch="False" />
+                <line number="34" hits="78" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="13" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="35" hits="85" branch="False" />
+              </lines>
+            </method>
+            <method name="CompleteDiagnostic" signature="(GearFlow.Operation.Application.CommandContext,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.DiagnosticConsumable&gt;,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="40" hits="45" branch="False" />
+                <line number="41" hits="44" branch="False" />
+                <line number="42" hits="44" branch="False" />
+                <line number="43" hits="44" branch="False" />
+                <line number="44" hits="41" branch="False" />
+                <line number="45" hits="41" branch="False" />
+                <line number="46" hits="41" branch="False" />
+                <line number="47" hits="44" branch="False" />
+                <line number="48" hits="5" branch="False" />
+                <line number="49" hits="1" branch="False" />
+                <line number="50" hits="1" branch="False" />
+                <line number="51" hits="44" branch="False" />
+                <line number="52" hits="39" branch="False" />
+                <line number="53" hits="19" branch="False" />
+                <line number="54" hits="19" branch="False" />
+                <line number="55" hits="64" branch="False" />
+              </lines>
+            </method>
+            <method name="FailDiagnostic" signature="(GearFlow.Operation.Application.CommandContext,System.String,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="60" hits="2" branch="False" />
+                <line number="61" hits="2" branch="False" />
+                <line number="62" hits="2" branch="False" />
+                <line number="63" hits="2" branch="False" />
+                <line number="64" hits="3" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="13" type="jump" coverage="100%" />
+                    <condition number="32" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="65" hits="1" branch="False" />
+                <line number="66" hits="3" branch="False" />
+              </lines>
+            </method>
+            <method name="UpdateVehicle" signature="(GearFlow.Operation.Application.CommandContext,System.Guid,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="70" hits="2" branch="False" />
+                <line number="71" hits="4" branch="False" />
+              </lines>
+            </method>
+            <method name="Deactivate" signature="(GearFlow.Operation.Application.CommandContext,System.String,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="75" hits="3" branch="False" />
+                <line number="76" hits="3" branch="False" />
+                <line number="77" hits="6" branch="False" />
+              </lines>
+            </method>
+            <method name="AuthorizeExecution" signature="(GearFlow.Operation.Application.CommandContext,GearFlow.Operation.Domain.ExecutionAuthorization,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="82" hits="12" branch="False" />
+                <line number="83" hits="11" branch="False" />
+                <line number="84" hits="10" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="86" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="85" hits="1" branch="False" />
+                <line number="86" hits="9" branch="False" />
+                <line number="87" hits="17" branch="False" />
+              </lines>
+            </method>
+            <method name="StartExecution" signature="(GearFlow.Operation.Application.CommandContext,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="91" hits="7" branch="False" />
+                <line number="92" hits="7" branch="False" />
+                <line number="93" hits="7" branch="False" />
+                <line number="94" hits="11" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="13" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="95" hits="13" branch="False" />
+              </lines>
+            </method>
+            <method name="ExecuteJob" signature="(GearFlow.Operation.Application.CommandContext,System.Guid,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="98" hits="7" branch="False" />
+                <line number="99" hits="7" branch="False" />
+                <line number="100" hits="7" branch="False" />
+                <line number="101" hits="15" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="19" type="jump" coverage="100%" />
+                    <condition number="48" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="102" hits="5" branch="False" />
+                <line number="103" hits="14" branch="False" />
+              </lines>
+            </method>
+            <method name="FinalizeExecution" signature="(GearFlow.Operation.Application.CommandContext,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="106" hits="3" branch="False" />
+                <line number="107" hits="3" branch="False" />
+                <line number="108" hits="3" branch="False" />
+                <line number="109" hits="5" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="13" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="110" hits="6" branch="False" />
+              </lines>
+            </method>
+            <method name="CancelOperation" signature="(GearFlow.Operation.Application.CommandContext,System.String,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="114" hits="8" branch="False" />
+                <line number="115" hits="7" branch="False" />
+                <line number="116" hits="7" branch="False" />
+                <line number="117" hits="6" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="2" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="118" hits="10" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="56" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="119" hits="5" branch="False" />
+                <line number="120" hits="7" branch="False" />
+              </lines>
+            </method>
+            <method name="Change" signature="(GearFlow.Operation.Application.CommandContext,System.String,System.Object,GearFlow.Operation.Application.OperationEventKind,System.Action`1&lt;GearFlow.Operation.Domain.WorkOperation&gt;,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="124" hits="79" branch="False" />
+                <line number="125" hits="79" branch="False" />
+                <line number="126" hits="74" branch="False" />
+                <line number="127" hits="73" branch="False" />
+                <line number="128" hits="69" branch="False" />
+                <line number="129" hits="79" branch="False" />
+              </lines>
+            </method>
+            <method name="Found" signature="(GearFlow.Operation.Domain.WorkOperation)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="158" hits="115" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="2" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Active" signature="(GearFlow.Operation.Domain.WorkOperation)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="161" hits="104" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="6" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="162" hits="98" branch="False" />
+              </lines>
+            </method>
+            <method name="Reason" signature="(System.String)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="163" hits="13" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="6" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="164" hits="13" branch="False" />
+              </lines>
+            </method>
+            <method name="Copy" signature="(System.Collections.Generic.IEnumerable`1&lt;T&gt;)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="167" hits="163" branch="False" />
+                <line number="168" hits="161" branch="False" />
+                <line number="169" hits="519" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="24" type="jump" coverage="100%" />
+                    <condition number="54" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="170" hits="160" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(GearFlow.Operation.Application.IOperationUnitOfWork,GearFlow.Operation.Application.DiagnosticPricer,System.TimeProvider)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="53" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="118" branch="False" />
+            <line number="12" hits="58" branch="False" />
+            <line number="13" hits="66" branch="False" />
+            <line number="14" hits="58" branch="False" />
+            <line number="15" hits="58" branch="False" />
+            <line number="16" hits="53" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="17" hits="58" branch="False" />
+            <line number="18" hits="3" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="12" type="jump" coverage="100%" />
+                <condition number="21" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="19" hits="1" branch="False" />
+            <line number="20" hits="2" branch="True" condition-coverage="90% (9/10)">
+              <conditions>
+                <condition number="55" type="jump" coverage="50%" />
+                <condition number="73" type="jump" coverage="100%" />
+                <condition number="125" type="jump" coverage="100%" />
+                <condition number="219" type="jump" coverage="100%" />
+                <condition number="310" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="21" hits="2" branch="False" />
+            <line number="22" hits="4" branch="False" />
+            <line number="23" hits="1" branch="False" />
+            <line number="24" hits="1" branch="False" />
+            <line number="25" hits="58" branch="False" />
+            <line number="26" hits="50" branch="False" />
+            <line number="27" hits="58" branch="False" />
+            <line number="31" hits="46" branch="False" />
+            <line number="32" hits="46" branch="False" />
+            <line number="33" hits="41" branch="False" />
+            <line number="34" hits="78" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="13" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="35" hits="85" branch="False" />
+            <line number="40" hits="45" branch="False" />
+            <line number="41" hits="44" branch="False" />
+            <line number="42" hits="44" branch="False" />
+            <line number="43" hits="44" branch="False" />
+            <line number="44" hits="41" branch="False" />
+            <line number="45" hits="41" branch="False" />
+            <line number="46" hits="41" branch="False" />
+            <line number="47" hits="44" branch="False" />
+            <line number="48" hits="5" branch="False" />
+            <line number="49" hits="1" branch="False" />
+            <line number="50" hits="1" branch="False" />
+            <line number="51" hits="44" branch="False" />
+            <line number="52" hits="39" branch="False" />
+            <line number="53" hits="19" branch="False" />
+            <line number="54" hits="19" branch="False" />
+            <line number="55" hits="64" branch="False" />
+            <line number="60" hits="2" branch="False" />
+            <line number="61" hits="2" branch="False" />
+            <line number="62" hits="2" branch="False" />
+            <line number="63" hits="2" branch="False" />
+            <line number="64" hits="3" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="13" type="jump" coverage="100%" />
+                <condition number="32" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="65" hits="1" branch="False" />
+            <line number="66" hits="3" branch="False" />
+            <line number="70" hits="2" branch="False" />
+            <line number="71" hits="4" branch="False" />
+            <line number="75" hits="3" branch="False" />
+            <line number="76" hits="3" branch="False" />
+            <line number="77" hits="6" branch="False" />
+            <line number="82" hits="12" branch="False" />
+            <line number="83" hits="11" branch="False" />
+            <line number="84" hits="10" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="86" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="85" hits="1" branch="False" />
+            <line number="86" hits="9" branch="False" />
+            <line number="87" hits="17" branch="False" />
+            <line number="91" hits="7" branch="False" />
+            <line number="92" hits="7" branch="False" />
+            <line number="93" hits="7" branch="False" />
+            <line number="94" hits="11" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="13" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="95" hits="13" branch="False" />
+            <line number="98" hits="7" branch="False" />
+            <line number="99" hits="7" branch="False" />
+            <line number="100" hits="7" branch="False" />
+            <line number="101" hits="15" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="19" type="jump" coverage="100%" />
+                <condition number="48" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="102" hits="5" branch="False" />
+            <line number="103" hits="14" branch="False" />
+            <line number="106" hits="3" branch="False" />
+            <line number="107" hits="3" branch="False" />
+            <line number="108" hits="3" branch="False" />
+            <line number="109" hits="5" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="13" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="110" hits="6" branch="False" />
+            <line number="114" hits="8" branch="False" />
+            <line number="115" hits="7" branch="False" />
+            <line number="116" hits="7" branch="False" />
+            <line number="117" hits="6" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="2" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="118" hits="10" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="56" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="119" hits="5" branch="False" />
+            <line number="120" hits="7" branch="False" />
+            <line number="124" hits="79" branch="False" />
+            <line number="125" hits="79" branch="False" />
+            <line number="126" hits="74" branch="False" />
+            <line number="127" hits="73" branch="False" />
+            <line number="128" hits="69" branch="False" />
+            <line number="129" hits="79" branch="False" />
+            <line number="158" hits="115" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="2" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="161" hits="104" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="6" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="162" hits="98" branch="False" />
+            <line number="163" hits="13" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="6" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="164" hits="13" branch="False" />
+            <line number="167" hits="163" branch="False" />
+            <line number="168" hits="161" branch="False" />
+            <line number="169" hits="519" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="24" type="jump" coverage="100%" />
+                <condition number="54" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="170" hits="160" branch="False" />
+            <line number="6" hits="53" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationService/&lt;Execute&gt;d__16" filename="Operation.Application\OperationService.cs" line-rate="1" branch-rate="1" complexity="16">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="16">
+              <lines>
+                <line number="134" hits="188" branch="False" />
+                <line number="135" hits="187" branch="False" />
+                <line number="136" hits="186" branch="False" />
+                <line number="137" hits="186" branch="False" />
+                <line number="138" hits="186" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="210" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="140" hits="15" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="229" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="141" hits="5" branch="False" />
+                <line number="143" hits="176" branch="False" />
+                <line number="144" hits="176" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="375" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="145" hits="176" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="426" type="jump" coverage="100%" />
+                    <condition number="459" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="146" hits="2" branch="False" />
+                <line number="147" hits="174" branch="False" />
+                <line number="148" hits="144" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="586" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="149" hits="144" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="652" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="150" hits="144" branch="False" />
+                <line number="151" hits="144" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="688" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="152" hits="144" branch="False" />
+                <line number="153" hits="144" branch="False" />
+                <line number="154" hits="144" branch="False" />
+                <line number="155" hits="143" branch="False" />
+                <line number="156" hits="141" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="134" hits="188" branch="False" />
+            <line number="135" hits="187" branch="False" />
+            <line number="136" hits="186" branch="False" />
+            <line number="137" hits="186" branch="False" />
+            <line number="138" hits="186" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="210" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="140" hits="15" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="229" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="141" hits="5" branch="False" />
+            <line number="143" hits="176" branch="False" />
+            <line number="144" hits="176" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="375" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="145" hits="176" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="426" type="jump" coverage="100%" />
+                <condition number="459" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="146" hits="2" branch="False" />
+            <line number="147" hits="174" branch="False" />
+            <line number="148" hits="144" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="586" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="149" hits="144" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="652" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="150" hits="144" branch="False" />
+            <line number="151" hits="144" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="688" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="152" hits="144" branch="False" />
+            <line number="153" hits="144" branch="False" />
+            <line number="154" hits="144" branch="False" />
+            <line number="155" hits="143" branch="False" />
+            <line number="156" hits="141" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationService/&lt;&gt;c__DisplayClass6_0/&lt;&lt;CompleteDiagnostic&gt;b__0&gt;d" filename="Operation.Application\OperationService.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods />
+          <lines />
+        </class>
+        <class name="GearFlow.Operation.Application.OperationEvent" filename="Operation.Application\Ports.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_EventId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="12" hits="155" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Kind" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="175" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="155" branch="False" />
+            <line number="13" hits="175" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationWrite" filename="Operation.Application\Ports.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="get_Operation" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="427" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Receipt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="836" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="15" hits="427" branch="False" />
+            <line number="16" hits="836" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.PageRequest" filename="Operation.Application\Ports.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Page" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="83" branch="False" />
+              </lines>
+            </method>
+            <method name="Normalize" signature="(System.Int32,System.Int32)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="35" hits="13" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Offset" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="36" hits="20" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="33" hits="83" branch="False" />
+            <line number="35" hits="13" branch="False" />
+            <line number="36" hits="20" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.PageResult`1" filename="Operation.Application\Ports.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_Items" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="38" hits="88" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="38" hits="88" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Application.OperationSearch" filename="Operation.Application\Ports.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_Scope" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="39" hits="113" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="39" hits="113" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="Operation.Domain" line-rate="1" branch-rate="0.9772" complexity="209">
+      <classes>
+        <class name="GearFlow.Operation.Domain.DiagnosticLine" filename="Operation.Domain\DiagnosticSnapshot.cs" line-rate="1" branch-rate="1" complexity="21">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="1274" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ItemType" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="545" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ItemId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="410" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Name" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="8" hits="174" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Quantity" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="371" branch="False" />
+              </lines>
+            </method>
+            <method name="get_UnitPriceCents" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="173" branch="False" />
+              </lines>
+            </method>
+            <method name="get_LineTotalCents" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="452" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,GearFlow.Operation.Domain.OperationItemType,System.Guid,System.String,System.Decimal,System.Int32,System.Int32)" line-rate="1" branch-rate="1" complexity="14">
+              <lines>
+                <line number="13" hits="457" branch="False" />
+                <line number="14" hits="457" branch="False" />
+                <line number="16" hits="457" branch="False" />
+                <line number="17" hits="456" branch="False" />
+                <line number="18" hits="456" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="46" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="19" hits="454" branch="False" />
+                <line number="20" hits="454" branch="False" />
+                <line number="21" hits="453" branch="False" />
+                <line number="22" hits="450" branch="True" condition-coverage="100% (8/8)">
+                  <conditions>
+                    <condition number="103" type="jump" coverage="100%" />
+                    <condition number="117" type="jump" coverage="100%" />
+                    <condition number="121" type="jump" coverage="100%" />
+                    <condition number="137" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="23" hits="450" branch="False" />
+                <line number="24" hits="2" branch="False" />
+                <line number="25" hits="449" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="158" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="26" hits="448" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="174" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="27" hits="446" branch="False" />
+                <line number="28" hits="446" branch="False" />
+                <line number="29" hits="446" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="1274" branch="False" />
+            <line number="6" hits="545" branch="False" />
+            <line number="7" hits="410" branch="False" />
+            <line number="8" hits="174" branch="False" />
+            <line number="9" hits="371" branch="False" />
+            <line number="10" hits="173" branch="False" />
+            <line number="11" hits="452" branch="False" />
+            <line number="13" hits="457" branch="False" />
+            <line number="14" hits="457" branch="False" />
+            <line number="16" hits="457" branch="False" />
+            <line number="17" hits="456" branch="False" />
+            <line number="18" hits="456" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="46" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="19" hits="454" branch="False" />
+            <line number="20" hits="454" branch="False" />
+            <line number="21" hits="453" branch="False" />
+            <line number="22" hits="450" branch="True" condition-coverage="100% (8/8)">
+              <conditions>
+                <condition number="103" type="jump" coverage="100%" />
+                <condition number="117" type="jump" coverage="100%" />
+                <condition number="121" type="jump" coverage="100%" />
+                <condition number="137" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="23" hits="450" branch="False" />
+            <line number="24" hits="2" branch="False" />
+            <line number="25" hits="449" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="158" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="26" hits="448" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="174" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="27" hits="446" branch="False" />
+            <line number="28" hits="446" branch="False" />
+            <line number="29" hits="446" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.DiagnosticSnapshot" filename="Operation.Domain\DiagnosticSnapshot.cs" line-rate="1" branch-rate="1" complexity="24">
+          <methods>
+            <method name="get_DiagnosticId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="40" hits="268" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Lines" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="41" hits="574" branch="False" />
+              </lines>
+            </method>
+            <method name="get_PricedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="42" hits="265" branch="False" />
+              </lines>
+            </method>
+            <method name="get_PricingPolicyId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="43" hits="136" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Currency" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="44" hits="56" branch="False" />
+              </lines>
+            </method>
+            <method name="get_TotalPriceCents" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="45" hits="121" branch="False" />
+              </lines>
+            </method>
+            <method name="HasSameContent" signature="(GearFlow.Operation.Domain.DiagnosticSnapshot)" line-rate="1" branch-rate="1" complexity="10">
+              <lines>
+                <line number="62" hits="38" branch="True" condition-coverage="100% (10/10)">
+                  <conditions>
+                    <condition number="17" type="jump" coverage="100%" />
+                    <condition number="39" type="jump" coverage="100%" />
+                    <condition number="61" type="jump" coverage="100%" />
+                    <condition number="78" type="jump" coverage="100%" />
+                    <condition number="102" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="63" hits="38" branch="False" />
+                <line number="64" hits="38" branch="False" />
+                <line number="65" hits="244" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.DiagnosticLine&gt;,System.DateTimeOffset,System.String)" line-rate="1" branch-rate="1" complexity="8">
+              <lines>
+                <line number="47" hits="110" branch="False" />
+                <line number="48" hits="110" branch="False" />
+                <line number="50" hits="110" branch="False" />
+                <line number="51" hits="109" branch="False" />
+                <line number="52" hits="108" branch="False" />
+                <line number="53" hits="108" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="63" type="jump" coverage="100%" />
+                    <condition number="66" type="jump" coverage="100%" />
+                    <condition number="75" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="54" hits="384" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="143" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="55" hits="1" branch="False" />
+                <line number="56" hits="381" branch="False" />
+                <line number="57" hits="101" branch="False" />
+                <line number="58" hits="101" branch="False" />
+                <line number="59" hits="101" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="40" hits="268" branch="False" />
+            <line number="41" hits="574" branch="False" />
+            <line number="42" hits="265" branch="False" />
+            <line number="43" hits="136" branch="False" />
+            <line number="44" hits="56" branch="False" />
+            <line number="45" hits="121" branch="False" />
+            <line number="62" hits="38" branch="True" condition-coverage="100% (10/10)">
+              <conditions>
+                <condition number="17" type="jump" coverage="100%" />
+                <condition number="39" type="jump" coverage="100%" />
+                <condition number="61" type="jump" coverage="100%" />
+                <condition number="78" type="jump" coverage="100%" />
+                <condition number="102" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="63" hits="38" branch="False" />
+            <line number="64" hits="38" branch="False" />
+            <line number="65" hits="244" branch="False" />
+            <line number="47" hits="110" branch="False" />
+            <line number="48" hits="110" branch="False" />
+            <line number="50" hits="110" branch="False" />
+            <line number="51" hits="109" branch="False" />
+            <line number="52" hits="108" branch="False" />
+            <line number="53" hits="108" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="63" type="jump" coverage="100%" />
+                <condition number="66" type="jump" coverage="100%" />
+                <condition number="75" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="54" hits="384" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="143" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="55" hits="1" branch="False" />
+            <line number="56" hits="381" branch="False" />
+            <line number="57" hits="101" branch="False" />
+            <line number="58" hits="101" branch="False" />
+            <line number="59" hits="101" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.DomainGuard" filename="Operation.Domain\DomainGuard.cs" line-rate="1" branch-rate="1" complexity="12">
+          <methods>
+            <method name="Id" signature="(System.Guid,System.String)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="7" hits="3419" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="11" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="8" hits="3379" branch="False" />
+              </lines>
+            </method>
+            <method name="Text" signature="(System.String,System.String)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="13" hits="1072" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="6" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="14" hits="1046" branch="False" />
+              </lines>
+            </method>
+            <method name="Quantity" signature="(System.Decimal,System.String)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="19" hits="768" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="11" type="jump" coverage="100%" />
+                    <condition number="26" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="20" hits="6" branch="False" />
+                <line number="21" hits="762" branch="False" />
+              </lines>
+            </method>
+            <method name="CopyItems" signature="(System.Collections.Generic.IEnumerable`1&lt;T&gt;,System.String)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="26" hits="522" branch="False" />
+                <line number="27" hits="518" branch="False" />
+                <line number="28" hits="1611" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="20" type="jump" coverage="100%" />
+                    <condition number="50" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="29" hits="514" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="7" hits="3419" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="11" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="8" hits="3379" branch="False" />
+            <line number="13" hits="1072" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="6" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="14" hits="1046" branch="False" />
+            <line number="19" hits="768" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="11" type="jump" coverage="100%" />
+                <condition number="26" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="20" hits="6" branch="False" />
+            <line number="21" hits="762" branch="False" />
+            <line number="26" hits="522" branch="False" />
+            <line number="27" hits="518" branch="False" />
+            <line number="28" hits="1611" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="20" type="jump" coverage="100%" />
+                <condition number="50" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="29" hits="514" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.ApprovedJob" filename="Operation.Domain\ExecutionAuthorization.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_BudgetJobId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="167" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticLineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="306" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="63" branch="False" />
+                <line number="11" hits="63" branch="False" />
+                <line number="12" hits="62" branch="False" />
+                <line number="13" hits="61" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="6" hits="167" branch="False" />
+            <line number="7" hits="306" branch="False" />
+            <line number="9" hits="63" branch="False" />
+            <line number="11" hits="63" branch="False" />
+            <line number="12" hits="62" branch="False" />
+            <line number="13" hits="61" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.ExecutionAuthorization" filename="Operation.Domain\ExecutionAuthorization.cs" line-rate="1" branch-rate="1" complexity="19">
+          <methods>
+            <method name="get_AuthorizationId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="74" branch="False" />
+              </lines>
+            </method>
+            <method name="get_BudgetId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="19" hits="77" branch="False" />
+              </lines>
+            </method>
+            <method name="get_BudgetRevision" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="48" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Snapshot" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="89" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Jobs" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="77" branch="False" />
+              </lines>
+            </method>
+            <method name="HasSameTerms" signature="(GearFlow.Operation.Domain.ExecutionAuthorization)" line-rate="1" branch-rate="1" complexity="6">
+              <lines>
+                <line number="44" hits="7" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="17" type="jump" coverage="100%" />
+                    <condition number="31" type="jump" coverage="100%" />
+                    <condition number="50" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="45" hits="21" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid,System.Int32,GearFlow.Operation.Domain.DiagnosticSnapshot,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.ApprovedJob&gt;)" line-rate="1" branch-rate="1" complexity="8">
+              <lines>
+                <line number="24" hits="58" branch="False" />
+                <line number="25" hits="58" branch="False" />
+                <line number="27" hits="58" branch="False" />
+                <line number="28" hits="57" branch="False" />
+                <line number="29" hits="57" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="42" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="30" hits="55" branch="False" />
+                <line number="31" hits="55" branch="False" />
+                <line number="32" hits="54" branch="False" />
+                <line number="33" hits="54" branch="False" />
+                <line number="34" hits="279" branch="False" />
+                <line number="35" hits="116" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="235" type="jump" coverage="100%" />
+                    <condition number="287" type="jump" coverage="100%" />
+                    <condition number="332" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="36" hits="61" branch="False" />
+                <line number="37" hits="112" branch="False" />
+                <line number="38" hits="4" branch="False" />
+                <line number="39" hits="49" branch="False" />
+                <line number="40" hits="49" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="74" branch="False" />
+            <line number="19" hits="77" branch="False" />
+            <line number="20" hits="48" branch="False" />
+            <line number="21" hits="89" branch="False" />
+            <line number="22" hits="77" branch="False" />
+            <line number="44" hits="7" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="17" type="jump" coverage="100%" />
+                <condition number="31" type="jump" coverage="100%" />
+                <condition number="50" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="45" hits="21" branch="False" />
+            <line number="24" hits="58" branch="False" />
+            <line number="25" hits="58" branch="False" />
+            <line number="27" hits="58" branch="False" />
+            <line number="28" hits="57" branch="False" />
+            <line number="29" hits="57" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="42" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="30" hits="55" branch="False" />
+            <line number="31" hits="55" branch="False" />
+            <line number="32" hits="54" branch="False" />
+            <line number="33" hits="54" branch="False" />
+            <line number="34" hits="279" branch="False" />
+            <line number="35" hits="116" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="235" type="jump" coverage="100%" />
+                <condition number="287" type="jump" coverage="100%" />
+                <condition number="332" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="36" hits="61" branch="False" />
+            <line number="37" hits="112" branch="False" />
+            <line number="38" hits="4" branch="False" />
+            <line number="39" hits="49" branch="False" />
+            <line number="40" hits="49" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.JobProgress" filename="Operation.Domain\ExecutionAuthorization.cs" line-rate="1" branch-rate="1" complexity="7">
+          <methods>
+            <method name="get_BudgetJobId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="50" hits="72" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticLineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="51" hits="44" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CatalogJobId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="52" hits="46" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="53" hits="58" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutedBy" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="54" hits="34" branch="False" />
+              </lines>
+            </method>
+            <method name="Execute" signature="(System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="67" hits="11" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid,System.Guid,System.Nullable`1&lt;System.DateTimeOffset&gt;,System.String)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="56" hits="44" branch="False" />
+                <line number="57" hits="44" branch="False" />
+                <line number="59" hits="44" branch="False" />
+                <line number="60" hits="44" branch="False" />
+                <line number="61" hits="44" branch="False" />
+                <line number="62" hits="44" branch="False" />
+                <line number="63" hits="44" branch="False" />
+                <line number="64" hits="44" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="50" hits="72" branch="False" />
+            <line number="51" hits="44" branch="False" />
+            <line number="52" hits="46" branch="False" />
+            <line number="53" hits="58" branch="False" />
+            <line number="54" hits="34" branch="False" />
+            <line number="67" hits="11" branch="False" />
+            <line number="56" hits="44" branch="False" />
+            <line number="57" hits="44" branch="False" />
+            <line number="59" hits="44" branch="False" />
+            <line number="60" hits="44" branch="False" />
+            <line number="61" hits="44" branch="False" />
+            <line number="62" hits="44" branch="False" />
+            <line number="63" hits="44" branch="False" />
+            <line number="64" hits="44" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.OperationHistory" filename="Operation.Domain\OperationStatus.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Version" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="25" hits="1407" branch="False" />
+              </lines>
+            </method>
+            <method name="get_At" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="26" hits="1436" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Int64,GearFlow.Operation.Domain.OperationStatus,GearFlow.Operation.Domain.OperationAction,System.String,System.DateTimeOffset,System.String,System.Nullable`1&lt;System.Guid&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="24" hits="399" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="25" hits="1407" branch="False" />
+            <line number="26" hits="1436" branch="False" />
+            <line number="24" hits="399" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.OperationConflictException" filename="Operation.Domain\OperationStatus.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name=".ctor" signature="(System.String)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="70" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="28" hits="70" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.RequestedJob" filename="Operation.Domain\RequestedItems.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="6" hits="630" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CatalogJobId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="417" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="368" branch="False" />
+                <line number="11" hits="368" branch="False" />
+                <line number="12" hits="367" branch="False" />
+                <line number="13" hits="366" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="6" hits="630" branch="False" />
+            <line number="7" hits="417" branch="False" />
+            <line number="9" hits="368" branch="False" />
+            <line number="11" hits="368" branch="False" />
+            <line number="12" hits="367" branch="False" />
+            <line number="13" hits="366" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.RequestedPart" filename="Operation.Domain\RequestedItems.cs" line-rate="1" branch-rate="1" complexity="5">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="513" branch="False" />
+              </lines>
+            </method>
+            <method name="get_PartId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="19" hits="375" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Quantity" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="441" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid,System.Int32)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="22" hits="147" branch="False" />
+                <line number="24" hits="147" branch="False" />
+                <line number="25" hits="146" branch="False" />
+                <line number="26" hits="146" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="42" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="27" hits="144" branch="False" />
+                <line number="28" hits="144" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="18" hits="513" branch="False" />
+            <line number="19" hits="375" branch="False" />
+            <line number="20" hits="441" branch="False" />
+            <line number="22" hits="147" branch="False" />
+            <line number="24" hits="147" branch="False" />
+            <line number="25" hits="146" branch="False" />
+            <line number="26" hits="146" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="42" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="27" hits="144" branch="False" />
+            <line number="28" hits="144" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.DiagnosticConsumable" filename="Operation.Domain\RequestedItems.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="get_LineId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="847" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ConsumableId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="34" hits="607" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Quantity" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="35" hits="610" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid,System.Decimal)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="37" hits="317" branch="False" />
+                <line number="39" hits="317" branch="False" />
+                <line number="40" hits="316" branch="False" />
+                <line number="41" hits="315" branch="False" />
+                <line number="42" hits="312" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="33" hits="847" branch="False" />
+            <line number="34" hits="607" branch="False" />
+            <line number="35" hits="610" branch="False" />
+            <line number="37" hits="317" branch="False" />
+            <line number="39" hits="317" branch="False" />
+            <line number="40" hits="316" branch="False" />
+            <line number="41" hits="315" branch="False" />
+            <line number="42" hits="312" branch="False" />
+          </lines>
+        </class>
+        <class name="GearFlow.Operation.Domain.WorkOperation" filename="Operation.Domain\WorkOperation.cs" line-rate="1" branch-rate="0.9582999999999999" complexity="107">
+          <methods>
+            <method name="get_ServiceOrderId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="8" hits="1153" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ServiceOrderCode" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="555" branch="False" />
+              </lines>
+            </method>
+            <method name="get_VehicleId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="1256" branch="False" />
+              </lines>
+            </method>
+            <method name="get_InitialVehicleId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="539" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticId" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="12" hits="842" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Status" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="2947" branch="False" />
+              </lines>
+            </method>
+            <method name="get_IsActive" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="2209" branch="False" />
+              </lines>
+            </method>
+            <method name="get_IsTombstone" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="540" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Version" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="3485" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CreatedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="17" hits="869" branch="False" />
+              </lines>
+            </method>
+            <method name="get_UpdatedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="2166" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticStartedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="19" hits="1423" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticCompletedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="1142" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutionAuthorizedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="1104" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutionStartedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="1240" branch="False" />
+              </lines>
+            </method>
+            <method name="get_ExecutionCompletedAt" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="23" hits="1087" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DiagnosticFailureReason" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="24" hits="1082" branch="False" />
+              </lines>
+            </method>
+            <method name="get_DeactivationReason" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="25" hits="1085" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CancellationReason" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="26" hits="1104" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Diagnostic" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="27" hits="1363" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Authorization" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="1297" branch="False" />
+              </lines>
+            </method>
+            <method name="get_RequestedJobs" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="29" hits="1315" branch="False" />
+              </lines>
+            </method>
+            <method name="get_RequestedParts" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="30" hits="1266" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Consumables" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="31" hits="1710" branch="False" />
+              </lines>
+            </method>
+            <method name="get_History" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="32" hits="325" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Jobs" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="33" hits="318" branch="False" />
+              </lines>
+            </method>
+            <method name="Copy" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="70" hits="391" branch="False" />
+              </lines>
+            </method>
+            <method name="CreateCanceled" signature="(System.Guid,System.String,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="105" hits="6" branch="False" />
+              </lines>
+            </method>
+            <method name="UpdateVehicle" signature="(System.Guid,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="0.875" complexity="8">
+              <lines>
+                <line number="109" hits="11" branch="False" />
+                <line number="110" hits="8" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="17" type="jump" coverage="100%" />
+                    <condition number="26" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="111" hits="1" branch="False" />
+                <line number="112" hits="7" branch="False" />
+                <line number="113" hits="6" branch="False" />
+                <line number="114" hits="7" branch="True" condition-coverage="75% (3/4)">
+                  <conditions>
+                    <condition number="77" type="jump" coverage="50%" />
+                    <condition number="96" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="115" hits="5" branch="False" />
+                <line number="116" hits="5" branch="False" />
+                <line number="117" hits="5" branch="False" />
+              </lines>
+            </method>
+            <method name="StartDiagnostic" signature="(System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="122" hits="115" branch="False" />
+                <line number="123" hits="107" branch="False" />
+                <line number="124" hits="106" branch="False" />
+                <line number="125" hits="103" branch="False" />
+                <line number="126" hits="103" branch="False" />
+                <line number="127" hits="103" branch="False" />
+                <line number="128" hits="103" branch="False" />
+              </lines>
+            </method>
+            <method name="CompleteDiagnostic" signature="(GearFlow.Operation.Domain.DiagnosticSnapshot,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.DiagnosticConsumable&gt;,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="0.909" complexity="22">
+              <lines>
+                <line number="133" hits="83" branch="False" />
+                <line number="134" hits="82" branch="False" />
+                <line number="135" hits="79" branch="False" />
+                <line number="136" hits="78" branch="False" />
+                <line number="137" hits="162" branch="False" />
+                <line number="138" hits="76" branch="False" />
+                <line number="139" hits="131" branch="False" />
+                <line number="140" hits="293" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="241" type="jump" coverage="100%" />
+                    <condition number="262" type="jump" coverage="100%" />
+                    <condition number="282" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="141" hits="686" branch="True" condition-coverage="100% (6/6)">
+                  <conditions>
+                    <condition number="22" type="jump" coverage="100%" />
+                    <condition number="41" type="jump" coverage="100%" />
+                    <condition number="65" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="142" hits="686" branch="False" />
+                <line number="143" hits="9" branch="False" />
+                <line number="144" hits="67" branch="False" />
+                <line number="145" hits="67" branch="True" condition-coverage="75% (3/4)">
+                  <conditions>
+                    <condition number="333" type="jump" coverage="50%" />
+                    <condition number="352" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="146" hits="65" branch="True" condition-coverage="83.33% (5/6)">
+                  <conditions>
+                    <condition number="388" type="jump" coverage="100%" />
+                    <condition number="418" type="jump" coverage="50%" />
+                    <condition number="437" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="147" hits="2" branch="False" />
+                <line number="148" hits="63" branch="False" />
+                <line number="149" hits="63" branch="False" />
+                <line number="150" hits="63" branch="False" />
+                <line number="151" hits="63" branch="False" />
+                <line number="152" hits="63" branch="False" />
+                <line number="153" hits="63" branch="False" />
+              </lines>
+            </method>
+            <method name="FailDiagnostic" signature="(System.String,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="157" hits="6" branch="False" />
+                <line number="158" hits="6" branch="False" />
+                <line number="159" hits="6" branch="False" />
+                <line number="160" hits="5" branch="False" />
+                <line number="161" hits="5" branch="False" />
+                <line number="162" hits="5" branch="False" />
+                <line number="163" hits="5" branch="False" />
+                <line number="164" hits="5" branch="False" />
+              </lines>
+            </method>
+            <method name="AuthorizeExecution" signature="(GearFlow.Operation.Domain.ExecutionAuthorization,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="8">
+              <lines>
+                <line number="169" hits="48" branch="False" />
+                <line number="170" hits="42" branch="False" />
+                <line number="171" hits="41" branch="False" />
+                <line number="172" hits="40" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="32" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="174" hits="9" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="46" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="175" hits="5" branch="False" />
+                <line number="177" hits="33" branch="False" />
+                <line number="178" hits="32" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="74" type="jump" coverage="100%" />
+                    <condition number="93" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="179" hits="6" branch="False" />
+                <line number="181" hits="59" branch="False" />
+                <line number="182" hits="167" branch="False" />
+                <line number="183" hits="26" branch="False" />
+                <line number="184" hits="26" branch="False" />
+                <line number="185" hits="26" branch="False" />
+                <line number="186" hits="26" branch="False" />
+                <line number="187" hits="26" branch="False" />
+                <line number="188" hits="26" branch="False" />
+              </lines>
+            </method>
+            <method name="StartExecution" signature="(System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="193" hits="23" branch="False" />
+                <line number="194" hits="17" branch="False" />
+                <line number="195" hits="16" branch="False" />
+                <line number="196" hits="16" branch="False" />
+                <line number="197" hits="16" branch="False" />
+                <line number="198" hits="16" branch="False" />
+                <line number="199" hits="16" branch="False" />
+              </lines>
+            </method>
+            <method name="ExecuteJob" signature="(System.Guid,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="203" hits="18" branch="False" />
+                <line number="204" hits="18" branch="False" />
+                <line number="205" hits="16" branch="False" />
+                <line number="206" hits="15" branch="False" />
+                <line number="207" hits="32" branch="False" />
+                <line number="208" hits="16" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="78" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="209" hits="13" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="116" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="210" hits="11" branch="False" />
+                <line number="211" hits="11" branch="False" />
+                <line number="212" hits="11" branch="False" />
+              </lines>
+            </method>
+            <method name="FinalizeExecution" signature="(System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="217" hits="11" branch="False" />
+                <line number="218" hits="11" branch="False" />
+                <line number="219" hits="9" branch="False" />
+                <line number="220" hits="9" branch="False" />
+                <line number="221" hits="9" branch="False" />
+                <line number="222" hits="9" branch="False" />
+                <line number="223" hits="9" branch="False" />
+              </lines>
+            </method>
+            <method name="Deactivate" signature="(System.String,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="6">
+              <lines>
+                <line number="227" hits="13" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="11" type="jump" coverage="100%" />
+                    <condition number="20" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="228" hits="1" branch="False" />
+                <line number="229" hits="12" branch="False" />
+                <line number="230" hits="11" branch="False" />
+                <line number="231" hits="14" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="60" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="232" hits="8" branch="False" />
+                <line number="233" hits="8" branch="False" />
+                <line number="234" hits="8" branch="False" />
+                <line number="235" hits="8" branch="False" />
+              </lines>
+            </method>
+            <method name="CancelOperation" signature="(System.String,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="6">
+              <lines>
+                <line number="240" hits="25" branch="False" />
+                <line number="241" hits="24" branch="False" />
+                <line number="242" hits="31" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="28" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="243" hits="17" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="43" type="jump" coverage="100%" />
+                    <condition number="52" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="244" hits="3" branch="False" />
+                <line number="245" hits="14" branch="False" />
+                <line number="246" hits="14" branch="False" />
+                <line number="247" hits="14" branch="False" />
+                <line number="248" hits="14" branch="False" />
+                <line number="249" hits="14" branch="False" />
+              </lines>
+            </method>
+            <method name="PrepareChange" signature="(System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="254" hits="300" branch="False" />
+                <line number="255" hits="296" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="29" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="256" hits="294" branch="False" />
+                <line number="257" hits="294" branch="False" />
+              </lines>
+            </method>
+            <method name="Record" signature="(GearFlow.Operation.Domain.OperationAction,System.String,System.DateTimeOffset,System.String,System.Nullable`1&lt;System.Guid&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="262" hits="260" branch="False" />
+                <line number="263" hits="260" branch="False" />
+                <line number="264" hits="260" branch="False" />
+                <line number="265" hits="260" branch="False" />
+              </lines>
+            </method>
+            <method name="RequireActive" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="269" hits="339" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="6" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="270" hits="291" branch="False" />
+              </lines>
+            </method>
+            <method name="Require" signature="(GearFlow.Operation.Domain.OperationStatus)" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="274" hits="284" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="7" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="275" hits="264" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.RequestedJob&gt;,System.Collections.Generic.IEnumerable`1&lt;GearFlow.Operation.Domain.RequestedPart&gt;,System.String,System.DateTimeOffset,System.Nullable`1&lt;System.Int32&gt;,System.Nullable`1&lt;System.Guid&gt;)" line-rate="1" branch-rate="1" complexity="12">
+              <lines>
+                <line number="6" hits="547" branch="False" />
+                <line number="7" hits="547" branch="False" />
+                <line number="35" hits="150" branch="False" />
+                <line number="36" hits="150" branch="False" />
+                <line number="38" hits="150" branch="False" />
+                <line number="39" hits="149" branch="False" />
+                <line number="40" hits="147" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="161" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="41" hits="148" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="204" type="jump" coverage="100%" />
+                    <condition number="214" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="42" hits="144" branch="False" />
+                <line number="43" hits="144" branch="False" />
+                <line number="44" hits="142" branch="False" />
+                <line number="45" hits="140" branch="False" />
+                <line number="46" hits="139" branch="True" condition-coverage="100% (4/4)">
+                  <conditions>
+                    <condition number="275" type="jump" coverage="100%" />
+                    <condition number="289" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="47" hits="2" branch="False" />
+                <line number="48" hits="421" branch="False" />
+                <line number="49" hits="137" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="406" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="50" hits="2" branch="False" />
+                <line number="51" hits="135" branch="False" />
+                <line number="52" hits="135" branch="False" />
+                <line number="53" hits="135" branch="False" />
+                <line number="54" hits="135" branch="False" />
+                <line number="55" hits="135" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.String,System.String,System.DateTimeOffset)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="57" hits="6" branch="False" />
+                <line number="59" hits="6" branch="False" />
+                <line number="60" hits="5" branch="False" />
+                <line number="61" hits="4" branch="False" />
+                <line number="62" hits="4" branch="False" />
+                <line number="63" hits="4" branch="False" />
+                <line number="64" hits="4" branch="False" />
+                <line number="65" hits="4" branch="False" />
+                <line number="66" hits="4" branch="False" />
+                <line number="67" hits="4" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(GearFlow.Operation.Domain.WorkOperation)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="72" hits="391" branch="False" />
+                <line number="74" hits="391" branch="False" />
+                <line number="75" hits="391" branch="False" />
+                <line number="76" hits="391" branch="False" />
+                <line number="77" hits="391" branch="False" />
+                <line number="78" hits="391" branch="False" />
+                <line number="79" hits="391" branch="False" />
+                <line number="80" hits="391" branch="False" />
+                <line number="81" hits="391" branch="False" />
+                <line number="82" hits="391" branch="False" />
+                <line number="83" hits="391" branch="False" />
+                <line number="84" hits="391" branch="False" />
+                <line number="85" hits="391" branch="False" />
+                <line number="86" hits="391" branch="False" />
+                <line number="87" hits="391" branch="False" />
+                <line number="88" hits="391" branch="False" />
+                <line number="89" hits="391" branch="False" />
+                <line number="90" hits="391" branch="False" />
+                <line number="91" hits="391" branch="False" />
+                <line number="92" hits="391" branch="False" />
+                <line number="94" hits="391" branch="False" />
+                <line number="95" hits="391" branch="False" />
+                <line number="96" hits="391" branch="False" />
+                <line number="97" hits="391" branch="False" />
+                <line number="98" hits="391" branch="False" />
+                <line number="99" hits="391" branch="False" />
+                <line number="100" hits="391" branch="False" />
+                <line number="101" hits="391" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="8" hits="1153" branch="False" />
+            <line number="9" hits="555" branch="False" />
+            <line number="10" hits="1256" branch="False" />
+            <line number="11" hits="539" branch="False" />
+            <line number="12" hits="842" branch="False" />
+            <line number="13" hits="2947" branch="False" />
+            <line number="14" hits="2209" branch="False" />
+            <line number="15" hits="540" branch="False" />
+            <line number="16" hits="3485" branch="False" />
+            <line number="17" hits="869" branch="False" />
+            <line number="18" hits="2166" branch="False" />
+            <line number="19" hits="1423" branch="False" />
+            <line number="20" hits="1142" branch="False" />
+            <line number="21" hits="1104" branch="False" />
+            <line number="22" hits="1240" branch="False" />
+            <line number="23" hits="1087" branch="False" />
+            <line number="24" hits="1082" branch="False" />
+            <line number="25" hits="1085" branch="False" />
+            <line number="26" hits="1104" branch="False" />
+            <line number="27" hits="1363" branch="False" />
+            <line number="28" hits="1297" branch="False" />
+            <line number="29" hits="1315" branch="False" />
+            <line number="30" hits="1266" branch="False" />
+            <line number="31" hits="1710" branch="False" />
+            <line number="32" hits="325" branch="False" />
+            <line number="33" hits="318" branch="False" />
+            <line number="70" hits="391" branch="False" />
+            <line number="105" hits="6" branch="False" />
+            <line number="109" hits="11" branch="False" />
+            <line number="110" hits="8" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="17" type="jump" coverage="100%" />
+                <condition number="26" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="111" hits="1" branch="False" />
+            <line number="112" hits="7" branch="False" />
+            <line number="113" hits="6" branch="False" />
+            <line number="114" hits="7" branch="True" condition-coverage="75% (3/4)">
+              <conditions>
+                <condition number="77" type="jump" coverage="50%" />
+                <condition number="96" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="115" hits="5" branch="False" />
+            <line number="116" hits="5" branch="False" />
+            <line number="117" hits="5" branch="False" />
+            <line number="122" hits="115" branch="False" />
+            <line number="123" hits="107" branch="False" />
+            <line number="124" hits="106" branch="False" />
+            <line number="125" hits="103" branch="False" />
+            <line number="126" hits="103" branch="False" />
+            <line number="127" hits="103" branch="False" />
+            <line number="128" hits="103" branch="False" />
+            <line number="133" hits="83" branch="False" />
+            <line number="134" hits="82" branch="False" />
+            <line number="135" hits="79" branch="False" />
+            <line number="136" hits="78" branch="False" />
+            <line number="137" hits="162" branch="False" />
+            <line number="138" hits="76" branch="False" />
+            <line number="139" hits="131" branch="False" />
+            <line number="140" hits="293" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="241" type="jump" coverage="100%" />
+                <condition number="262" type="jump" coverage="100%" />
+                <condition number="282" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="141" hits="686" branch="True" condition-coverage="100% (6/6)">
+              <conditions>
+                <condition number="22" type="jump" coverage="100%" />
+                <condition number="41" type="jump" coverage="100%" />
+                <condition number="65" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="142" hits="686" branch="False" />
+            <line number="143" hits="9" branch="False" />
+            <line number="144" hits="67" branch="False" />
+            <line number="145" hits="67" branch="True" condition-coverage="75% (3/4)">
+              <conditions>
+                <condition number="333" type="jump" coverage="50%" />
+                <condition number="352" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="146" hits="65" branch="True" condition-coverage="83.33% (5/6)">
+              <conditions>
+                <condition number="388" type="jump" coverage="100%" />
+                <condition number="418" type="jump" coverage="50%" />
+                <condition number="437" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="147" hits="2" branch="False" />
+            <line number="148" hits="63" branch="False" />
+            <line number="149" hits="63" branch="False" />
+            <line number="150" hits="63" branch="False" />
+            <line number="151" hits="63" branch="False" />
+            <line number="152" hits="63" branch="False" />
+            <line number="153" hits="63" branch="False" />
+            <line number="157" hits="6" branch="False" />
+            <line number="158" hits="6" branch="False" />
+            <line number="159" hits="6" branch="False" />
+            <line number="160" hits="5" branch="False" />
+            <line number="161" hits="5" branch="False" />
+            <line number="162" hits="5" branch="False" />
+            <line number="163" hits="5" branch="False" />
+            <line number="164" hits="5" branch="False" />
+            <line number="169" hits="48" branch="False" />
+            <line number="170" hits="42" branch="False" />
+            <line number="171" hits="41" branch="False" />
+            <line number="172" hits="40" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="32" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="174" hits="9" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="46" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="175" hits="5" branch="False" />
+            <line number="177" hits="33" branch="False" />
+            <line number="178" hits="32" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="74" type="jump" coverage="100%" />
+                <condition number="93" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="179" hits="6" branch="False" />
+            <line number="181" hits="59" branch="False" />
+            <line number="182" hits="167" branch="False" />
+            <line number="183" hits="26" branch="False" />
+            <line number="184" hits="26" branch="False" />
+            <line number="185" hits="26" branch="False" />
+            <line number="186" hits="26" branch="False" />
+            <line number="187" hits="26" branch="False" />
+            <line number="188" hits="26" branch="False" />
+            <line number="193" hits="23" branch="False" />
+            <line number="194" hits="17" branch="False" />
+            <line number="195" hits="16" branch="False" />
+            <line number="196" hits="16" branch="False" />
+            <line number="197" hits="16" branch="False" />
+            <line number="198" hits="16" branch="False" />
+            <line number="199" hits="16" branch="False" />
+            <line number="203" hits="18" branch="False" />
+            <line number="204" hits="18" branch="False" />
+            <line number="205" hits="16" branch="False" />
+            <line number="206" hits="15" branch="False" />
+            <line number="207" hits="32" branch="False" />
+            <line number="208" hits="16" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="78" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="209" hits="13" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="116" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="210" hits="11" branch="False" />
+            <line number="211" hits="11" branch="False" />
+            <line number="212" hits="11" branch="False" />
+            <line number="217" hits="11" branch="False" />
+            <line number="218" hits="11" branch="False" />
+            <line number="219" hits="9" branch="False" />
+            <line number="220" hits="9" branch="False" />
+            <line number="221" hits="9" branch="False" />
+            <line number="222" hits="9" branch="False" />
+            <line number="223" hits="9" branch="False" />
+            <line number="227" hits="13" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="11" type="jump" coverage="100%" />
+                <condition number="20" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="228" hits="1" branch="False" />
+            <line number="229" hits="12" branch="False" />
+            <line number="230" hits="11" branch="False" />
+            <line number="231" hits="14" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="60" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="232" hits="8" branch="False" />
+            <line number="233" hits="8" branch="False" />
+            <line number="234" hits="8" branch="False" />
+            <line number="235" hits="8" branch="False" />
+            <line number="240" hits="25" branch="False" />
+            <line number="241" hits="24" branch="False" />
+            <line number="242" hits="31" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="28" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="243" hits="17" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="43" type="jump" coverage="100%" />
+                <condition number="52" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="244" hits="3" branch="False" />
+            <line number="245" hits="14" branch="False" />
+            <line number="246" hits="14" branch="False" />
+            <line number="247" hits="14" branch="False" />
+            <line number="248" hits="14" branch="False" />
+            <line number="249" hits="14" branch="False" />
+            <line number="254" hits="300" branch="False" />
+            <line number="255" hits="296" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="29" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="256" hits="294" branch="False" />
+            <line number="257" hits="294" branch="False" />
+            <line number="262" hits="260" branch="False" />
+            <line number="263" hits="260" branch="False" />
+            <line number="264" hits="260" branch="False" />
+            <line number="265" hits="260" branch="False" />
+            <line number="269" hits="339" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="6" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="270" hits="291" branch="False" />
+            <line number="274" hits="284" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="7" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="275" hits="264" branch="False" />
+            <line number="6" hits="547" branch="False" />
+            <line number="7" hits="547" branch="False" />
+            <line number="35" hits="150" branch="False" />
+            <line number="36" hits="150" branch="False" />
+            <line number="38" hits="150" branch="False" />
+            <line number="39" hits="149" branch="False" />
+            <line number="40" hits="147" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="161" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="41" hits="148" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="204" type="jump" coverage="100%" />
+                <condition number="214" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="42" hits="144" branch="False" />
+            <line number="43" hits="144" branch="False" />
+            <line number="44" hits="142" branch="False" />
+            <line number="45" hits="140" branch="False" />
+            <line number="46" hits="139" branch="True" condition-coverage="100% (4/4)">
+              <conditions>
+                <condition number="275" type="jump" coverage="100%" />
+                <condition number="289" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="47" hits="2" branch="False" />
+            <line number="48" hits="421" branch="False" />
+            <line number="49" hits="137" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="406" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="50" hits="2" branch="False" />
+            <line number="51" hits="135" branch="False" />
+            <line number="52" hits="135" branch="False" />
+            <line number="53" hits="135" branch="False" />
+            <line number="54" hits="135" branch="False" />
+            <line number="55" hits="135" branch="False" />
+            <line number="57" hits="6" branch="False" />
+            <line number="59" hits="6" branch="False" />
+            <line number="60" hits="5" branch="False" />
+            <line number="61" hits="4" branch="False" />
+            <line number="62" hits="4" branch="False" />
+            <line number="63" hits="4" branch="False" />
+            <line number="64" hits="4" branch="False" />
+            <line number="65" hits="4" branch="False" />
+            <line number="66" hits="4" branch="False" />
+            <line number="67" hits="4" branch="False" />
+            <line number="72" hits="391" branch="False" />
+            <line number="74" hits="391" branch="False" />
+            <line number="75" hits="391" branch="False" />
+            <line number="76" hits="391" branch="False" />
+            <line number="77" hits="391" branch="False" />
+            <line number="78" hits="391" branch="False" />
+            <line number="79" hits="391" branch="False" />
+            <line number="80" hits="391" branch="False" />
+            <line number="81" hits="391" branch="False" />
+            <line number="82" hits="391" branch="False" />
+            <line number="83" hits="391" branch="False" />
+            <line number="84" hits="391" branch="False" />
+            <line number="85" hits="391" branch="False" />
+            <line number="86" hits="391" branch="False" />
+            <line number="87" hits="391" branch="False" />
+            <line number="88" hits="391" branch="False" />
+            <line number="89" hits="391" branch="False" />
+            <line number="90" hits="391" branch="False" />
+            <line number="91" hits="391" branch="False" />
+            <line number="92" hits="391" branch="False" />
+            <line number="94" hits="391" branch="False" />
+            <line number="95" hits="391" branch="False" />
+            <line number="96" hits="391" branch="False" />
+            <line number="97" hits="391" branch="False" />
+            <line number="98" hits="391" branch="False" />
+            <line number="99" hits="391" branch="False" />
+            <line number="100" hits="391" branch="False" />
+            <line number="101" hits="391" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

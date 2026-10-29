@@ -12,3 +12,5 @@ Relatório: [initial-core.cobertura.xml](initial-core.cobertura.xml). A evidênc
 ## Evidência posterior
 
 O passo 2 evoluiu o modelo e reorganizou os testes. A execução mais recente tem 72 aprovados; consultar [resultado do passo 2](../planning/evidence/step-2/RESULTS.md). Este arquivo e initial-core.cobertura.xml permanecem como baseline histórica.
+
+O checkpoint posterior mais recente é o [passo 3](../planning/evidence/step-3/RESULTS.md): 120 testes aprovados. As evidências iniciais permanecem históricas.

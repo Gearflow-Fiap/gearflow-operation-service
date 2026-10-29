@@ -8,6 +8,7 @@ public sealed class WorkOperation
     public Guid ServiceOrderId { get; }
     public int? ServiceOrderCode { get; }
     public Guid? VehicleId { get; private set; }
+    public Guid? InitialVehicleId { get; }
     public Guid? DiagnosticId { get; }
     public OperationStatus Status { get; private set; } = OperationStatus.Received;
     public bool IsActive { get; private set; } = true;
@@ -35,7 +36,7 @@ public sealed class WorkOperation
         IEnumerable<RequestedPart> requestedParts, string actor, DateTimeOffset now, int? serviceOrderCode = null, Guid? diagnosticId = null)
     {
         ServiceOrderId = DomainGuard.Id(serviceOrderId, nameof(serviceOrderId));
-        VehicleId = DomainGuard.Id(vehicleId, nameof(vehicleId));
+        InitialVehicleId = VehicleId = DomainGuard.Id(vehicleId, nameof(vehicleId));
         DiagnosticId = DomainGuard.Id(diagnosticId ?? Guid.NewGuid(), nameof(diagnosticId));
         if (serviceOrderCode is <= 0) throw new ArgumentOutOfRangeException(nameof(serviceOrderCode));
         ServiceOrderCode = serviceOrderCode;
@@ -63,6 +64,40 @@ public sealed class WorkOperation
         Status = OperationStatus.Canceled;
         CreatedAt = UpdatedAt = now.ToUniversalTime();
         history.Add(new(Version, Status, OperationAction.Canceled, by, CreatedAt, CancellationReason));
+    }
+
+    // Cópia destacada para unidades de trabalho e leituras isoladas; não é serialização wire/EF.
+    public WorkOperation Copy() => new(this);
+
+    private WorkOperation(WorkOperation source)
+    {
+        ServiceOrderId = source.ServiceOrderId;
+        ServiceOrderCode = source.ServiceOrderCode;
+        VehicleId = source.VehicleId;
+        InitialVehicleId = source.InitialVehicleId;
+        DiagnosticId = source.DiagnosticId;
+        Status = source.Status;
+        IsActive = source.IsActive;
+        IsTombstone = source.IsTombstone;
+        Version = source.Version;
+        CreatedAt = source.CreatedAt;
+        UpdatedAt = source.UpdatedAt;
+        DiagnosticStartedAt = source.DiagnosticStartedAt;
+        DiagnosticCompletedAt = source.DiagnosticCompletedAt;
+        ExecutionAuthorizedAt = source.ExecutionAuthorizedAt;
+        ExecutionStartedAt = source.ExecutionStartedAt;
+        ExecutionCompletedAt = source.ExecutionCompletedAt;
+        DiagnosticFailureReason = source.DiagnosticFailureReason;
+        DeactivationReason = source.DeactivationReason;
+        CancellationReason = source.CancellationReason;
+        // Valores e coleções abaixo são imutáveis; somente as listas mutáveis internas são copiadas.
+        RequestedJobs = source.RequestedJobs;
+        RequestedParts = source.RequestedParts;
+        Consumables = source.Consumables;
+        Diagnostic = source.Diagnostic;
+        Authorization = source.Authorization;
+        history.AddRange(source.history);
+        jobs.AddRange(source.jobs);
     }
 
     // Fence sem inventar veículo/serviços; persistência e unicidade por OS virão em outro incremento.

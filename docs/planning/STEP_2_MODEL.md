@@ -82,3 +82,7 @@ Os testes antigos de 19 casos foram reorganizados/evoluídos, não simplesmente 
 ## O que continua posterior
 
 Portas de preço e queries/casos de uso completos (passo 3), política financeira final, repositório e cópias isoladas/rehidratação, concorrência em banco, migrations, inbox/outbox, contratos wire, RabbitMQ, autenticação, API e BDD. Não houve alteração em app/Budget/Inventory, publicação ou deploy.
+
+## Evolução posterior
+
+O [passo 3](STEP_3_APPLICATION.md) implementou as portas/casos de uso/queries e isolamento local previstos aqui. Os limites mencionados para Application no texto acima são o histórico do checkpoint 2; persistência/rede continuam posteriores.

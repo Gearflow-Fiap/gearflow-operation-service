@@ -21,7 +21,7 @@ Data da baseline: 2026-10-24. Esta é a proposta de referência para planejar a 
 
 ## ADRs
 
-ADRs 001–005 continuam Proposed até revisão coletiva. ADR-006 registra a escolha local do modelo implementado no passo 2; não equivale à adoção dos contratos em outros repositórios.
+ADRs 001–005 continuam Proposed até revisão coletiva. ADRs 006/007 registram as escolhas locais do modelo e da aplicação; não equivale à adoção dos contratos em outros repositórios.
 
 | ADR | Assunto |
 |---|---|
@@ -31,6 +31,7 @@ ADRs 001–005 continuam Proposed até revisão coletiva. ADR-006 registra a esc
 | [004](architecture/adr-004-execucao-e-compensacao.md) | Autorização, início físico, conclusão e cancelamento |
 | [005](architecture/adr-005-contratos-e-versionamento.md) | Identidade de mensagens, contratos e evolução |
 | [006](architecture/adr-006-modelo-local-e-precificacao.md) | Modelo local e limite da precificação no passo 2 |
+| [007](architecture/adr-007-casos-de-uso-e-intencoes.md) | Intenções, casos de uso e protocolo de gravação local |
 
 ## Governança
 
@@ -53,3 +54,5 @@ Schemas e exemplos em contracts/v1 definem o corpo lógico das mensagens novas d
 Esta sequência local não é a mesma numeração P0-P8 do plano geral. O acompanhamento registra a conclusão de cada passo e a parada solicitada antes de prosseguir.
 
 - [Passo 2: modelo operacional implementado e limites](planning/STEP_2_MODEL.md).
+
+- [Passo 3: aplicação, interfaces e limites](planning/STEP_3_APPLICATION.md).

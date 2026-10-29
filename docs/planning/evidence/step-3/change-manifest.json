@@ -1,0 +1,140 @@
+{
+  "date": "2026-10-28",
+  "step": 3,
+  "runtimeFiles": [
+    {
+      "path": "src/Operation.Application/CommandContext.cs",
+      "sha256": "59896f640cb4628b0b94fba75ec306a1a11a90f04d0130b68f466dca59d6bbd2"
+    },
+    {
+      "path": "src/Operation.Application/CommandFingerprint.cs",
+      "sha256": "b98492e4880638f893da1ac48eba15bfdb51a9e3741f8676bb2ae9b67ecf0592"
+    },
+    {
+      "path": "src/Operation.Application/DiagnosticPricer.cs",
+      "sha256": "1f0319165a46cfd64c20b5c3b3b2396ce6006c912faa13b8b83840cf001dcb9f"
+    },
+    {
+      "path": "src/Operation.Application/DurationCalculator.cs",
+      "sha256": "a6934b23bb8d634c7c8f390dde1a5cca4413f358acdf883e8ec423df7b6ace70"
+    },
+    {
+      "path": "src/Operation.Application/ExecutionQueue.cs",
+      "sha256": "0994fda68f22740c036a9316dc768e5223305ec642b10a5ca8bc497005151ec6"
+    },
+    {
+      "path": "src/Operation.Application/Operation.Application.csproj",
+      "sha256": "a0afe3a2d3fd9ac1d95de0d3a7ee77ff6717f7af48c444d900681c1781ab390c"
+    },
+    {
+      "path": "src/Operation.Application/OperationDetails.cs",
+      "sha256": "41fce15f1c8c3f5e42780fcabdfedaf2ef4a307831a3bb7d8e6c45499ef31cf3"
+    },
+    {
+      "path": "src/Operation.Application/OperationQueries.cs",
+      "sha256": "4ef482f77ab4ad3a7ac4204e4e6c341394507191b2c4fef017fd0dd949512f3c"
+    },
+    {
+      "path": "src/Operation.Application/OperationService.cs",
+      "sha256": "ec7a4caf312c66df043adad80d6f1f80638623dd84dd1eee6db87613dfa6d9a0"
+    },
+    {
+      "path": "src/Operation.Application/Ports.cs",
+      "sha256": "36f456ba57d2b49a943b67b3128f87cb4e327f004d10bb75441846f26d314a81"
+    },
+    {
+      "path": "src/Operation.Domain/DiagnosticSnapshot.cs",
+      "sha256": "37eacdc160085a7dc199bbf50981506735ae107ff7582c1a98ec612a6b1da022"
+    },
+    {
+      "path": "src/Operation.Domain/DomainGuard.cs",
+      "sha256": "439bf6ccc5e01b5e0cb2158b01e2761a5277673699ea491741258818d5d1c13a"
+    },
+    {
+      "path": "src/Operation.Domain/ExecutionAuthorization.cs",
+      "sha256": "0be7f6590d578da91addfec13d613f68c0c88038fda34b0a702eea0bfaa17227"
+    },
+    {
+      "path": "src/Operation.Domain/Operation.Domain.csproj",
+      "sha256": "3e1a9f612f8cfcc2e2a8b2ef085685f9f3d1a55c4b901e8d88af6ec37d283195"
+    },
+    {
+      "path": "src/Operation.Domain/OperationStatus.cs",
+      "sha256": "fc10945c1c757d20622a32f298c0358735f944cf4b3fd0648a67c4e7e56887d1"
+    },
+    {
+      "path": "src/Operation.Domain/RequestedItems.cs",
+      "sha256": "4c53abfae7f12466a496221347ec582c82499809db271510f01a227214a8407d"
+    },
+    {
+      "path": "src/Operation.Domain/WorkOperation.cs",
+      "sha256": "c775774047ac3f07390153d1f21b1426eeae2598fda675edc0fd35957475254b"
+    },
+    {
+      "path": "tests/Operation.Tests/ApplicationFixture.cs",
+      "sha256": "268e71a637c27b1f3841feab80a5a5cc8576682ea08b49e210559fb2c659267e"
+    },
+    {
+      "path": "tests/Operation.Tests/ApplicationQueryTests.cs",
+      "sha256": "82a102af4a2719f009e20c24a85a1d51ade7833e76f0f71bcf7a014451e57dcf"
+    },
+    {
+      "path": "tests/Operation.Tests/CancellationTests.cs",
+      "sha256": "5273bbafcbd3457585b947ca706f88f838df5d75ca6a87c72c1df84bac3ce540"
+    },
+    {
+      "path": "tests/Operation.Tests/DetachedCopyTests.cs",
+      "sha256": "73f787c19011d81445eff10d59c24e8cfa062073cb0e2218411dd623c70d450b"
+    },
+    {
+      "path": "tests/Operation.Tests/DiagnosticTests.cs",
+      "sha256": "ddc527d90254a6f6630be1f5377b1be272391dd18452c3ce481b57fe95156746"
+    },
+    {
+      "path": "tests/Operation.Tests/DomainFixture.cs",
+      "sha256": "2143d895e08c00c271d2cd43c64ee96bb9843ea90a7df070645d9bf2cb6e3054"
+    },
+    {
+      "path": "tests/Operation.Tests/ExecutionTests.cs",
+      "sha256": "f9832a83672fffba941f753e86de5c1ac74a26d37a3a10553dc3d6ad69669c11"
+    },
+    {
+      "path": "tests/Operation.Tests/IntakeTests.cs",
+      "sha256": "a142a5c18e5f2c239e3c501cb4236e5842ee4eb50d345bb83d19af923c879be1"
+    },
+    {
+      "path": "tests/Operation.Tests/IntentConcurrencyTests.cs",
+      "sha256": "849d93a578489af5281bde195e2088d0fb12308040289b46463284d499827e49"
+    },
+    {
+      "path": "tests/Operation.Tests/Operation.Tests.csproj",
+      "sha256": "7c21a9b03946b00fb2d1e03479fca034fb747841485d121aa555c6ba725e95b9"
+    },
+    {
+      "path": "tests/Operation.Tests/OperationTests.cs",
+      "sha256": "81fe7dd920d512e70f4c27ae067be5c286d53e761f423b1ed921c7b861aae6a3"
+    },
+    {
+      "path": "tests/Operation.Tests/PricingTests.cs",
+      "sha256": "b436cd059142391e7a22ac2eb35b256fa5d716f69ac0b3b9b470754900f245e5"
+    },
+    {
+      "path": "tests/Operation.Tests/QueueTests.cs",
+      "sha256": "47abd604faca86131e7e99a1d4d6670cac15bc1333cc311ffec989f707a8c05c"
+    },
+    {
+      "path": "tests/Operation.Tests/SnapshotTests.cs",
+      "sha256": "25352276825bd800b9ef5e76f51cf858acb26d76809d838696d998c4eee0d141"
+    }
+  ],
+  "localLinksChecked": 177,
+  "brokenLinks": [],
+  "acceptanceCriteriaReviewed": 22,
+  "storageAdapter": "test-only IsolatedStore",
+  "externalRepositoriesChanged": false,
+  "nextIncrementStarted": false,
+  "headAtCheckpoint": "1e469ed524d8fd79999299e70f7cf4fb5c237759",
+  "gitIndexMatchesHeadForStep2Runtime": true,
+  "gitIndexModifiedByThisExecution": false,
+  "gitVerificationNote": "Read-only Git commands only. Current HEAD contains step 2; index matches HEAD. Raw working-file SHA-256 and Git blob SHA-256 are not compared because line endings may differ."
+}

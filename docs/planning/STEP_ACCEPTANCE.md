@@ -81,3 +81,34 @@ A tabela inicial é a fotografia anterior à implementação. Resultado atual po
 | AT-22 | Sem mudança; catálogo continua suporte proposto | posterior |
 
 [Evidência do passo 2](evidence/step-2/RESULTS.md) e [modelo implementado](STEP_2_MODEL.md).
+
+## Situação após o passo 3
+
+Núcleo local por interfaces validado; nenhum status abaixo declara adapter de produção/Saga completos.
+
+| ID | Resultado no checkpoint 3 | Teste representativo |
+|---|---|---|
+| AT-01 | Atendido no núcleo local; contrato OS e adapter pendentes | `FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData` |
+| AT-02 | Validação local atendida | `MissingOperationAndInvalidInputsHaveNoSideEffects` |
+| AT-03 | Cópias/DTOs isolados atendidos | `DetailsAreFrozenAndDoNotExposeMutableStoredAggregate` |
+| AT-04 | Caso de uso e guard locais atendidos | `FailedDiagnosticAndDeactivationBlockFurtherWorkWithoutFakeFinancialEffects` |
+| AT-05 | Precificação por porta e snapshot locais atendidos; fonte real posterior | `FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData` |
+| AT-06 | Falhas/zero explícito atendidos por testes de porta | `TransientPricingFailureCanRetrySameIntentAndExplicitZeroIsAccepted` |
+| AT-07 | Políticas explícitas testadas; acordo financeiro com Budget pendente | `SelectedPolicyIsExplicitAndFrozenWithPriceSnapshot` |
+| AT-08 | Atualização e preservação de entrada locais atendidas; propagação externa pendente | `RepeatedBusinessReceiveUsesInitialVehicleAndNeverRegressesWork` |
+| AT-09 | Caso de uso/tombstone locais atendidos; persistência real posterior | `CancelBeforeReceiveCreatesFenceAndRejectsLateWork` |
+| AT-10 | Autorização local atendida; pagamento/reserva pela coordenação externa | `AuthorizationChecksIdentityTermsAndPreservesOriginalAuthorizationOnRetry` |
+| AT-11 | Mapeamento/progresso por linha atendidos localmente | `FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData` |
+| AT-12 | Replay e repetição semântica sem duplicação atendidos no protocolo local | `NewIntentForAlreadyPerformedWorkDoesNotDuplicateProgressOrReprice` |
+| AT-13 | Conclusão local atendida; sem consumo/entrega global | `FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData` |
+| AT-14 | Auditoria e projeção congelada atendidas localmente | `FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData` |
+| AT-15 | DTOs/queries/paginação locais atendidos; read adapter real posterior | `HistoryIsPaginatedByVersionAndQueriesFailExplicitlyWhenAbsent` |
+| AT-16 | Fila/filtros/páginas atendidos localmente; executar no banco pelo adapter futuro | `QueueAndAllListsHaveDifferentScopesWithNormalizedPagesAndStableOrder` |
+| AT-17 | Duração/média por fase atendidas; exporter/dashboard posterior | `PhaseDurationsSeparateQueueAndPhysicalWorkAndDoNotInventMissingSamples` |
+| AT-18 | Rollback e receipt/eventos isolados atendidos no double; ACID real posterior | `FailedCommitAfterPricingOrProgressLeavesOriginalSnapshotUntouched` |
+| AT-19 | Journal/replay/CAS contratados e testados localmente; journal persistente posterior | `ReusingIntentWithDifferentMeaningIsRejected` |
+| AT-20 | Fence e protocolo CAS locais atendidos; corrida em banco real posterior | `DifferentIntentCommandsUsingSameStoredVersionCannotOverwriteOneAnother` |
+| AT-21 | Fronteiras locais preservadas; contratos/broker/Saga/BDD posteriores | `FullLocalFlowPreservesItemsPricesMappingAuditAndPendingEventData` |
+| AT-22 | Porta de preço disponível; CRUD/migração do catálogo continuam suporte posterior | `PricesAreRequestedOncePerCatalogItemWhileOccurrencesKeepIndependentLines` |
+
+[Evidência do passo 3](evidence/step-3/RESULTS.md) e [casos de uso e limites](STEP_3_APPLICATION.md).
