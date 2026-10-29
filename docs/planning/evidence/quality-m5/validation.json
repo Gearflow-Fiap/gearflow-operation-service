@@ -1,0 +1,36 @@
+{
+  "step": "M5",
+  "status": "complete-local",
+  "baselineCommit": "1fd3fb709a1b8b501a04eb661536db94817645d0",
+  "decision": "retain-explicit-service-and-single-pipeline",
+  "adr": "docs/architecture/adr-014-casos-de-uso-e-handlers.md",
+  "commandMethodsEvaluated": 11,
+  "queryMethodsEvaluated": 5,
+  "operationServiceConstructorDependencies": 3,
+  "productionCodeChanged": false,
+  "packagesChanged": false,
+  "newTestsAdded": 0,
+  "buildProjectsPassed": 9,
+  "unitCasesPassedThisStep": 168,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "report": "TestResults/quality-m5/miran_MIRANDA_2026-10-29_20_38_12_net10.0.trx",
+      "passed": 168,
+      "total": 168,
+      "failed": 0
+    }
+  ],
+  "latestFullRegressionReference": {
+    "step": "M4",
+    "dotnetCasesPassed": 294,
+    "pythonTestsPassed": 13,
+    "minimumCoverage": "95.79%",
+    "reexecutedAsFullSuiteInM5": false,
+    "evidence": "docs/planning/evidence/quality-m4/validation.json"
+  },
+  "productionDeploy": false,
+  "localDocumentationLinksChecked": 165,
+  "documentedCommandAndQueryInventoryMatchesSource": true
+}

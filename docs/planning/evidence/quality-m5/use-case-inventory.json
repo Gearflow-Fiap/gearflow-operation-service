@@ -1,0 +1,61 @@
+{
+  "commands": [
+    {
+      "method": "UpdateVehicle",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Administration.cs"
+    },
+    {
+      "method": "Deactivate",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Administration.cs"
+    },
+    {
+      "method": "CancelOperation",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Administration.cs"
+    },
+    {
+      "method": "StartDiagnostic",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Diagnostics.cs"
+    },
+    {
+      "method": "CompleteDiagnostic",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Diagnostics.cs"
+    },
+    {
+      "method": "FailDiagnostic",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Diagnostics.cs"
+    },
+    {
+      "method": "AuthorizeExecution",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Execution.cs"
+    },
+    {
+      "method": "StartExecution",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Execution.cs"
+    },
+    {
+      "method": "ExecuteJob",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Execution.cs"
+    },
+    {
+      "method": "FinalizeExecution",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Execution.cs"
+    },
+    {
+      "method": "Receive",
+      "file": "src/Operation.Application/Operations/Commands/OperationService.Intake.cs"
+    }
+  ],
+  "queryMethods": [
+    "Get",
+    "List",
+    "Queue",
+    "History",
+    "Durations"
+  ],
+  "operationServiceDependencies": [
+    "IOperationUnitOfWork",
+    "DiagnosticPricer",
+    "TimeProvider"
+  ],
+  "decision": "retain-explicit-service-and-single-pipeline"
+}

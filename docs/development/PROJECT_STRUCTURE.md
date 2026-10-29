@@ -39,7 +39,7 @@ Program.cs é o composition root. Endpoints traduzem HTTP; Application coordena 
 
 OperationService possui partes por recebimento, diagnóstico, execução e administração. O arquivo Pipeline mantém uma única implementação de replay/idempotência, controle de versão, telemetria, receipt e commit de estado/outbox. Não duplicar esse fluxo dentro de endpoints/consumers. As partes são uma classe de aplicação; não criam transações independentes por arquivo.
 
-MediatR foi avaliado e não adicionado neste checkpoint. A API já separa comandos e consultas, e o pipeline atual é explícito e testado. Adicionar um mediator apenas para encaminhar chamadas não melhora as fronteiras atuais. Se o número de handlers ou comportamentos justificar, migrar depois com testes de equivalência do pipeline, sem alterar contratos de integração.
+A avaliação M5 mantém OperationService explícito: 11 comandos coesos, três dependências e um pipeline compartilhado. [ADR-014](../architecture/adr-014-casos-de-uso-e-handlers.md) registra a decisão de manter a estrutura atual e os critérios para reavaliar handlers/MediatR. O [mapa de casos de uso](APPLICATION_USE_CASES.md) distingue os comandos recebidos por mensagem das ações físicas HTTP.
 
 [Execução Visual Studio](VISUAL_STUDIO.md) e [mapa dos testes](../../tests/README.md).
 

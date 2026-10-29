@@ -17,6 +17,7 @@ Data da baseline: 2026-10-24. Esta é a proposta de referência para planejar a 
 | Publicar e versionar contratos | [RFC-003](rfcs/rfc-003-distribuicao-de-contratos.md) |
 | Consultar observabilidade | [Operação](development/OBSERVABILITY.md) |
 | Ver testes e critérios de cobertura | [Qualidade](development/TEST_STRATEGY.md) |
+| Localizar casos de uso e entender a decisão sobre handlers | [Casos de uso](development/APPLICATION_USE_CASES.md) |
 | Consultar composição e configuração atuais | [DI e opções](development/CONFIGURATION.md) |
 | Consultar validação HTTP, ator e ETag | [Entrada HTTP](development/HTTP_INPUT.md) |
 | Alterar mapeamentos EF, pacotes e convenções de build | [Persistência/build](development/BUILD_AND_PERSISTENCE.md) |
@@ -36,6 +37,7 @@ ADRs 001–005 continuam Proposed até revisão coletiva. ADRs 006/007 registram
 | [005](architecture/adr-005-contratos-e-versionamento.md) | Identidade de mensagens, contratos e evolução |
 | [006](architecture/adr-006-modelo-local-e-precificacao.md) | Modelo local e limite da precificação no passo 2 |
 | [007](architecture/adr-007-casos-de-uso-e-intencoes.md) | Intenções, casos de uso e protocolo de gravação local |
+| [014](architecture/adr-014-casos-de-uso-e-handlers.md) | Manter casos de uso explícitos e pipeline único após avaliação M5 |
 
 ## Governança
 

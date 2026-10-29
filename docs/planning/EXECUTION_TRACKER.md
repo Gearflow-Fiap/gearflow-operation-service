@@ -182,3 +182,11 @@ Mapeamentos EF separados em seis configurações; 24 versões diretas em Directo
 294 testes .NET distintos (168 unitários + 126 integração) e 13 Python aprovados, sem falhas/ignorados. API 95,79%; demais assemblies >=98,93%. Restore isolado do contexto Docker e publish API/migrador aprovados; imagem/F5 não reconstruídos pelo agente. [Evidências](evidence/quality-m4/RESULTS.md), [guia](../development/BUILD_AND_PERSISTENCE.md).
 
 Próximo passo: M5 — avaliar handlers e registrar decisão, sem MediatR automático ou duplicação do pipeline transacional. Pendências coletivas/OS/Saga e entrega remota seguem no 7B.
+
+## Evolução de código — M5 e sequência M1–M5 concluídos
+
+Avaliação fundamentada mantém os casos de uso explícitos e pipeline único. Onze comandos coesos, três dependências e consultas separadas; nenhuma separação em handlers/MediatR feita apenas por organização. Acoplamento de resolução do pricer e gatilhos de reavaliação registrados no [ADR-014](../architecture/adr-014-casos-de-uso-e-handlers.md). [Mapa](../development/APPLICATION_USE_CASES.md).
+
+M5 documental: build dos nove projetos aprovado sem erros/avisos; 168 testes unitários existentes reexecutados, zero falhas/ignorados. Nenhum código de produção, pacote ou teste modificado. Última regressão completa/cobertura permanece M4: 294 .NET + 13 Python, mínimo 95,79%. [Evidências M5](evidence/quality-m5/RESULTS.md).
+
+Sequência de organização M1–M5 encerrada localmente. Próximo foco: 7B, alinhamento coletivo/OS-Saga/contratos/topologia/credenciais, homologação integrada, testes distribuídos e entrega remota. Esta conclusão não confirma decisões ainda pendentes do grupo.

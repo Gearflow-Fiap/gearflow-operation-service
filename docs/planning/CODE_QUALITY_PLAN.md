@@ -10,7 +10,7 @@ Baseline: 231 casos .NET distintos e 13 testes Python aprovados no checkpoint Sc
 | M2 — composição e configuração | Registro DI por camada e opções tipadas para JWT, Inventory, RabbitMQ, preços e telemetria | Program enxuto; lifetimes e adapters preservados; configuração inválida rejeitada no ponto correto, sem imprimir segredos; dependências opcionais não viram obrigatórias | Concluído localmente; evidências M2 |
 | M3 — entrada HTTP | Validação de requests, leitura do ator e parser de ETag reutilizáveis | Mesmos códigos HTTP, precondições e limites; ator confiável na API e explícito nos comandos/consumers; domínio continua protegendo suas invariantes | Concluído localmente; evidências M3 |
 | M4 — persistência e convenções | IEntityTypeConfiguration por entidade, versões NuGet centralizadas e regras de estilo/analisadores | Modelo EF equivalente, sem migration artificial; build Docker lê novos arquivos de configuração; versões preservadas e gate de estilo adotado incrementalmente | Concluído localmente; evidências M4 |
-| M5 — avaliar handlers | Avaliar casos de uso individuais e dependências após os passos anteriores | Registrar decisão e justificativa; somente extrair handlers se houver ganho, com equivalência do pipeline transacional; MediatR não é requisito | Planejado |
+| M5 — avaliar handlers | Avaliar casos de uso individuais e dependências após os passos anteriores | Registrar decisão e justificativa; somente extrair handlers se houver ganho, com equivalência do pipeline transacional; MediatR não é requisito | Concluído localmente; ADR-014 e evidências M5 |
 
 ## Regras para todos os passos
 
@@ -67,3 +67,11 @@ Seis configurações EF por entidade, 24 versões NuGet centralizadas e convenç
 294 testes .NET (168 unitários + 126 integração) e 13 Python aprovados, sem falhas/ignorados. Cobertura API 95,79%; demais assemblies >=98,93%. Gate incremental de whitespace e build sem erros/avisos aprovados. [Evidências](evidence/quality-m4/RESULTS.md), [guia](../development/BUILD_AND_PERSISTENCE.md). Imagem/F5 não reconstruídos pelo agente.
 
 Retomada: M5 — avaliar handlers após essas mudanças, registrando decisão fundamentada. MediatR continua sem adoção automática; manter o pipeline transacional único.
+
+## Checkpoint M5 — sequência concluída
+
+Avaliação dos 11 comandos, três dependências e cinco consultas: manter OperationService explícito e pipeline único, sem handlers adicionais/MediatR nesta etapa. [ADR-014](../architecture/adr-014-casos-de-uso-e-handlers.md) registra alternativas, acoplamento conhecido do pricer e gatilhos de reavaliação. [Mapa](../development/APPLICATION_USE_CASES.md), [evidências](evidence/quality-m5/RESULTS.md).
+
+Etapa documental; nenhum código de produção/pacote/teste alterado. Build dos nove projetos e 168 testes unitários reexecutados com sucesso, zero erros/avisos/falhas/ignorados. Última regressão completa/cobertura continua sendo a do M4 (294 .NET + 13 Python, mínimo 95,79%), explicitamente referenciada como anterior.
+
+M1–M5 concluídos localmente. Retomada de produto/entrega: pendências 7B no EXECUTION_TRACKER; não declarar integração coletiva ou fase 4 encerrada apenas com estes checkpoints.

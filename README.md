@@ -10,7 +10,7 @@ CLI/CI: use `GearFlow.Operation.CI.slnf` para build/test de todos os projetos .N
 
 ## Estado atual
 
-**Organização M4 concluída:** configurações EF por entidade, versões NuGet centralizadas e convenções incrementais. 294 testes .NET + 13 Python aprovados, modelo/banco preservados. [Guia de persistência/build](docs/development/BUILD_AND_PERSISTENCE.md), [evidências](docs/planning/evidence/quality-m4/RESULTS.md) e [plano M1–M5](docs/planning/CODE_QUALITY_PLAN.md). Próximo passo: M5, avaliar handlers. Guias anteriores: [DI/configuração](docs/development/CONFIGURATION.md) e [entrada HTTP](docs/development/HTTP_INPUT.md).
+**Organização M1–M5 concluída localmente.** A avaliação M5 mantém casos de uso explícitos e pipeline único; [ADR-014](docs/architecture/adr-014-casos-de-uso-e-handlers.md) registra a decisão e critérios para reavaliar handlers/MediatR. [Mapa de casos de uso](docs/development/APPLICATION_USE_CASES.md), [evidências M5](docs/planning/evidence/quality-m5/RESULTS.md) e [plano](docs/planning/CODE_QUALITY_PLAN.md). No M5: build e 168 testes unitários reexecutados, sem mudança de produção. Última regressão completa: M4, 294 .NET + 13 Python aprovados, cobertura mínima 95,79%. Próximo foco: integração/entrega 7B.
 
 Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 
