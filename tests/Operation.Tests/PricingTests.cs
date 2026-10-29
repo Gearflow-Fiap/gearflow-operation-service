@@ -7,6 +7,20 @@ namespace Operation.Tests;
 
 public class PricingTests
 {
+    [Fact]
+    public async Task MissingPolicyBlocksPricingWithoutCallingCatalogOrChangingState()
+    {
+        var clock = new ApplicationClock();
+        var catalog = new TestPriceCatalog(clock);
+        var pricer = new DiagnosticPricer(catalog, null, clock);
+        var operation = Diagnosing();
+        await Assert.ThrowsAsync<PricingUnavailableException>(() => pricer.Price(operation, [], default));
+        Assert.Throws<PricingUnavailableException>(() => pricer.PolicyId);
+        Assert.Equal(0, catalog.Calls);
+        Assert.Equal(OperationStatus.InDiagnostic, operation.Status);
+        Assert.Equal(2, operation.Version);
+    }
+
     [Theory]
     [InlineData(ConsumablePricingMode.LegacyLinePriceV1, 1800, "legacy-consumable-line-v1")]
     [InlineData(ConsumablePricingMode.PerUnitV1, 1900, "per-unit-away-from-zero-v1")]

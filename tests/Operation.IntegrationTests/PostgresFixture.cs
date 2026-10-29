@@ -37,6 +37,8 @@ public sealed class PostgresFixture : IAsyncLifetime
 
     internal async Task<IntegrationHarness> Create(bool migrate = true)
     {
+        // Collection serializada: liberar pools ociosos dos bancos anteriores antes do próximo cenário.
+        NpgsqlConnection.ClearAllPools();
         var name = "operation_it_" + Guid.NewGuid().ToString("N");
         await using var connection = new NpgsqlConnection(admin);
         await connection.OpenAsync();

@@ -14,19 +14,19 @@ public interface IPriceCatalog
 
 public enum ConsumablePricingMode { LegacyLinePriceV1, PerUnitV1 }
 
-/// <summary>Política explícita, sem default: integração real deve acordar a escolha com Budget.</summary>
+/// <summary>Política explícita, sem default: ausência bloqueia Price/PolicyId; integração deve acordar escolha com Budget.</summary>
 public sealed class DiagnosticPricer
 {
     private readonly IPriceCatalog catalog;
-    private readonly ConsumablePricingMode mode;
+    private readonly ConsumablePricingMode? mode;
     private readonly TimeProvider clock;
-    public string PolicyId => mode == ConsumablePricingMode.LegacyLinePriceV1 ? "legacy-consumable-line-v1" : "per-unit-away-from-zero-v1";
+    public string PolicyId => !mode.HasValue ? throw new PricingUnavailableException("Política financeira não configurada.") : mode == ConsumablePricingMode.LegacyLinePriceV1 ? "legacy-consumable-line-v1" : "per-unit-away-from-zero-v1";
 
-    public DiagnosticPricer(IPriceCatalog catalog, ConsumablePricingMode mode, TimeProvider clock)
+    public DiagnosticPricer(IPriceCatalog catalog, ConsumablePricingMode? mode, TimeProvider clock)
     {
         ArgumentNullException.ThrowIfNull(catalog);
         ArgumentNullException.ThrowIfNull(clock);
-        if (!Enum.IsDefined(mode)) throw new ArgumentOutOfRangeException(nameof(mode));
+        if (mode.HasValue && !Enum.IsDefined(mode.Value)) throw new ArgumentOutOfRangeException(nameof(mode));
         this.catalog = catalog;
         this.mode = mode;
         this.clock = clock;
@@ -34,6 +34,7 @@ public sealed class DiagnosticPricer
 
     public async Task<DiagnosticSnapshot> Price(WorkOperation operation, IReadOnlyList<DiagnosticConsumable> consumables, CancellationToken ct)
     {
+        if (!mode.HasValue) throw new PricingUnavailableException("Política financeira não configurada.");
         if (!operation.IsActive || operation.Status != OperationStatus.InDiagnostic)
             throw new OperationConflictException("Operação deve estar ativa e em diagnóstico para consultar preços.");
         var inputs = operation.RequestedJobs.Select(job => new LineInput(job.LineId, OperationItemType.Labor, job.CatalogJobId, 1))

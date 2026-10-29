@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Operation.Api/Operation.Api.csproj" />
     <Project Path="src/Operation.Domain/Operation.Domain.csproj" />
     <Project Path="src/Operation.Application/Operation.Application.csproj" />
     <Project Path="src/Operation.Infrastructure/Operation.Infrastructure.csproj" />

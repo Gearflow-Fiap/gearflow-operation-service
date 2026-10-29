@@ -20,7 +20,7 @@ public sealed record OperationWrite(WorkOperation Operation, long? ExpectedStore
 /// e salvar estado, receipt e outbox na MESMA transação, inclusive quando não há mudança de estado.
 /// Se outra execução já comitou a mesma intenção/hash, retornar o resultado original sem novos efeitos;
 /// hash divergente gera IntentConflictException. Checar receipt antes da versão nesse replay concorrente.
-/// Falha não pode tornar estado, receipt ou eventos visíveis parcialmente. Nenhum adapter real existe ainda.
+/// Falha não pode tornar estado, receipt ou eventos visíveis parcialmente. Adapter PostgreSQL implementado em Infrastructure.
 /// </summary>
 public interface IOperationUnitOfWork
 {
@@ -39,9 +39,9 @@ public sealed record PageResult<T>(IReadOnlyList<T> Items, int Page, int PageSiz
 public sealed record OperationSearch(OperationListScope Scope, OperationStatus? Status = null, bool IncludeInactive = false);
 
 /// <summary>
-/// Adapter futuro pagina/filtra no banco. Queue usa ExecutionQueue e exclui inativas;
+/// Adapter pagina/filtra no banco. Queue usa ExecutionQueue e exclui inativas;
 /// All ordena CreatedAt desc e ServiceOrderId asc. GetHistory retorna null para OS ausente e ordena por Version.
-/// Summary considera operações ativas. Implementação em memória existe somente nos testes.
+/// Summary considera operações ativas. Implementação PostgreSQL concreta; double em memória somente nos testes.
 /// </summary>
 public interface IOperationReadStore
 {

@@ -40,7 +40,11 @@ O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [ac
 - [Decisões a revisar com cada integrante](docs/rfcs/rfc-001-baseline-e-integracao.md).
 - [Análise inicial do PDF e legado](docs/FASE-4-ANALISE.md) (registro histórico).
 
-## Último checkpoint
+## Último checkpoint — incremento 5A
+
+API operacional HTTP/JWT, ETag/idempotência, erros e OpenAPI implementados. **166 testes aprovados** (131 unitários + 35 de integração), sem falhas/ignorados. API: 97,97% de cobertura. [Evidências do 5A](docs/planning/evidence/increment-5a/RESULTS.md). Preços reais e catálogo seguem no 5B; host bloqueia cotação com 503.
+
+### Histórico — persistência
 
 Incremento 4 concluído: persistência PostgreSQL/EF, migrations, histórico, receipts idempotentes, concorrência e outbox interna transacional. **144 testes aprovados** (130 unitários e 14 de integração no PostgreSQL real), sem falhas/ignorados. Cobertura consolidada: Application 100%, Domain 98,93%, Infrastructure 98,50% (inclui migrations geradas).
 
@@ -56,6 +60,7 @@ src/
   Operation.Domain/
   Operation.Application/
   Operation.Infrastructure/
+  Operation.Api/
 tests/
   Operation.Tests/
   Operation.IntegrationTests/
@@ -69,4 +74,10 @@ docs/
 
 O slnx organiza projetos nas pastas src e tests. Requer SDK .NET 10; integração requer PostgreSQL 17, via Docker/Testcontainers ou OPERATION_TEST_POSTGRES. Consulte o guia acima para comandos e migrations.
 
-Ainda faltam host HTTP/JWT, catálogo real, contratos homologados, RabbitMQ/MassTransit, dispatcher da outbox e integração da Saga. OperationEvent é registro interno persistido, não um contrato RabbitMQ já publicado. Os outros serviços e gearflow-app não foram alterados neste incremento.
+Host HTTP/JWT implementado no 5A; consulte [API e configuração](docs/development/API_ENDPOINTS.md). Ainda faltam catálogo real, adapter Inventory, contratos homologados, RabbitMQ/MassTransit, dispatcher da outbox e integração da Saga. OperationEvent é registro interno persistido, não um contrato RabbitMQ já publicado. Os outros serviços e gearflow-app não foram alterados neste incremento.
+
+## Padrão para alinhamento do grupo
+
+[RFC-003 — padrão da fase 4](docs/rfcs/rfc-003-padrao-fase-4.md): responsabilidades, preços por unidade, snapshot, autenticação entre serviços e Saga. É uma recomendação para revisão coletiva; infra-broker provisiona mensageria e não substitui o serviço de OS/coordenador.
+
+O incremento 5 foi dividido em 5A (HTTP) e 5B (catálogo/integração real de preços). No host atual, finalizar diagnóstico retorna 503 enquanto a cotação não está conectada. Testes HTTP de sucesso usam catálogo fake explícito; não são evidência de integração real com Inventory.

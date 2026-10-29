@@ -1,51 +1,42 @@
-# API HTTP proposta do Operation
+# API HTTP — incremento 5A
 
-**Status:** Proposed; nenhum endpoint desta lista está implementado. Base /api/operation; catálogo /api/catalog/jobs conforme legado, rota final a validar com frontend/gateway. Emitir OpenAPI a partir do código no incremento da API; esta especificação textual não é um Swagger já funcional.
+Status: host e endpoints operacionais implementados. HTTP usa PostgreSQL real. Catálogo próprio e adapter Inventory ainda pertencem ao incremento 5B; o host atual bloqueia cotação com 503, sem concluir diagnóstico com preço fictício. Integração de broker segue no incremento 6.
 
-## Revisão de paridade
+Base: /api/operation. Autenticação JWT HS256 + policy Staff em todos os endpoints abaixo.
 
-A [matriz do passo 1](../planning/STEP_1_PARITY.md) prevalece para delimitar o que é herdado e o que é extensão proposta. Em especial, finish com items livres, fila acionável nova e desativação do catálogo não existiam assim no legado. Nos passos 2/3 preservar serviços/peças recebidos da OS e acrescentar insumos; não permitir substituição silenciosa do pedido inicial. HTTP real continua fora desses dois incrementos locais.
-
-## Operação e progresso
-
-| Método/rota | Entrada | Saída / regra |
+| Método/rota | Entrada | Resultado |
 |---|---|---|
-| GET /api/operation/queue?page=1&pageSize=20 | filtros status opcionais | 200 {items,page,pageSize,totalCount}; page>=1, pageSize 1..100 |
-| GET /api/operation/service-orders/{id} | GUID OS | 200 snapshot local/status/version/jobs; 404 se desconhecida |
-| GET /api/operation/service-orders/{id}/history?page=1&pageSize=20 | GUID OS + paginação | 200 histórico de transições e ações auditadas |
-| POST /api/operation/service-orders/{id}/diagnostic/start | body vazio | 200 {status,operationVersion}; DiagnosticStarted |
-| POST /api/operation/service-orders/{id}/diagnostic/finish | {items:[{itemType,itemId,quantity}]} | 200 {diagnosticId,status,operationVersion}; resolve preços e gera lineIds/snapshot |
-| POST /api/operation/service-orders/{id}/diagnostic/fail | {reason} | 200 {status,operationVersion}; DiagnosticFailed; bloqueia finish/start até cancelamento |
-| POST /api/operation/service-orders/{id}/execution/start | body vazio | Só ReadyForExecution; 200 {status,operationVersion}; início físico |
-| POST /api/operation/service-orders/{id}/execution/jobs/{lineId}/done | body vazio | Linha Labor aprovada; 200 {lineId,executedOn,operationVersion}; JobExecuted |
-| POST /api/operation/service-orders/{id}/execution/finish | body vazio | Só InExecution; 200 {status,operationVersion}; ExecutionFinished |
+| GET /queue | page, pageSize, status opcionais | página da fila acionável |
+| GET /service-orders | page, pageSize, status, includeInactive opcionais | página de operações |
+| GET /service-orders/{id} | GUID OS | estado atual e ETag forte da versão; 404 ausente |
+| GET /service-orders/{id}/history | page/pageSize | histórico paginado |
+| GET /durations | nenhuma | médias e amostras por fase |
+| POST /service-orders/{id}/diagnostic/start | sem body | CommandResult e ETag |
+| POST /service-orders/{id}/diagnostic/finish | {consumables:[{lineId,consumableId,quantity}]} | CommandResult; 503 até catálogo/configuração real |
+| POST /service-orders/{id}/diagnostic/fail | {reason} | falha de diagnóstico explícita |
+| POST /service-orders/{id}/execution/start | sem body | início físico após autorização persistida |
+| POST /service-orders/{id}/execution/jobs/{budgetJobId}/done | sem body | executa linha aprovada pelo Budget |
+| POST /service-orders/{id}/execution/finish | sem body | conclusão após todas as linhas |
 
-A falha explícita de diagnóstico leva ao estado local DiagnosticFailed, que bloqueia conclusão/início posterior enquanto a Saga cancela. CancelOperation continua permitido nesse estado. Não interpretar falha transitória de consulta de preço como falha de diagnóstico.
+Escritas exigem Idempotency-Key GUID não vazio e If-Match com um único ETag forte positivo, ex.: "3". Sem If-Match: 428. Formato inválido, wildcard ou ETag fraco: 400. Versão divergente: 412. Estado/intenção conflitante: 409. Replay exato retorna resultado/ETag originais mesmo com versão atual posterior; GET consulta estado atual. Ator vem do sub autenticado com prefixo staff:, nunca do body. Respostas de escrita e consulta individual usam Cache-Control: no-store.
 
-Não haverá endpoint público de aprovar orçamento, reservar estoque, receber autorização externa ou cancelar como compensação. Essas funções seguem por comando da Saga. Se um operador precisar cancelar uma OS, deve solicitar ao OS Service, que coordena o processo.
+Enums são strings; propriedades desconhecidas no body são rejeitadas. Finish não aceita preços ou substituição de serviços/peças originais. Consumables=[] é válido; null/ausente não é. LineId precisa permanecer estável ao repetir uma intenção.
 
-## Idempotência e concorrência HTTP
+Não há endpoints HTTP para receber OS, autorizar execução, reservar estoque, aprovar orçamento, pagar ou compensar cancelamento. Esses passos dependem dos adapters internos de integração. Sem broker, recebimento/autorização só são exercitados via aplicação pelos testes; não é um fluxo completo para demonstração ainda.
 
-Escritas operacionais exigem Idempotency-Key como GUID e If-Match com versão devolvida no ETag/consulta. Ausência de precondição -> 428; versão divergente -> 412. Persistir chave, rota/OS/ator, hash semântico do corpo e resultado na mesma transação de estado/outbox.
+Erros seguem application/problem+json com code e traceId, sem stack trace ou detalhe de JWT. 400 validação; 401 token ausente/inválido; 403 falta policy staff/sub; 404 ausência; 409 conflito; 412 versão; 428 precondição; 503 cotação indisponível; 500 erro interno.
 
-Repetição da MESMA intenção e mesmo corpo retorna resultado original sem repetir efeito/evento, mesmo se a operação já avançou; consultar journal antes de validar If-Match novamente. Reutilizar chave com rota/corpo/ator diferente -> 409. Novo pedido para job já concluído devolve resultado estável sem nova execução. Cliques com versões concorrentes precisam recarregar estado quando houver conflito.
+OpenAPI gerado: GET /openapi/v1.json (Staff). Liveness público: GET /health/live, sem afirmar prontidão do banco/broker. Catálogo /api/catalog/jobs segue planejado no 5B.
 
-Quem define autor é a autenticação, não o body. API retorna após commit local, sem prometer que OS global já recebeu evento. Resposta 200 não significa pagamento/estoque processados no mesmo request. Não aceitar preço do cliente no finish.
+## Configurar e executar
 
-## Fila alvo
+Definir por ambiente/user-secrets, sem versionar segredos:
 
-InExecution primeiro; ReadyForExecution em seguida; InDiagnostic; Received. Depois CreatedAt e ID para desempate determinístico. AwaitingExecutionAuthorization (diagnóstico pronto aguardando comercial) aparece em consulta/filtro próprio, fora da fila acionável. Esta ordenação é proposta de evolução da fila: o código atual ainda mantém prioridade herdada com AwaitingApproval/WaitingParts. Validar UX antes de trocar.
+- ConnectionStrings__Operation: conexão PostgreSQL exclusiva.
+- Jwt__Secret: chave HS256 com pelo menos 32 bytes; Jwt__Issuer e Jwt__Audience obrigatórios.
+- Authorization__StaffClaimType e Authorization__StaffClaimValue: claim confiável emitida pela identidade. Proposta do grupo: actor_type=staff. Tokens atuais do monólito ainda precisam dessa evolução.
+- Pricing__ConsumableMode: LegacyLinePriceV1 ou PerUnitV1, somente após acordo. Ausente/inválida deixa precificação bloqueada. Mesmo configurada, IPriceCatalog ainda está bloqueado neste host até o 5B.
 
-## Catálogo de mão de obra
+Executar migrations conforme POSTGRESQL.md e depois `dotnet run --project src/Operation.Api`. Não há migration automática na inicialização. Não copiar security_stamp como política de revogação remota nem consultar banco Identity.
 
-Propor GET /api/catalog/jobs e /{id}; POST para criar; PUT /{id} para atualizar; DELETE /{id} para desativar. DTO: id,name,description,priceCents,isActive. Desativar bloqueia novos diagnósticos; não remove snapshots existentes. Escritas de catálogo autenticadas, validação/concorrência próprias; definir permissão de manutenção com frontend, sem presumir papel já emitido.
-
-## Erros e segurança
-
-ProblemDetails com código estável e traceId: 400 validação; 401 sem credencial válida; 403 sem autorização staff; 404 operação inexistente; 409 conflito de estado/intenção; 412 versão; 428 precondição; 503 dependência de preço indisponível. Não retornar stack trace, JWT ou segredos.
-
-Validar staff por política explícita acordada na RFC-002; RequireAuthorization sozinho não distingue cliente de mecânico. Autenticação de integração de preço é questão separada. Rate limit/CORS na borda não substituem autorização na API.
-
-## Suporte local implementado no passo 3
-
-OperationService e OperationQueries agora fornecem ações/queries por interfaces. Nenhuma rota deste arquivo foi exposta em HTTP. O host futuro deve mapear Idempotency-Key para CommandContext.IntentId, ator de identidade confiável e If-Match para ExpectedVersion (obrigatoriedade HTTP continua no host; comandos de broker podem omitir versão). Mapear exceções/DTOs e não aceitar preço do cliente. Replay devolve resultado histórico; consulta Get devolve estado atual. Ver [casos de uso](../planning/STEP_3_APPLICATION.md).
+A RFC-003 apresenta o padrão recomendado para a revisão coletiva. A API exige configuração explícita em vez de tratar qualquer JWT como staff.

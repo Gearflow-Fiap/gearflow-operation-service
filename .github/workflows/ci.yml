@@ -31,7 +31,7 @@ jobs:
           python-version: '3.x'
       - run: dotnet restore GearFlow.Operation.slnx
       - run: dotnet build GearFlow.Operation.slnx --no-restore --configuration Release
-      - run: dotnet test GearFlow.Operation.slnx --no-build --configuration Release --collect:"XPlat Code Coverage" --results-directory TestResults
+      - run: dotnet test GearFlow.Operation.slnx --no-build --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults
       - run: python scripts/check_coverage.py TestResults
       - uses: actions/upload-artifact@v4
         if: always()

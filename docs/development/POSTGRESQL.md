@@ -28,8 +28,10 @@ O compose usa senha exclusivamente local, substituível por OPERATION_POSTGRES_P
 Cobertura consolidada, em diretório limpo por execução:
 
 ```powershell
-dotnet test GearFlow.Operation.slnx --configuration Release --collect:"XPlat Code Coverage" --results-directory TestResults/current
+dotnet test GearFlow.Operation.slnx --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults/current
 python scripts/check_coverage.py TestResults/current
 ```
 
 O script une os hits por assembly/classe/arquivo/linha entre unitários e integração; não soma percentuais nem conta cópias de relatórios como novas linhas. Gate mínimo de 80% por assembly.
+
+A configuração exclui somente OpenApiXmlCommentSupport.generated.cs, gerado pela biblioteca Microsoft.AspNetCore.OpenApi. Código escrito do host, domínio, aplicação, infraestrutura e migrations continua medido.

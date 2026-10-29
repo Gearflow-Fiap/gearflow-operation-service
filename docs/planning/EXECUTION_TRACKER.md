@@ -1,6 +1,6 @@
-# Acompanhamento dos passos 1 a 3
+# Acompanhamento da implementação
 
-Atualizado em 28/10/2026. **Ponto de retomada: passos 1, 2 e 3 concluídos no núcleo local. Próximo: persistência real.** Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
+Atualizado em 29/10/2026. **Ponto de retomada: núcleo e persistência concluídos; incremento 5A (API) concluído; 5B (catálogo/preços reais) pendente.** Os registros dos passos anteriores abaixo são históricos. Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
 
 | Passo solicitado | Escopo | Situação | Evidência |
 |---|---|---|---|
@@ -103,3 +103,10 @@ Usuário autorizou iniciar próximos incrementos. O [plano](NEXT_INCREMENTS.md) 
 Persistência exclusiva PostgreSQL/EF implementada, com migrations, reidratação validada, consultas SQL, histórico, receipt e outbox transacionais. Conflitos por intenção/versão e rollback comprovados contra banco real. 130 testes unitários + 14 de integração aprovados; cobertura por assembly >=98%. [Evidências e limites](evidence/increment-4/RESULTS.md), [ADR-008](../architecture/adr-008-persistencia-postgresql.md), [guia local](../development/POSTGRESQL.md).
 
 O texto de limites do passo 3 registra o estado histórico daquele checkpoint. Estado atual inclui PostgreSQL, mas ainda não API ou broker. Próximo incremento: 5, host HTTP/JWT e adapter de preços, com testes HTTP e validação dos contratos comerciais. Antes de fechar o adapter, confirmar com Inventory a política de consumíveis e autenticação/contrato de cotação. Contratos públicos de eventos devem ser revisados coletivamente no incremento 6.
+
+
+## Incremento 5A — concluído
+
+Host HTTP/JWT, policy staff explícita, ProblemDetails, OpenAPI e comandos com ETag/idempotência. **166 aprovados** (131 unitários + 35 integração), sem falhas/ignorados; API 97,97%, demais assemblies >=98,61%. [Evidências](evidence/increment-5a/RESULTS.md), [ADR-009](../architecture/adr-009-api-http.md), [rotas/configuração](../development/API_ENDPOINTS.md), [proposta ao grupo](../rfcs/rfc-003-padrao-fase-4.md).
+
+Retomada: 5B, catálogo de mão de obra e preços reais. Host ainda retorna 503 na cotação por falta de adapter; não declarar incremento 5 completo nem fluxo distribuído pronto. Preservar regra de checkpoint/testes por entrega.
