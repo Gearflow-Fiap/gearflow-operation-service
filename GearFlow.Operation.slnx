@@ -17,6 +17,12 @@
     <Project Path="tools/Operation.Migrate/Operation.Migrate.csproj" />
     <Project Path="tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj" />
   </Folder>
+  <Folder Name="/build/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+  </Folder>
   <Folder Name="/docs/">
     <File Path="README.md" />
     <File Path="docs/INDEX.md" />

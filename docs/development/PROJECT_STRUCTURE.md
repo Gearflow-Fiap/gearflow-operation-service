@@ -16,6 +16,7 @@ src/
     Operations/Queue/                  # Fila e durações
   Operation.Infrastructure/
     Configuration/ Messaging/ Migrations/ Persistence/ Pricing/
+    Persistence/Configurations/         # Um IEntityTypeConfiguration por entidade
     DependencyInjection.cs
   Operation.Api/
     Authentication/ Composition/ Configuration/ Errors/ Health/ HostedServices/ Http/
@@ -45,3 +46,5 @@ MediatR foi avaliado e não adicionado neste checkpoint. A API já separa comand
 [Composição DI e configuração tipada](CONFIGURATION.md): responsabilidades, lifetimes e condições de ativação das integrações.
 
 [Entrada HTTP](HTTP_INPUT.md): validação de requests, ator autenticado e ETag compartilhado, preservando as regras distintas de catálogo e comandos.
+
+[Persistência e convenções de build](BUILD_AND_PERSISTENCE.md): configurações EF, versões NuGet centrais, referências do modelo e gate de formatação incremental.

@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY Directory.Build.props ./
+COPY Directory.Build.props Directory.Packages.props .editorconfig ./
 COPY src/Operation.Domain/Operation.Domain.csproj src/Operation.Domain/
 COPY src/Operation.Application/Operation.Application.csproj src/Operation.Application/
 COPY src/Operation.Contracts/Operation.Contracts.csproj src/Operation.Contracts/

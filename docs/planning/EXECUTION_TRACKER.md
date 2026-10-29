@@ -174,3 +174,11 @@ Helpers de ator autenticado, ETag e contexto de comando HTTP; shape/conversão d
 290 testes .NET distintos (164 unitários + 126 no projeto de integração) e 13 Python aprovados; zero falhas/ignorados. API 95,79%; demais assemblies >=98,93%. Três cenários aprovados antes da refatoração e reexecutados depois; 17 casos novos incluídos no total final. [Evidências](evidence/quality-m3/RESULTS.md).
 
 Próximo passo: M4 — configurações EF por entidade, versões NuGet centralizadas e convenções incrementais. Migrations, handlers e configuração F5/Compose não alterados neste checkpoint; integração coletiva/OS/Saga e entrega remota continuam no 7B.
+
+## Evolução de código — M4 concluído
+
+Mapeamentos EF separados em seis configurações; 24 versões diretas em Directory.Packages.props, preservando dependências resolvidas dos nove projetos. .editorconfig/analyzers e gate de whitespace incremental; pasta build na solução e Dockerfile atualizado para restore central. Modelo, DDL e histórico EF idênticos à referência anterior; quatro migrations/snapshot intactos.
+
+294 testes .NET distintos (168 unitários + 126 integração) e 13 Python aprovados, sem falhas/ignorados. API 95,79%; demais assemblies >=98,93%. Restore isolado do contexto Docker e publish API/migrador aprovados; imagem/F5 não reconstruídos pelo agente. [Evidências](evidence/quality-m4/RESULTS.md), [guia](../development/BUILD_AND_PERSISTENCE.md).
+
+Próximo passo: M5 — avaliar handlers e registrar decisão, sem MediatR automático ou duplicação do pipeline transacional. Pendências coletivas/OS/Saga e entrega remota seguem no 7B.

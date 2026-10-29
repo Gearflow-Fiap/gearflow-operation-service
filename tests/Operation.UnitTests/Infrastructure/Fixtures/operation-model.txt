@@ -1,0 +1,289 @@
+Model:
+  EntityType: BrokerInboxRow
+    Properties:
+      MessageId (Guid) Required PK Index AfterSave:Throw ValueGenerated.OnAdd
+        Annotations:
+          Relational:ColumnName: message_id
+      CommandName (string) Required MaxLength(100)
+        Annotations:
+          MaxLength: 100
+          Relational:ColumnName: command_name
+      CorrelationId (Guid) Required
+        Annotations:
+          Relational:ColumnName: correlation_id
+      Fingerprint (string) Required MaxLength(64)
+        Annotations:
+          MaxLength: 64
+          Relational:ColumnName: fingerprint
+      IsCompleted (bool) Required Index
+        Annotations:
+          Relational:ColumnName: is_completed
+      ProcessedAt (DateTimeOffset?) Index
+        Annotations:
+          Relational:ColumnName: processed_at
+      PublishedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: published_at
+      ReceivedAt (DateTimeOffset) Required Index
+        Annotations:
+          Relational:ColumnName: received_at
+      ReplyId (Guid?)
+        Annotations:
+          Relational:ColumnName: reply_id
+      ReplyJson (string)
+        Annotations:
+          Relational:ColumnName: reply_json
+          Relational:ColumnType: jsonb
+      ReplyType (string) MaxLength(100)
+        Annotations:
+          MaxLength: 100
+          Relational:ColumnName: reply_type
+      TraceParent (string) MaxLength(55)
+        Annotations:
+          MaxLength: 55
+          Relational:ColumnName: trace_parent
+      TraceState (string) MaxLength(512)
+        Annotations:
+          MaxLength: 512
+          Relational:ColumnName: trace_state
+    Keys:
+      MessageId PK
+    Indexes:
+      IsCompleted, ReceivedAt
+      ProcessedAt, MessageId
+        Annotations:
+          Relational:Filter: reply_json IS NOT NULL AND published_at IS NULL AND is_completed
+    Annotations:
+      Relational:CheckConstraints: System.Collections.Generic.SortedDictionary`2[System.String,Microsoft.EntityFrameworkCore.Metadata.ICheckConstraint]
+      Relational:Schema:
+      Relational:TableName: broker_inbox
+      RelationshipDiscoveryConvention:NavigationCandidates: Microsoft.EntityFrameworkCore.Utilities.OrderedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]
+  EntityType: HistoryRow
+    Properties:
+      ServiceOrderId (Guid) Required PK FK AfterSave:Throw
+        Annotations:
+          Relational:ColumnName: service_order_id
+      Version (long) Required PK AfterSave:Throw
+        Annotations:
+          Relational:ColumnName: version
+      Action (OperationAction) Required MaxLength(40)
+        Annotations:
+          MaxLength: 40
+          ProviderClrType: System.String
+          Relational:ColumnName: action
+          ValueConverter:
+      Actor (string) Required
+        Annotations:
+          Relational:ColumnName: actor
+      At (DateTimeOffset) Required
+        Annotations:
+          Relational:ColumnName: at
+      Description (string) Required
+        Annotations:
+          Relational:ColumnName: description
+      Status (OperationStatus) Required MaxLength(40)
+        Annotations:
+          MaxLength: 40
+          ProviderClrType: System.String
+          Relational:ColumnName: status
+          ValueConverter:
+      SubjectId (Guid?)
+        Annotations:
+          Relational:ColumnName: subject_id
+    Keys:
+      ServiceOrderId, Version PK
+    Foreign keys:
+      HistoryRow {'ServiceOrderId'} -> OperationRow {'ServiceOrderId'} Required Restrict
+    Annotations:
+      Relational:CheckConstraints: System.Collections.Generic.SortedDictionary`2[System.String,Microsoft.EntityFrameworkCore.Metadata.ICheckConstraint]
+      Relational:Schema:
+      Relational:TableName: histories
+      RelationshipDiscoveryConvention:NavigationCandidates: Microsoft.EntityFrameworkCore.Utilities.OrderedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]
+  EntityType: JobRow
+    Properties:
+      Id (Guid) Required PK Index AfterSave:Throw ValueGenerated.OnAdd
+        Annotations:
+          Relational:ColumnName: id
+      CreatedAt (DateTimeOffset) Required
+        Annotations:
+          Relational:ColumnName: created_at
+      Description (string) Required MaxLength(2000)
+        Annotations:
+          MaxLength: 2000
+          Relational:ColumnName: description
+      IsActive (bool) Required Index
+        Annotations:
+          Relational:ColumnName: is_active
+      Name (string) Required Index MaxLength(128)
+        Annotations:
+          MaxLength: 128
+          Relational:ColumnName: name
+      PriceCents (int) Required
+        Annotations:
+          Relational:ColumnName: price_cents
+      UpdatedAt (DateTimeOffset) Required
+        Annotations:
+          Relational:ColumnName: updated_at
+      UpdatedBy (string) Required MaxLength(200)
+        Annotations:
+          MaxLength: 200
+          Relational:ColumnName: updated_by
+      Version (long) Required Concurrency
+        Annotations:
+          Relational:ColumnName: version
+    Keys:
+      Id PK
+    Indexes:
+      IsActive, Name, Id
+    Annotations:
+      Relational:CheckConstraints: System.Collections.Generic.SortedDictionary`2[System.String,Microsoft.EntityFrameworkCore.Metadata.ICheckConstraint]
+      Relational:Schema:
+      Relational:TableName: catalog_jobs
+      RelationshipDiscoveryConvention:NavigationCandidates: Microsoft.EntityFrameworkCore.Utilities.OrderedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]
+  EntityType: OperationRow
+    Properties:
+      ServiceOrderId (Guid) Required PK Index AfterSave:Throw ValueGenerated.OnAdd
+        Annotations:
+          Relational:ColumnName: service_order_id
+      CreatedAt (DateTimeOffset) Required Index
+        Annotations:
+          Relational:ColumnName: created_at
+      DiagnosticCompletedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: diagnostic_completed_at
+      DiagnosticStartedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: diagnostic_started_at
+      ExecutionAuthorizedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: execution_authorized_at
+      ExecutionCompletedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: execution_completed_at
+      ExecutionStartedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: execution_started_at
+      IsActive (bool) Required Index
+        Annotations:
+          Relational:ColumnName: is_active
+      IsTombstone (bool) Required
+        Annotations:
+          Relational:ColumnName: is_tombstone
+      ServiceOrderCode (int?)
+        Annotations:
+          Relational:ColumnName: service_order_code
+      StateFormat (int) Required
+        Annotations:
+          Relational:ColumnName: state_format
+      StateJson (string) Required
+        Annotations:
+          Relational:ColumnName: state_json
+          Relational:ColumnType: jsonb
+      Status (OperationStatus) Required Index MaxLength(40)
+        Annotations:
+          MaxLength: 40
+          ProviderClrType: System.String
+          Relational:ColumnName: status
+          ValueConverter:
+      UpdatedAt (DateTimeOffset) Required
+        Annotations:
+          Relational:ColumnName: updated_at
+      VehicleId (Guid?)
+        Annotations:
+          Relational:ColumnName: vehicle_id
+      Version (long) Required Concurrency
+        Annotations:
+          Relational:ColumnName: version
+    Keys:
+      ServiceOrderId PK
+    Indexes:
+      CreatedAt, ServiceOrderId
+      IsActive, Status, CreatedAt, ServiceOrderId
+    Annotations:
+      Relational:CheckConstraints: System.Collections.Generic.SortedDictionary`2[System.String,Microsoft.EntityFrameworkCore.Metadata.ICheckConstraint]
+      Relational:Schema:
+      Relational:TableName: operations
+      RelationshipDiscoveryConvention:NavigationCandidates: Microsoft.EntityFrameworkCore.Utilities.OrderedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]
+  EntityType: OutboxRow
+    Properties:
+      EventId (Guid) Required PK Index AfterSave:Throw ValueGenerated.OnAdd
+        Annotations:
+          Relational:ColumnName: event_id
+      CausationId (Guid) Required FK Index
+        Annotations:
+          Relational:ColumnName: causation_id
+      DispatchedAt (DateTimeOffset?)
+        Annotations:
+          Relational:ColumnName: dispatched_at
+      EventJson (string) Required
+        Annotations:
+          Relational:ColumnName: event_json
+          Relational:ColumnType: jsonb
+      Kind (OperationEventKind) Required MaxLength(40)
+        Annotations:
+          MaxLength: 40
+          ProviderClrType: System.String
+          Relational:ColumnName: kind
+          ValueConverter:
+      OccurredAt (DateTimeOffset) Required Index
+        Annotations:
+          Relational:ColumnName: occurred_at
+      ServiceOrderId (Guid) Required FK Index
+        Annotations:
+          Relational:ColumnName: service_order_id
+      Version (long) Required Index
+        Annotations:
+          Relational:ColumnName: version
+    Keys:
+      EventId PK
+    Foreign keys:
+      OutboxRow {'CausationId'} -> ReceiptRow {'IntentId'} Required Restrict
+      OutboxRow {'ServiceOrderId'} -> OperationRow {'ServiceOrderId'} Required Restrict
+    Indexes:
+      CausationId
+      OccurredAt, EventId
+        Annotations:
+          Relational:Filter: dispatched_at IS NULL
+      ServiceOrderId, Version Unique
+    Annotations:
+      Relational:Schema:
+      Relational:TableName: outbox_events
+      RelationshipDiscoveryConvention:NavigationCandidates: Microsoft.EntityFrameworkCore.Utilities.OrderedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]
+  EntityType: ReceiptRow
+    Properties:
+      IntentId (Guid) Required PK AfterSave:Throw ValueGenerated.OnAdd
+        Annotations:
+          Relational:ColumnName: intent_id
+      CreatedAt (DateTimeOffset) Required
+        Annotations:
+          Relational:ColumnName: created_at
+      Fingerprint (string) Required MaxLength(64)
+        Annotations:
+          MaxLength: 64
+          Relational:ColumnName: fingerprint
+      ResultJson (string) Required
+        Annotations:
+          Relational:ColumnName: result_json
+          Relational:ColumnType: jsonb
+      ServiceOrderId (Guid) Required FK Index
+        Annotations:
+          Relational:ColumnName: service_order_id
+    Keys:
+      IntentId PK
+    Foreign keys:
+      ReceiptRow {'ServiceOrderId'} -> OperationRow {'ServiceOrderId'} Required Restrict
+    Indexes:
+      ServiceOrderId
+    Annotations:
+      Relational:CheckConstraints: System.Collections.Generic.SortedDictionary`2[System.String,Microsoft.EntityFrameworkCore.Metadata.ICheckConstraint]
+      Relational:Schema:
+      Relational:TableName: command_receipts
+      RelationshipDiscoveryConvention:NavigationCandidates: Microsoft.EntityFrameworkCore.Utilities.OrderedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]
+Annotations:
+  BaseTypeDiscoveryConvention:DerivedTypes: System.Collections.Generic.Dictionary`2[System.Type,System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.IConventionEntityType]]
+  InversePropertyAttributeConvention:InverseNavigations: System.Collections.Generic.Dictionary`2[System.Type,System.Collections.Generic.SortedSet`1[System.Type]]
+  NonNullableConventionState: System.Reflection.NullabilityInfoContext
+  Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+  ProductVersion: 10.0.9
+  Relational:DefaultSchema: operation
+  Relational:MaxIdentifierLength: 63

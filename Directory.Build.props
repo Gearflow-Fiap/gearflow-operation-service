@@ -4,5 +4,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel Condition="'$(MSBuildProjectExtension)' == '.csproj'">10.0</AnalysisLevel>
+    <EnableNETAnalyzers Condition="'$(MSBuildProjectExtension)' == '.csproj'">true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild Condition="'$(MSBuildProjectExtension)' == '.csproj'">true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 </Project>

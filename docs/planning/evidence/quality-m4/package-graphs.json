@@ -1,0 +1,47 @@
+{
+  "src/Operation.Api/Operation.Api.csproj": {
+    "packageCount": 30,
+    "before": "afad26c4a96ed3a9f978a50d0c7aa163eaa0472052fc93ae1dbdc72d8aa5729c",
+    "after": "afad26c4a96ed3a9f978a50d0c7aa163eaa0472052fc93ae1dbdc72d8aa5729c"
+  },
+  "src/Operation.Application/Operation.Application.csproj": {
+    "packageCount": 1,
+    "before": "6a837b482794eef799026d7dacbf91f43ffa1d02697a2560f5eb451bcbebbb66",
+    "after": "6a837b482794eef799026d7dacbf91f43ffa1d02697a2560f5eb451bcbebbb66"
+  },
+  "src/Operation.Contracts/Operation.Contracts.csproj": {
+    "packageCount": 0,
+    "before": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "after": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  "src/Operation.Domain/Operation.Domain.csproj": {
+    "packageCount": 0,
+    "before": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "after": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  "src/Operation.Infrastructure/Operation.Infrastructure.csproj": {
+    "packageCount": 50,
+    "before": "8a1b072d31cd6fe5184ef4d8213810a244c41523237007bf72dd7cc5a87505ea",
+    "after": "8a1b072d31cd6fe5184ef4d8213810a244c41523237007bf72dd7cc5a87505ea"
+  },
+  "tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj": {
+    "packageCount": 0,
+    "before": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "after": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+  },
+  "tools/Operation.Migrate/Operation.Migrate.csproj": {
+    "packageCount": 30,
+    "before": "1f36b5297ecba4b73ddb3c8f17ae46a258122c181fea457b1a8e4dac46397b96",
+    "after": "1f36b5297ecba4b73ddb3c8f17ae46a258122c181fea457b1a8e4dac46397b96"
+  },
+  "tests/Operation.IntegrationTests/Operation.IntegrationTests.csproj": {
+    "packageCount": 91,
+    "before": "ea42461067f8e10aa33bda39853a1e79130235c44a6dedf2ec91be4a329a2d9e",
+    "after": "ea42461067f8e10aa33bda39853a1e79130235c44a6dedf2ec91be4a329a2d9e"
+  },
+  "tests/Operation.UnitTests/Operation.UnitTests.csproj": {
+    "packageCount": 43,
+    "before": "5517ccfa07a893a7bfb7cb2dfca57ced548c826c25ed9ea076bb75ba83221188",
+    "after": "5517ccfa07a893a7bfb7cb2dfca57ced548c826c25ed9ea076bb75ba83221188"
+  }
+}

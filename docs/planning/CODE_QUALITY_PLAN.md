@@ -9,7 +9,7 @@ Baseline: 231 casos .NET distintos e 13 testes Python aprovados no checkpoint Sc
 | M1 — Scalar e contrato HTTP | Resumos/descrições, respostas tipadas/erros, headers e exemplos; testes de autorização/documentação descobrindo as rotas | Toda rota de negócio documentada e Staff; OpenAPI coerente com respostas reais; falhas de autenticação sem efeitos; build/testes/gate aprovados | Concluído localmente; evidências M1 |
 | M2 — composição e configuração | Registro DI por camada e opções tipadas para JWT, Inventory, RabbitMQ, preços e telemetria | Program enxuto; lifetimes e adapters preservados; configuração inválida rejeitada no ponto correto, sem imprimir segredos; dependências opcionais não viram obrigatórias | Concluído localmente; evidências M2 |
 | M3 — entrada HTTP | Validação de requests, leitura do ator e parser de ETag reutilizáveis | Mesmos códigos HTTP, precondições e limites; ator confiável na API e explícito nos comandos/consumers; domínio continua protegendo suas invariantes | Concluído localmente; evidências M3 |
-| M4 — persistência e convenções | IEntityTypeConfiguration por entidade, versões NuGet centralizadas e regras de estilo/analisadores | Modelo EF equivalente, sem migration artificial; build Docker lê novos arquivos de configuração; versões preservadas e gate de estilo adotado incrementalmente | Planejado |
+| M4 — persistência e convenções | IEntityTypeConfiguration por entidade, versões NuGet centralizadas e regras de estilo/analisadores | Modelo EF equivalente, sem migration artificial; build Docker lê novos arquivos de configuração; versões preservadas e gate de estilo adotado incrementalmente | Concluído localmente; evidências M4 |
 | M5 — avaliar handlers | Avaliar casos de uso individuais e dependências após os passos anteriores | Registrar decisão e justificativa; somente extrair handlers se houver ganho, com equivalência do pipeline transacional; MediatR não é requisito | Planejado |
 
 ## Regras para todos os passos
@@ -59,3 +59,11 @@ ConnectionStrings:Operation ausente agora falha na inicialização, sem abrir co
 Ator autenticado e ETag compartilhados, contexto HTTP de operações e requests organizados. Códigos/limites e distinção entre catálogo e comandos preservados. Três cenários caracterizados antes da refatoração; 17 novos casos incluídos no total final de 290 testes .NET (164 unitários + 126 no projeto de integração), com 13 Python aprovados, zero falhas/ignorados. API 95,79%; demais assemblies >=98,93%. [Evidências](evidence/quality-m3/RESULTS.md), [guia HTTP](../development/HTTP_INPUT.md).
 
 Retomada: M4 — configurações EF por entidade e convenções/versões NuGet, verificando equivalência do modelo e compatibilidade do build Docker. Nenhuma alteração de banco/handler feita no M3.
+
+## Checkpoint M4
+
+Seis configurações EF por entidade, 24 versões NuGet centralizadas e convenções incrementais concluídas. Modelo/DDL/histórico iguais à referência anterior, sem migration nova; quatro migrations/snapshot preservados. Grafos resolvidos dos nove projetos idênticos antes/depois. Restore isolado dos arquivos copiados pelo Dockerfile e publish da API/migrador aprovados.
+
+294 testes .NET (168 unitários + 126 integração) e 13 Python aprovados, sem falhas/ignorados. Cobertura API 95,79%; demais assemblies >=98,93%. Gate incremental de whitespace e build sem erros/avisos aprovados. [Evidências](evidence/quality-m4/RESULTS.md), [guia](../development/BUILD_AND_PERSISTENCE.md). Imagem/F5 não reconstruídos pelo agente.
+
+Retomada: M5 — avaliar handlers após essas mudanças, registrando decisão fundamentada. MediatR continua sem adoção automática; manter o pipeline transacional único.

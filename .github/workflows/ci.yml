@@ -44,6 +44,12 @@ jobs:
       - name: Test offline integration handoff
         run: python -m unittest discover -s tests/python -v
       - run: dotnet restore GearFlow.Operation.CI.slnf
+      - name: Verify incremental formatting gate
+        run: >-
+          dotnet format whitespace . --folder --verify-no-changes
+          --include src/Operation.Infrastructure/Persistence/OperationDbContext.cs
+          src/Operation.Infrastructure/Persistence/Configurations
+          tests/Operation.UnitTests/Infrastructure/ModelContractTests.cs
       - name: Prepare Sonar scanner when configured
         if: vars.SONAR_PROJECT_KEY != ''
         run: dotnet tool install --global dotnet-sonarscanner --version 12.0.0

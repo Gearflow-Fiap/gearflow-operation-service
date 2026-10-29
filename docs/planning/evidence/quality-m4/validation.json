@@ -1,0 +1,55 @@
+{
+  "step": "M4",
+  "status": "complete-local",
+  "baselineCommit": "f0a52e28587219c6ef6414298244607a170ff3dc",
+  "dotnetCasesPassed": 294,
+  "unitCasesPassed": 168,
+  "integrationCasesPassed": 126,
+  "newModelContractCases": 4,
+  "pythonTestsPassed": 13,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "report": "TestResults/quality-m4/miran_MIRANDA_2026-10-29_20_26_32_net10.0.trx",
+      "passed": 126,
+      "total": 126,
+      "failed": 0
+    },
+    {
+      "report": "TestResults/quality-m4/miran_MIRANDA_2026-10-29_20_30_54_net10.0.trx",
+      "passed": 168,
+      "total": 168,
+      "failed": 0
+    }
+  ],
+  "coverage": {
+    "GearFlow.Contracts.Operation": "26/26 (100.00%)",
+    "Operation.Api": "432/451 (95.79%)",
+    "Operation.Application": "351/351 (100.00%)",
+    "Operation.Domain": "370/374 (98.93%)",
+    "Operation.Infrastructure": "2564/2584 (99.23%)"
+  },
+  "centralPackageVersions": 24,
+  "resolvedProjectGraphsCompared": 9,
+  "resolvedVersionsAndSha512Unchanged": true,
+  "efConfigurations": 6,
+  "modelBaselineFixtureSha256": {
+    "migration-history.sql": "4e82fd7eec7d37f79914639e3d9c6a15b21b0aa9fb40bc18ca65ea577e9fddec",
+    "operation-model.txt": "3a951afe16fb925cf242883d6599521ccef2247da2bffa51c60acfe61fba8f48",
+    "operation-schema.sql": "ccc6a7f3b4bb274829f66f5402b9d03d55f6c2eadb74ef959770d538d61e3197"
+  },
+  "existingMigrationsUnchanged": true,
+  "pendingModelChanges": false,
+  "incrementalFormatGatePassed": true,
+  "isolatedDockerCopyRestorePassed": [
+    "api",
+    "migrate"
+  ],
+  "releasePublishPassed": [
+    "api",
+    "migrate"
+  ],
+  "dockerImageRebuilt": false,
+  "productionDeploy": false
+}

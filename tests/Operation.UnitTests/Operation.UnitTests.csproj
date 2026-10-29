@@ -4,6 +4,7 @@
     <ProjectReference Include="../../src/Operation.Infrastructure/Operation.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Infrastructure/Fixtures/*" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../docs/contracts/runtime-v1/**/*.json" Link="Contracts/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

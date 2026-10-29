@@ -17,6 +17,10 @@ Data da baseline: 2026-10-24. Esta é a proposta de referência para planejar a 
 | Publicar e versionar contratos | [RFC-003](rfcs/rfc-003-distribuicao-de-contratos.md) |
 | Consultar observabilidade | [Operação](development/OBSERVABILITY.md) |
 | Ver testes e critérios de cobertura | [Qualidade](development/TEST_STRATEGY.md) |
+| Consultar composição e configuração atuais | [DI e opções](development/CONFIGURATION.md) |
+| Consultar validação HTTP, ator e ETag | [Entrada HTTP](development/HTTP_INPUT.md) |
+| Alterar mapeamentos EF, pacotes e convenções de build | [Persistência/build](development/BUILD_AND_PERSISTENCE.md) |
+| Acompanhar a evolução de código M1–M5 | [Plano de qualidade](planning/CODE_QUALITY_PLAN.md) |
 | Consultar análise original | [FASE-4-ANALISE](FASE-4-ANALISE.md) |
 
 ## ADRs

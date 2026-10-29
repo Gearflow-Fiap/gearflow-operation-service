@@ -1,0 +1,7 @@
+/.gitattributes text eol=lf
+/.editorconfig text eol=lf
+/Directory.Packages.props text eol=lf
+/src/Operation.Infrastructure/Persistence/OperationDbContext.cs text eol=lf
+/src/Operation.Infrastructure/Persistence/Configurations/*.cs text eol=lf
+/tests/Operation.UnitTests/Infrastructure/ModelContractTests.cs text eol=lf
+/tests/Operation.UnitTests/Infrastructure/Fixtures/* text eol=lf

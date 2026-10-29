@@ -6,7 +6,7 @@
 |---|---|---|
 | Operation.UnitTests/Domain | Recebimento, diagnóstico, snapshots, execução, cancelamento e cópias destacadas | Nenhuma |
 | Operation.UnitTests/Application | Intenções, consultas, fila, preço, telemetria e casos de uso | Doubles em memória |
-| Operation.UnitTests/Infrastructure | Mapper de persistência e cliente HTTP de preços | Servidor/handler substituto; sem PostgreSQL |
+| Operation.UnitTests/Infrastructure | Mapper, contrato do modelo EF/DDL/histórico e cliente HTTP de preços | Servidor/handler substituto; sem PostgreSQL |
 | Operation.UnitTests/Contracts | Projeção e serialização dos contratos públicos | Serializadores reais; sem broker |
 | Operation.UnitTests/Architecture | Dependências permitidas entre assemblies/camadas | Metadata dos assemblies |
 | Operation.UnitTests/Support | Dados de domínio, relógio e storage de teste compartilhados | Não são adapters de produção |
@@ -40,3 +40,5 @@ python -m unittest discover -s tests/python -v
 O filtro CI.slnf contém todos os projetos .NET da solução; apenas o .dcproj do Visual Studio fica fora. Não exclui testes ou camadas do gate de cobertura. Testes de integração continuam serializados na coleção Postgres; cada caso usa banco exclusivo, e testes de broker usam vhost exclusivo. Não apontar o fixture para banco/vhost compartilhados de homologação.
 
 Mudar a localização dos cenários não os transforma em BDD distribuído nem em prova de serviços externos completos. As evidências de cada checkpoint ficam em docs/planning/evidence.
+
+ModelContractTests compara fixtures anteriores à extração do M4 sem conectar ao banco e verifica ausência de mudanças de modelo para migration. Referências em Infrastructure/Fixtures exigem revisão para atualização; não regenerar apenas para aprovar testes. [Convenções e gate de whitespace](../docs/development/BUILD_AND_PERSISTENCE.md).

@@ -10,7 +10,7 @@ CLI/CI: use `GearFlow.Operation.CI.slnf` para build/test de todos os projetos .N
 
 ## Estado atual
 
-**Organização M3 concluída:** ator autenticado, ETag e validação/conversão de requests compartilhados, com 290 testes .NET + 13 Python aprovados. [Guia HTTP](docs/development/HTTP_INPUT.md), [evidências](docs/planning/evidence/quality-m3/RESULTS.md) e [plano M1–M5](docs/planning/CODE_QUALITY_PLAN.md). Próximo passo: M4, persistência e convenções. DI/configuração tipada do M2: [guia](docs/development/CONFIGURATION.md).
+**Organização M4 concluída:** configurações EF por entidade, versões NuGet centralizadas e convenções incrementais. 294 testes .NET + 13 Python aprovados, modelo/banco preservados. [Guia de persistência/build](docs/development/BUILD_AND_PERSISTENCE.md), [evidências](docs/planning/evidence/quality-m4/RESULTS.md) e [plano M1–M5](docs/planning/CODE_QUALITY_PLAN.md). Próximo passo: M5, avaliar handlers. Guias anteriores: [DI/configuração](docs/development/CONFIGURATION.md) e [entrada HTTP](docs/development/HTTP_INPUT.md).
 
 Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 
