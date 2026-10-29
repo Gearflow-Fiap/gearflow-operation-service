@@ -2,6 +2,10 @@
 
 **Baseline:** 2026-10-24. **Escopo desta etapa:** planejar/documentar; sem publicar pacote, implantar ou mudar runtime dos serviços.
 
+## Sequência ativa de execução
+
+Em 28/10/2026, o usuário solicitou três passos locais: (1) paridade/escopo, (2) modelo operacional, (3) casos de uso. A conclusão e a evidência de cada um ficam no [acompanhamento](EXECUTION_TRACKER.md). Executar somente o passo 1 antes de retornar ao usuário. Esta sequência precede/complementa os marcos P0-P8 abaixo e não exige fingir que houve acordo externo para testar domínio local.
+
 ## Estado de partida
 
 Operation tem Domain/Application e 19 testes locais. Inventory tem implementação de banco/broker/contratos inspecionada; não reexecutamos seus testes. Budget tem documentação; OS ainda não existe segundo o grupo. A nova arquitetura é alvo proposto, não descrição do núcleo já pronto.

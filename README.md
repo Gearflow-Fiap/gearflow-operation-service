@@ -24,6 +24,10 @@ Microsserviço de diagnóstico e execução da oficina, extraído do Workshop do
 
 ADRs registram contexto, alternativas e consequências. Nenhuma aprovação dos outros integrantes foi presumida.
 
+## Execução acompanhada — passos 1 a 3
+
+O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [acompanhamento](docs/planning/EXECUTION_TRACKER.md), a [matriz de paridade da fase 3](docs/planning/STEP_1_PARITY.md) e os [critérios de aceite](docs/planning/STEP_ACCEPTANCE.md). O passo 1 fecha inventário/escopo; não implementa o modelo dos passos 2/3. Os contratos propostos anteriormente ainda precisam dos ajustes de paridade registrados na matriz.
+
 ## Navegação
 
 - [Índice da documentação](docs/INDEX.md).

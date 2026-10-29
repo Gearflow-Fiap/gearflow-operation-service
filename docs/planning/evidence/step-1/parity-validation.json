@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-28",
+  "parityRows": 29,
+  "legacyHandlers": 23,
+  "mappedHandlers": 23,
+  "legacySourceReferences": 60,
+  "sourceHashesMatch": true,
+  "operationRuntimeFilesUnchanged": 10,
+  "existingTestReferencesValid": true,
+  "acceptanceReferencesValid": true,
+  "localLinksChecked": 113,
+  "brokenLinks": [],
+  "step2Started": false
+}

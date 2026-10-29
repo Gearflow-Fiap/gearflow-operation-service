@@ -2,6 +2,10 @@
 
 **Status:** Proposed, baseline 2026-10-24; revisão coletiva e implementação pendentes. **Artefato:** JSON Schema Draft 2020-12 + exemplos + manifesto. Não há pacote NuGet publicado, consumers ou compatibilidade MassTransit validada neste incremento.
 
+## Revisão de paridade em 28/10/2026
+
+Antes de implementar esta proposta, aplicar as lacunas da [matriz do passo 1](../planning/STEP_1_PARITY.md): entrada sem peças solicitadas, serviços não vazios, atualização de veículo/desativação e identidade de linha. O JSON Schema ainda representa a proposta anterior e não comprova paridade funcional com a fase 3. Nenhum formato externo foi homologado por esta revisão.
+
 ## Como usar esta especificação
 
 1. Ler semântica e regras abaixo antes de implementar tipos.

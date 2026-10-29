@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-28",
+  "command": "dotnet test GearFlow.Operation.slnx --no-restore --configuration Release -m:1 -nr:false --collect:\"XPlat Code Coverage\" --logger \"trx;LogFileName=step-1.trx\" --results-directory TestResults/step-1-2026-10-28",
+  "sdk": "10.0.402",
+  "exitCode": 0,
+  "counters": {
+    "total": "19",
+    "executed": "19",
+    "passed": "19",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "coverage": {
+    "line-rate": "1",
+    "branch-rate": "1",
+    "version": "1.9",
+    "timestamp": "1793236532",
+    "lines-covered": "91",
+    "lines-valid": "91",
+    "branches-covered": "44",
+    "branches-valid": "44"
+  },
+  "packages": [
+    {
+      "name": "Operation.Application",
+      "line-rate": "1",
+      "branch-rate": "1",
+      "complexity": "32"
+    },
+    {
+      "name": "Operation.Domain",
+      "line-rate": "1",
+      "branch-rate": "1",
+      "complexity": "36"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Operation.Tests.OperationTests.InvalidTransitionDoesNotCommit",
+      "outcome": "Passed",
+      "duration": "00:00:00.0009656"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.FinalizationPreservesLegacyGuardWithoutNewJobRule",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004023"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.DuplicateReceiveIsConflictWithoutOverwritingOperation",
+      "outcome": "Passed",
+      "duration": "00:00:00.0013709"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.InvalidTransitions_DoNotChangeStateOrHistory",
+      "outcome": "Passed",
+      "duration": "00:00:00.0024319"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.CompleteFlow_WithStockDelay_RecordsLocalHistory",
+      "outcome": "Passed",
+      "duration": "00:00:00.0019036"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ExecutionRejectsUnknownAndRepeatedJobs",
+      "outcome": "Passed",
+      "duration": "00:00:00.0043179"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.QueueUsesOldestFirstWithinStatus",
+      "outcome": "Passed",
+      "duration": "00:00:00.0166824"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.CancelDiagnosticIsIdempotentAndCannotUndoPhysicalExecution",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006499"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.CommitFailurePropagatesWithoutClaimingSuccess",
+      "outcome": "Passed",
+      "duration": "00:00:00.0011918"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.MissingOrderAndInvalidCorrelationDoNotCommit",
+      "outcome": "Passed",
+      "duration": "00:00:00.0036630"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ActorIsRequired_WithoutPartialMutation(actor: \" \")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007274"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ApplicationCommitsStateAndPendingEventTogether",
+      "outcome": "Passed",
+      "duration": "00:00:00.0591389"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ApprovalWithStockAndRejectionEmitDifferentEvents",
+      "outcome": "Passed",
+      "duration": "00:00:00.0011976"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.Rejection_CancelsOnlyWhileAwaitingApproval",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003593"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.QueueUsesLegacyPriorityAndExcludesTerminalOperations",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003440"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ApprovedJobIdsMustBeValidAndUnique",
+      "outcome": "Passed",
+      "duration": "00:00:00.0009850"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.EmptyOrderIsRejected",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002669"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ApplicationAcknowledgesDiagnosticCancellation",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012386"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ActorIsRequired_WithoutPartialMutation(actor: \"\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0060474"
+    }
+  ],
+  "originalTrx": "TestResults/step-1-2026-10-28/step-1.trx",
+  "originalTrxSha256": "d513cd5d714ebe77d1584e4e31a10b6f3f6bc4f69d0e3f66b38c96fd5a99d616",
+  "coverageSha256": "04ec167f99cf3cdc444c93006f6315eb1c50622529eb23611409b0df569ef7f5",
+  "limits": [
+    "Existing Operation core only",
+    "Legacy tests inspected, not run",
+    "No database/broker/Saga/API checks",
+    "No Domain/Application implementation changes in step 1"
+  ]
+}

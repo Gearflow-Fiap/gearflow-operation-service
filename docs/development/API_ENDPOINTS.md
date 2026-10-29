@@ -2,6 +2,10 @@
 
 **Status:** Proposed; nenhum endpoint desta lista está implementado. Base /api/operation; catálogo /api/catalog/jobs conforme legado, rota final a validar com frontend/gateway. Emitir OpenAPI a partir do código no incremento da API; esta especificação textual não é um Swagger já funcional.
 
+## Revisão de paridade
+
+A [matriz do passo 1](../planning/STEP_1_PARITY.md) prevalece para delimitar o que é herdado e o que é extensão proposta. Em especial, finish com items livres, fila acionável nova e desativação do catálogo não existiam assim no legado. Nos passos 2/3 preservar serviços/peças recebidos da OS e acrescentar insumos; não permitir substituição silenciosa do pedido inicial. HTTP real continua fora desses dois incrementos locais.
+
 ## Operação e progresso
 
 | Método/rota | Entrada | Saída / regra |

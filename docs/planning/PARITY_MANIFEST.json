@@ -1,0 +1,803 @@
+{
+  "date": "2026-10-28",
+  "step": 1,
+  "status": "scope-mapped-not-implemented",
+  "operationBaselineCommit": "8304112aa2e6ad1779dd4ebcc63edadb8897de12",
+  "legacyCommit": null,
+  "legacyVersionNote": "Git metadata not available through this sandbox; exact inspected source bytes identified by SHA-256.",
+  "rows": [
+    {
+      "id": "PAR-01",
+      "title": "Abrir OS",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/CreateServiceOrder/CreateServiceOrderHandler.cs"
+      ],
+      "owner": "OS",
+      "operationAction": "Receber snapshot operacional, sem criar outra OS",
+      "legacyRule": "VehicleId, JobIds (ao menos um), Parts/quantidade; OSCode pertence à OS.",
+      "currentGap": "Receive atual só guarda ServiceOrderId; faltam dados iniciais.",
+      "existingOperationTests": [
+        "EmptyOrderIsRejected"
+      ],
+      "acceptanceIds": [
+        "AT-01",
+        "AT-02"
+      ]
+    },
+    {
+      "id": "PAR-02",
+      "title": "Iniciar diagnóstico",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/StartDiagnostic/StartDiagnosticHandler.cs"
+      ],
+      "owner": "Operation",
+      "operationAction": "Preservar início apenas a partir de Received",
+      "legacyRule": "Registra autor/data/histórico e recusa estado inválido.",
+      "currentGap": "Guard existe; entrada ainda sem veículo/itens.",
+      "existingOperationTests": [
+        "InvalidTransitions_DoNotChangeStateOrHistory",
+        "CompleteFlow_WithStockDelay_RecordsLocalHistory"
+      ],
+      "acceptanceIds": [
+        "AT-04",
+        "AT-14"
+      ]
+    },
+    {
+      "id": "PAR-03",
+      "title": "Concluir diagnóstico e gerar orçamento",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/FinalizeDiagnostic/FinalizeDiagnosticHandler.cs"
+      ],
+      "owner": "Operation + Budget",
+      "operationAction": "Operation conclui diagnóstico e fornece resultado; Budget gera orçamento",
+      "legacyRule": "Serviços/peças vêm da OS; consumíveis entram no diagnóstico; preços consultados no servidor.",
+      "currentGap": "CompleteDiagnostic atual só muda estado, sem itens/preços.",
+      "existingOperationTests": [
+        "ApplicationCommitsStateAndPendingEventTogether"
+      ],
+      "acceptanceIds": [
+        "AT-05",
+        "AT-06",
+        "AT-07",
+        "AT-18"
+      ]
+    },
+    {
+      "id": "PAR-04",
+      "title": "Aprovar orçamento por OS",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/ApproveBudget/ApproveBudgetHandler.cs"
+      ],
+      "owner": "Budget + coordenação + Inventory",
+      "operationAction": "Somente aceitar autorização operacional após verificações externas",
+      "legacyRule": "Legado aprova, reserva e entra em execução ou espera por peças.",
+      "currentGap": "Bool stockReserved não é um contrato de autorização completo.",
+      "existingOperationTests": [
+        "ApprovalWithStockAndRejectionEmitDifferentEvents"
+      ],
+      "acceptanceIds": [
+        "AT-10",
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-05",
+      "title": "Aprovar orçamento por BudgetId",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/ApproveBudgetById/ApproveBudgetByIdHandler.cs"
+      ],
+      "owner": "Budget + coordenação + Inventory",
+      "operationAction": "Mesmo limite de responsabilidade de PAR-04",
+      "legacyRule": "Resolve OS pelo orçamento; não muda o significado da aprovação.",
+      "currentGap": "Não implementar segunda aprovação no Operation.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-06",
+      "title": "Rejeitar orçamento por OS",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/RejectBudget/RejectBudgetHandler.cs"
+      ],
+      "owner": "Budget + coordenação + OS",
+      "operationAction": "Receber cancelamento coordenado, sem escrever no Budget",
+      "legacyRule": "Rejeição cancela OS em AwaitingApproval.",
+      "currentGap": "RejectBudget local é provisório; substituir fronteira por cancelamento.",
+      "existingOperationTests": [
+        "Rejection_CancelsOnlyWhileAwaitingApproval"
+      ],
+      "acceptanceIds": [
+        "AT-09",
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-07",
+      "title": "Rejeitar orçamento por BudgetId",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/RejectBudgetById/RejectBudgetByIdHandler.cs"
+      ],
+      "owner": "Budget + coordenação + OS",
+      "operationAction": "Não duplicar decisão do cliente",
+      "legacyRule": "Resolve OS a partir do BudgetId e cancela.",
+      "currentGap": "Rejeição não deve virar consumer financeiro com efeitos duplicados.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-08",
+      "title": "Executar item de serviço",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/ExecuteJob/ExecuteJobHandler.cs"
+      ],
+      "owner": "Operation",
+      "operationAction": "Manter progresso próprio da linha aprovada",
+      "legacyRule": "Exige InExecution e BudgetJobId; desconhecido falha, repetido retorna conflito.",
+      "currentGap": "JobProgress.JobId é ambíguo; distinguir linha de catálogo.",
+      "existingOperationTests": [
+        "ExecutionRejectsUnknownAndRepeatedJobs"
+      ],
+      "acceptanceIds": [
+        "AT-11",
+        "AT-12"
+      ]
+    },
+    {
+      "id": "PAR-09",
+      "title": "Retomar execução após falta de peças",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/ResumeExecution/ResumeExecutionHandler.cs"
+      ],
+      "owner": "Coordenação + Inventory + Operation",
+      "operationAction": "Retomar somente depois de confirmação externa de reserva",
+      "legacyRule": "Reavalia reserva antes de avançar; falta de estoque mantém espera.",
+      "currentGap": "ResumeExecution atual não consulta adapter nem prova autorização. ",
+      "existingOperationTests": [
+        "CompleteFlow_WithStockDelay_RecordsLocalHistory"
+      ],
+      "acceptanceIds": [
+        "AT-10",
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-10",
+      "title": "Finalizar OS e consumir estoque",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/FinalizeServiceOrder/FinalizeServiceOrderHandler.cs"
+      ],
+      "owner": "Operation + coordenação + Inventory + OS",
+      "operationAction": "Concluir execução local e comunicar; não consumir diretamente",
+      "legacyRule": "Exige InExecution; não exige todos os jobs marcados; consume reserva antes do sucesso global.",
+      "currentGap": "Núcleo usa Finalized local e não integra consumo.",
+      "existingOperationTests": [
+        "FinalizationPreservesLegacyGuardWithoutNewJobRule"
+      ],
+      "acceptanceIds": [
+        "AT-13",
+        "AT-18",
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-11",
+      "title": "Entregar veículo",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/DeliverServiceOrder/DeliverServiceOrderHandler.cs"
+      ],
+      "owner": "OS",
+      "operationAction": "Fora da escrita Operation",
+      "legacyRule": "Apenas Finalized -> Delivered; mede intervalo até entrega.",
+      "currentGap": "Não adicionar Deliver no Operation.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-12",
+      "title": "Desativar OS",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/DeactivateServiceOrder/DeactivateServiceOrderHandler.cs"
+      ],
+      "owner": "OS + Operation",
+      "operationAction": "Propagar desativação/inativação local antes do corte",
+      "legacyRule": "Soft-delete só Received/InDiagnostic; não confundir com rejeição de orçamento.",
+      "currentGap": "Não há IsActive nem tratamento de desativação no núcleo.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-09",
+        "AT-16"
+      ]
+    },
+    {
+      "id": "PAR-13",
+      "title": "Atualizar veículo",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/UpdateServiceOrderVehicle/UpdateServiceOrderVehicleHandler.cs"
+      ],
+      "owner": "OS + Operation",
+      "operationAction": "Aplicar atualização coordenada enquanto diagnóstico não foi concluído",
+      "legacyRule": "Código permite Received/InDiagnostic e bloqueia a partir de AwaitingApproval (mesmo antes da aprovação efetiva).",
+      "currentGap": "Não há VehicleId nem versionamento de snapshot.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-08"
+      ]
+    },
+    {
+      "id": "PAR-14",
+      "title": "Listar OS por prioridade",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/GetServiceOrders/GetServiceOrdersHandler.cs"
+      ],
+      "owner": "OS (global) + Operation (fila local)",
+      "operationAction": "Preservar dados/ordem de referência e documentar evolução da fila",
+      "legacyRule": "Paginação normaliza page>=1 e pageSize 1..100; prioridade definida no repository.",
+      "currentGap": "ExecutionQueue é em memória, sem IsActive/paginação.",
+      "existingOperationTests": [
+        "QueueUsesLegacyPriorityAndExcludesTerminalOperations",
+        "QueueUsesOldestFirstWithinStatus"
+      ],
+      "acceptanceIds": [
+        "AT-15",
+        "AT-16"
+      ]
+    },
+    {
+      "id": "PAR-15",
+      "title": "Consultar OS e histórico",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/GetServiceOrderById/GetServiceOrderByIdHandler.cs"
+      ],
+      "owner": "OS (global) + Operation (local)",
+      "operationAction": "Consultar detalhe operacional sem duplicar estado global",
+      "legacyRule": "404 quando não existe; histórico ordenado por data no DTO.",
+      "currentGap": "Sem caso de uso de consulta local completo.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-14",
+        "AT-15"
+      ]
+    },
+    {
+      "id": "PAR-16",
+      "title": "Consultar OS com orçamento",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/GetServiceOrderDetails/GetServiceOrderDetailsHandler.cs"
+      ],
+      "owner": "OS/composição de consulta + Budget",
+      "operationAction": "Fornecer sua parte operacional; não consultar tabela Budget",
+      "legacyRule": "Legado junta OS e orçamento via repositories do mesmo módulo.",
+      "currentGap": "Composição distribuída ainda não definida.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-17",
+      "title": "Consultar orçamento",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/GetBudgetById/GetBudgetByIdHandler.cs"
+      ],
+      "owner": "Budget",
+      "operationAction": "Fora do Operation",
+      "legacyRule": "Retorna itens, preços, aprovação e IDs de linha.",
+      "currentGap": "A autorização precisa trazer snapshot suficiente para não ler BudgetDB.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-11",
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-18",
+      "title": "Médias de duração",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/UseCases/GetExecutionAverage/GetExecutionAverageHandler.cs"
+      ],
+      "owner": "Operation (diagnóstico/reparos) + OS (global/entrega)",
+      "operationAction": "Manter duração técnica e separar tempo de fila no alvo",
+      "legacyRule": "Diagnóstico: InDiagnostic->AwaitingApproval; execução: InExecution->Finalized; finalização: Finalized->Delivered.",
+      "currentGap": "Há timestamps, mas não consulta/métrica equivalente nem regra de amostra. ",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-17"
+      ]
+    },
+    {
+      "id": "PAR-19",
+      "title": "Reposição automática",
+      "legacySources": [
+        "src/Workshop/Workshop.Application/EventHandlers/PartsReplenishedHandler.cs"
+      ],
+      "owner": "Inventory + coordenação + Operation",
+      "operationAction": "Receber autorização de retomada; não assinar reposição para reservar por conta própria",
+      "legacyRule": "Filtra OS cujo orçamento referencia item reposto e tenta reservar novamente.",
+      "currentGap": "Reavaliar OS em espera fica fora do núcleo Operation.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-20",
+      "title": "Criar mão de obra",
+      "legacySources": [
+        "src/Catalog/Catalog.Application/UseCases/CreateJob/CreateJobHandler.cs"
+      ],
+      "owner": "Operation proposto (contexto Catalog)",
+      "operationAction": "Destino candidato, revisão do grupo pendente; separar das regras WorkOperation",
+      "legacyRule": "Nome obrigatório, preço >=0 e descrição vazia quando nula.",
+      "currentGap": "CRUD catálogo não implementado; caso de uso operacional deve usar porta de consulta de preços.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-22"
+      ]
+    },
+    {
+      "id": "PAR-21",
+      "title": "Atualizar mão de obra",
+      "legacySources": [
+        "src/Catalog/Catalog.Application/UseCases/UpdateJob/UpdateJobHandler.cs"
+      ],
+      "owner": "Operation proposto (contexto Catalog)",
+      "operationAction": "Destino candidato, revisão do grupo pendente; separar das regras WorkOperation",
+      "legacyRule": "Valida nome/preço e preserva ID.",
+      "currentGap": "CRUD catálogo não implementado; caso de uso operacional deve usar porta de consulta de preços.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-22"
+      ]
+    },
+    {
+      "id": "PAR-22",
+      "title": "Excluir mão de obra",
+      "legacySources": [
+        "src/Catalog/Catalog.Application/UseCases/DeleteJob/DeleteJobHandler.cs"
+      ],
+      "owner": "Operation proposto (contexto Catalog)",
+      "operationAction": "Destino candidato, revisão do grupo pendente; separar das regras WorkOperation",
+      "legacyRule": "Legado remove fisicamente o Job; não há IsActive.",
+      "currentGap": "CRUD catálogo não implementado; caso de uso operacional deve usar porta de consulta de preços.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-22"
+      ]
+    },
+    {
+      "id": "PAR-23",
+      "title": "Listar mão de obra",
+      "legacySources": [
+        "src/Catalog/Catalog.Application/UseCases/GetJobs/GetJobsHandler.cs"
+      ],
+      "owner": "Operation proposto (contexto Catalog)",
+      "operationAction": "Destino candidato, revisão do grupo pendente; separar das regras WorkOperation",
+      "legacyRule": "Consulta catálogo pelo repository.",
+      "currentGap": "CRUD catálogo não implementado; caso de uso operacional deve usar porta de consulta de preços.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-22"
+      ]
+    },
+    {
+      "id": "PAR-24",
+      "title": "Consultar mão de obra",
+      "legacySources": [
+        "src/Catalog/Catalog.Application/UseCases/GetJobById/GetJobByIdHandler.cs"
+      ],
+      "owner": "Operation proposto (contexto Catalog)",
+      "operationAction": "Destino candidato, revisão do grupo pendente; separar das regras WorkOperation",
+      "legacyRule": "Consulta por ID, com falha quando ausente.",
+      "currentGap": "CRUD catálogo não implementado; caso de uso operacional deve usar porta de consulta de preços.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-22"
+      ]
+    },
+    {
+      "id": "PAR-25",
+      "title": "Notificar orçamento",
+      "legacySources": [
+        "src/Notifications/Notifications.Application/EventHandlers/BudgetGeneratedEmailHandler.cs"
+      ],
+      "owner": "Budget",
+      "operationAction": "Não copiar envio financeiro/estoque para Operation",
+      "legacyRule": "Evento in-process aciona notificação no contexto Notifications.",
+      "currentGap": "Dono exato de aviso interno deve ser consolidado; sem efeito no núcleo.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-26",
+      "title": "Notificar aprovação",
+      "legacySources": [
+        "src/Notifications/Notifications.Application/EventHandlers/BudgetApprovedNotificationHandler.cs"
+      ],
+      "owner": "Budget/OS",
+      "operationAction": "Não copiar envio financeiro/estoque para Operation",
+      "legacyRule": "Evento in-process aciona notificação no contexto Notifications.",
+      "currentGap": "Dono exato de aviso interno deve ser consolidado; sem efeito no núcleo.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-27",
+      "title": "Notificar falta de estoque",
+      "legacySources": [
+        "src/Notifications/Notifications.Application/EventHandlers/StockMissingNotificationHandler.cs"
+      ],
+      "owner": "Inventory/coordenação",
+      "operationAction": "Não copiar envio financeiro/estoque para Operation",
+      "legacyRule": "Evento in-process aciona notificação no contexto Notifications.",
+      "currentGap": "Dono exato de aviso interno deve ser consolidado; sem efeito no núcleo.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-28",
+      "title": "Notificar estoque mínimo",
+      "legacySources": [
+        "src/Notifications/Notifications.Application/EventHandlers/LowStockAlertHandler.cs"
+      ],
+      "owner": "Inventory",
+      "operationAction": "Não copiar envio financeiro/estoque para Operation",
+      "legacyRule": "Evento in-process aciona notificação no contexto Notifications.",
+      "currentGap": "Dono exato de aviso interno deve ser consolidado; sem efeito no núcleo.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    },
+    {
+      "id": "PAR-29",
+      "title": "Consulta pública de status",
+      "legacySources": [
+        "src/Host/GearFlow.Api/Endpoints/Externals/Public/ExternalStatusEndpoints.cs"
+      ],
+      "owner": "OS",
+      "operationAction": "Fora da API de mecânico",
+      "legacyRule": "Consulta OS por id; TODO do legado: clientId não é verificado como dono.",
+      "currentGap": "Não copiar lacuna de autorização; Operation permanece API operacional.",
+      "existingOperationTests": [],
+      "acceptanceIds": [
+        "AT-21"
+      ]
+    }
+  ],
+  "legacySources": [
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Application/UseCases/CreateJob/CreateJobHandler.cs",
+      "sha256": "d9e4a106a239fcae3cdbb5373cf39ab57124031bcf22ae6c2ba111fde7921381"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Application/UseCases/DeleteJob/DeleteJobHandler.cs",
+      "sha256": "eac5a72b24441faf8e20aa5a3bf4338d1e8467003d134ee5c59ddbcc98f32309"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Application/UseCases/GetJobById/GetJobByIdHandler.cs",
+      "sha256": "ea2e07ba5a359081aaa215865d85ff8550365cbb45ad3a67d7cc2fb6be9265d8"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Application/UseCases/GetJobs/GetJobsHandler.cs",
+      "sha256": "a7e2662407a8f1bf14408d772539f5d8be5dedf6cef4ccabc469bb90b31ee08e"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Application/UseCases/UpdateJob/UpdateJobHandler.cs",
+      "sha256": "8cc4fe6556fcecb91483bfc42671b8a060e52489f457130551414ce727e7d97e"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Domain/Aggregates/Job.cs",
+      "sha256": "44a10180ee6bc83e256a56df04cf165b838fc30bab79ef1cbd6f99b35e43c03c"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Catalog/Catalog.Domain/ValueObjects/JobId.cs",
+      "sha256": "a4146acd24059c32f3adb563787a9cb10ff0dccd719f7f9040299b0e41ccfa12"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Host/GearFlow.Api/Endpoints/Externals/Public/ExternalStatusEndpoints.cs",
+      "sha256": "f86472661a0219af920adf99351f872e313f02d58f46a53284c11633e1ea2eec"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Host/GearFlow.Api/Endpoints/Workshop/Internal/ServiceOrderEndpoints.cs",
+      "sha256": "26e57ffde1263b3e29588affdcfeff583490b2f5c978766129caa85d053f27f0"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Host/GearFlow.Api/Endpoints/Workshop/Public/BudgetEndpoints.cs",
+      "sha256": "159e4b1f364086ded4ce5db16e7cce7edd5f1d4a4b44266c21ebcfc3bd40641b"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Notifications/Notifications.Application/EventHandlers/BudgetApprovedNotificationHandler.cs",
+      "sha256": "55357e820728b38475527f6b638d83e728ffd1c38e33285d9088a7683191f614"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Notifications/Notifications.Application/EventHandlers/BudgetGeneratedEmailHandler.cs",
+      "sha256": "07abeb0221d23ce88a7c1b71cef4b4cdb7f600f6d064682f1b0c84cd7dad093d"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Notifications/Notifications.Application/EventHandlers/LowStockAlertHandler.cs",
+      "sha256": "b5a1761611543e11140b2f0751bf82004a2bba795ce44d59fa4f3cb23e731943"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Notifications/Notifications.Application/EventHandlers/StockMissingNotificationHandler.cs",
+      "sha256": "02231caf852b54899692295667b71c76aa1e2b0f3c1e6bca305cd1fb3c9b24bf"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Shared/Shared.Contracts/IIntegrationEvent.cs",
+      "sha256": "08eaf32d6a36329e54f1bdff721ba95dbe0ebc0478815abd15e4acc5e542a1fc"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Shared/Shared.Contracts/IntegrationEvents/Workshop/BudgetApprovedIntegrationEvent.cs",
+      "sha256": "a63447482a18001ddaae417a34dc6e3fa504db6e1a6f6ec8aad77017738af65a"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Shared/Shared.Contracts/IntegrationEvents/Workshop/BudgetGeneratedIntegrationEvent.cs",
+      "sha256": "7db0b1b7b1ff3dd893eacb0a82c754b231cce3f184509ab82ad772096e724b16"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/DTOs/BudgetDto.cs",
+      "sha256": "5087d376191f9d3c22c5360103e9d00aeaeee79ffb5f8b8178697a71a4a66974"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/DTOs/ServiceOrderDto.cs",
+      "sha256": "ec09226ecb4d25755f476d96dbddcbab7c3e220b804b84f8fe4579caec58537f"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/EventHandlers/PartsReplenishedHandler.cs",
+      "sha256": "4f2c233ba4a86a1768ae7a0af2d5feedd73fd21aeeac66694aa92c06e6b4d35e"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/ApproveBudget/ApproveBudgetHandler.cs",
+      "sha256": "2552fe348cad3607e649a1a6c9327adc780166c41ac4df96e4fa4d75fe1b6699"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/ApproveBudgetById/ApproveBudgetByIdHandler.cs",
+      "sha256": "9122bb55dc4ac47ee2e42ebb60696ed71d22dcd03b7e1fd7df10dca23aea949d"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/CreateServiceOrder/CreateServiceOrderCommand.cs",
+      "sha256": "877374aecd589ebe7bf2fe521e38d8c644d6346ffd33caefec492ebc2787edca"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/CreateServiceOrder/CreateServiceOrderHandler.cs",
+      "sha256": "73afa81e9a8397e92cd860009dfa60c6338b865aceab85cbaaf16ce4d9811f6d"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/DeactivateServiceOrder/DeactivateServiceOrderHandler.cs",
+      "sha256": "c119952d46dbcea84a83f8c0fca1e6104fcc8619946efd7c8b774a898b01e3ef"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/DeliverServiceOrder/DeliverServiceOrderHandler.cs",
+      "sha256": "4716b7eac19984e356d2aca2a77239dcc3d80793f6dfc28b1efeda5c188b957d"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/ExecuteJob/ExecuteJobHandler.cs",
+      "sha256": "eea01c931050564fa9fd6e5558dc4519662d7e2cc56479781ccfa25e39bf8383"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/FinalizeDiagnostic/FinalizeDiagnosticCommand.cs",
+      "sha256": "b42c8f13140b90e4ead22d852737737d66138c4d17613caa9fa9533a2f5991dc"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/FinalizeDiagnostic/FinalizeDiagnosticHandler.cs",
+      "sha256": "020a8bfce1cf573434a7453824ca852152727290f5202efd8d1154e72bbe6fa2"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/FinalizeServiceOrder/FinalizeServiceOrderHandler.cs",
+      "sha256": "6321923b310377d3d7c26a48f03601eda9e1f1113d01aa287d63e132bdcdd518"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/GetBudgetById/GetBudgetByIdHandler.cs",
+      "sha256": "9a9454a72ecd5cf0d8b0c243f92d51840e93423431b5ab22d86fe1b40051878f"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/GetExecutionAverage/GetExecutionAverageHandler.cs",
+      "sha256": "dee6c5b1a258e229d77d1ae70243654ee2fe4bf94e38df2e981dc7d422335b9f"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/GetServiceOrderById/GetServiceOrderByIdHandler.cs",
+      "sha256": "e064b972bc4cfe94e14e3f3134d2c4cce9593d3bc81f8099c82f268c8589d25d"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/GetServiceOrderDetails/GetServiceOrderDetailsHandler.cs",
+      "sha256": "dfed0649896c7f6611c6f4c4154bd24ebdd09d740abcd6321330006866b60eeb"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/GetServiceOrders/GetServiceOrdersHandler.cs",
+      "sha256": "4ff80f01b6cf7f004c601a5ec41090c949f71f1eb1ac8a0b6f2ab2e8515abfc9"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/RejectBudget/RejectBudgetHandler.cs",
+      "sha256": "ed6c356c8d6edb6794e4f0dce897439169cc7beae9f4de5d321c77a449ec07b7"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/RejectBudgetById/RejectBudgetByIdHandler.cs",
+      "sha256": "0d1ce39b098750579e15bb3d8e9595a5449346f384d55112d9747fe5e407becd"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/ResumeExecution/ResumeExecutionHandler.cs",
+      "sha256": "bfcfb110ffce16aa811fc512547c3bf458c7cd34b425e50c708a0207f28958f8"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/StartDiagnostic/StartDiagnosticHandler.cs",
+      "sha256": "b3e709d507740f3587e5a8376d557299cfdd901e3cc6f08d3241f533b9025c63"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Application/UseCases/UpdateServiceOrderVehicle/UpdateServiceOrderVehicleHandler.cs",
+      "sha256": "d035720427cb3538bd8db75f81e951cf3c2642752aceb6cbb1f372a1fa1e8998"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Domain/Aggregates/BudgetModel/Budget.cs",
+      "sha256": "5755706595ecf67b0a18219e276039cf164946cbfcb2deda332c0190dca902ea"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Domain/Aggregates/BudgetModel/BudgetConsumable.cs",
+      "sha256": "92d908087427ec20d1469baaf5ab38af4081c58c3014a426fdd4608cdbd8fa5c"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Domain/Aggregates/BudgetModel/BudgetJob.cs",
+      "sha256": "7a5542bb1b43195f13e38b72a0ae2423d792ff838140a7324730747f6a3835a8"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Domain/Aggregates/ServiceOrderModel/ServiceOrder.cs",
+      "sha256": "5d1ea9624356c209dd4f81d65c0e041696fb77e2f331478f70c2d5313f3b6959"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Domain/Aggregates/ServiceOrderModel/ServiceOrderJob.cs",
+      "sha256": "87faeb85c1f0f62294883a46eb8242bfe4d1dea4bce5beece6f3945d20eeabd6"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Domain/Aggregates/ServiceOrderModel/ServiceOrderPart.cs",
+      "sha256": "c6abee472d2bca9c00c3846895761f914649da0345b150aa4e04b202e65c4017"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "src/Workshop/Workshop.Infrastructure/Persistence/Repositories/ServiceOrderRepository.cs",
+      "sha256": "26ef3247f26b8a0751e544cc8c054978631dfa55decffe1c55f7561d788cbec2"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Catalog/Catalog.UnitTests/GlobalUsings.cs",
+      "sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Catalog/Catalog.UnitTests/JobTests.cs",
+      "sha256": "96400622dbbaf7f135897f4370db3f3aec9946cbb4b6906321498d05e92bd974"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Catalog/Catalog.UnitTests/JobUpdateTests.cs",
+      "sha256": "4c05f742e62cb5137ac714bfe2fe81a03a5ff29c8632204c26e2d3d2a071e892"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.IntegrationTests/CustomersPersistenceTests.cs",
+      "sha256": "963ff437eb5f8af72c7892e5f0c53c3fd20982b6af50d6fd65fa457d964b2eec"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.IntegrationTests/Fixtures/GearFlowDatabaseFixture.cs",
+      "sha256": "3eb3edd0c969955c97a1680a1f0d4c00e7331da2e573264a6d0772f11ce4def4"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.IntegrationTests/GlobalUsings.cs",
+      "sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.IntegrationTests/IdentityPersistenceTests.cs",
+      "sha256": "ae3a83e8c3ac312a82ec8f6db155a387c3c8c24ee15268897fc6ebc7732c5108"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.IntegrationTests/ServiceOrderFlowTests.cs",
+      "sha256": "fef12ad402eecb55a94525dc209b7870bc2045b3462004117dbdea3a77480f5b"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.UnitTests/BudgetTests.cs",
+      "sha256": "546ac2e69e8af4d8b8e1cef178747d2c6ec7627bfac64901e26d2912ad4578a4"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.UnitTests/GlobalUsings.cs",
+      "sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.UnitTests/Handlers/ServiceOrderHandlerTests.cs",
+      "sha256": "0bded0e87e86dfa9539ad4d7fa546187451b86aa7e0f68f983306cb5810e7a44"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.UnitTests/Handlers/WorkshopTransitionHandlerTests.cs",
+      "sha256": "15c27dcbf4c58424b573215cf855bd48b617b8e067b3b6779363f83292aad599"
+    },
+    {
+      "repository": "gearflow-app",
+      "path": "tests/Workshop/Workshop.UnitTests/ServiceOrderStateMachineTests.cs",
+      "sha256": "5b68ab81c1fb1114b7a476ab5730a5303185e72ffa63d8dd01070037572935c6"
+    }
+  ],
+  "operationRuntimeBaseline": {
+    "src/Operation.Application/Operation.Application.csproj": "a0afe3a2d3fd9ac1d95de0d3a7ee77ff6717f7af48c444d900681c1781ab390c",
+    "src/Operation.Application/OperationService.cs": "1a4cfc8accdb1aa08dbacc923147d469d770143f62576c8db3f6ba37494d6087",
+    "src/Operation.Application/Ports.cs": "ffa1006a4a9e699836d474f70ec14fc4b8014ff96ae6122575d9f7d4fd740cc6",
+    "src/Operation.Domain/Operation.Domain.csproj": "3e1a9f612f8cfcc2e2a8b2ef085685f9f3d1a55c4b901e8d88af6ec37d283195",
+    "src/Operation.Domain/OperationStatus.cs": "6e0984a30dffd1887fc5495dafd42678723b27fc7b7f08eeef203243d30a7fee",
+    "src/Operation.Domain/WorkOperation.cs": "c4bfcadc9660281bda23f09c4c721f3231afb397edf1afaf01d6dab530213ad9",
+    "tests/Operation.Tests/Operation.Tests.csproj": "7c21a9b03946b00fb2d1e03479fca034fb747841485d121aa555c6ba725e95b9",
+    "tests/Operation.Tests/OperationTests.cs": "cb4622da09bb5c1e3f0a4f089bcc292c209d56e22a4691c8d55b499aa788ac33",
+    "scripts/check_coverage.py": "f254ec205c13c2363b2ff31dd29462e2d3982bb3dcff3fd89b86bdced0c6b4db",
+    ".github/workflows/ci.yml": "5cf87124360939ab3d1d816ada079953310548d774d332877935c5bb666f5a22"
+  },
+  "handlerCoverage": {
+    "required": 23,
+    "mapped": 23
+  },
+  "crossCuttingAcceptanceIds": [
+    "AT-03",
+    "AT-19",
+    "AT-20"
+  ]
+}

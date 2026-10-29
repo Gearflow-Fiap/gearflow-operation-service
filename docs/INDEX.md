@@ -41,3 +41,12 @@ Schemas e exemplos em contracts/v1 definem o corpo lógico das mensagens novas d
 
 - [Fontes inspecionadas e limites](planning/SOURCE_MAP.md).
 - [Validação documental da baseline](planning/VALIDATION.md).
+
+## Execução atual: passos 1 a 3
+
+- [Ponto de retomada e checkpoints](planning/EXECUTION_TRACKER.md).
+- [Passo 1: matriz de paridade e escopo](planning/STEP_1_PARITY.md).
+- [Manifesto de fontes e casos mapeados](planning/PARITY_MANIFEST.json).
+- [Critérios de qualidade por passo](planning/STEP_ACCEPTANCE.md).
+
+Esta sequência local não é a mesma numeração P0-P8 do plano geral. O acompanhamento registra a conclusão de cada passo e a parada solicitada antes de prosseguir.
