@@ -7,7 +7,7 @@ Baseline: 231 casos .NET distintos e 13 testes Python aprovados no checkpoint Sc
 | Passo | Escopo | Aceite | Estado |
 |---|---|---|---|
 | M1 — Scalar e contrato HTTP | Resumos/descrições, respostas tipadas/erros, headers e exemplos; testes de autorização/documentação descobrindo as rotas | Toda rota de negócio documentada e Staff; OpenAPI coerente com respostas reais; falhas de autenticação sem efeitos; build/testes/gate aprovados | Concluído localmente; evidências M1 |
-| M2 — composição e configuração | Registro DI por camada e opções tipadas para JWT, Inventory, RabbitMQ, preços e telemetria | Program enxuto; lifetimes e adapters preservados; configuração inválida rejeitada no ponto correto, sem imprimir segredos; dependências opcionais não viram obrigatórias | Planejado |
+| M2 — composição e configuração | Registro DI por camada e opções tipadas para JWT, Inventory, RabbitMQ, preços e telemetria | Program enxuto; lifetimes e adapters preservados; configuração inválida rejeitada no ponto correto, sem imprimir segredos; dependências opcionais não viram obrigatórias | Concluído localmente; evidências M2 |
 | M3 — entrada HTTP | Validação de requests, leitura do ator e parser de ETag reutilizáveis | Mesmos códigos HTTP, precondições e limites; ator confiável na API e explícito nos comandos/consumers; domínio continua protegendo suas invariantes | Planejado |
 | M4 — persistência e convenções | IEntityTypeConfiguration por entidade, versões NuGet centralizadas e regras de estilo/analisadores | Modelo EF equivalente, sem migration artificial; build Docker lê novos arquivos de configuração; versões preservadas e gate de estilo adotado incrementalmente | Planejado |
 | M5 — avaliar handlers | Avaliar casos de uso individuais e dependências após os passos anteriores | Registrar decisão e justificativa; somente extrair handlers se houver ganho, com equivalência do pipeline transacional; MediatR não é requisito | Planejado |
@@ -47,3 +47,9 @@ M5: considerar separação somente se responsabilidades/dependências justificar
 16 rotas documentadas; cinco testes novos focados aprovados; suíte completa com 236 casos .NET e 13 Python aprovados, sem falhas/ignorados. Cobertura API 95,31%; demais assemblies >=98,93%. [Evidências](evidence/quality-m1/RESULTS.md).
 
 Retomada: M2. Extrair composição da API/aplicação/infraestrutura e opções tipadas, preservando flags, lifetimes, validação de JWT e comportamento de preço indisponível. Não avançar para handlers ou mudanças de banco como parte de M2.
+
+## Checkpoint M2
+
+DI por camada e opções tipadas concluídas. 273 testes .NET (164 unitários + 109 integração) e 13 Python aprovados, sem falhas/ignorados. Cobertura API 95,12%; demais assemblies >=98,93%. [Evidências](evidence/quality-m2/RESULTS.md) e [configuração](../development/CONFIGURATION.md).
+
+ConnectionStrings:Operation ausente agora falha na inicialização, sem abrir conexão antecipadamente. JWT obrigatório e integrações opcionais preservados; nenhuma política financeira padrão introduzida. Retomada: M3, sem avançar para handlers ou persistência nesta entrega.

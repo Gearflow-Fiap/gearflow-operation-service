@@ -158,3 +158,11 @@ Plano registrado em [CODE_QUALITY_PLAN](CODE_QUALITY_PLAN.md), separado dos pass
 236 testes .NET distintos (164 unitários + 72 integração) e 13 Python aprovados, sem falhas/ignorados; API 95,31% e demais assemblies >=98,93%. Cinco testes focados adicionais são reexecuções dos casos já incluídos no total. [Evidências](evidence/quality-m1/RESULTS.md).
 
 Próximo passo dessa sequência: M2 — DI por camada e opções tipadas. Demais pendências de integração coletiva/OS/Saga continuam no 7B. Reiniciar F5 para ver as novas descrições no Scalar.
+
+## Evolução de código — M2 concluído
+
+Composição explícita API/Application/Infrastructure e opções tipadas para autenticação, conexão, Inventory, preços, mensageria e telemetria. Lifetimes preservados; credencial Inventory observa reload. Ausência da conexão é detectada na inicialização, mas disponibilidade continua no readiness. Flags opcionais e ausência de default financeiro preservadas.
+
+273 testes .NET distintos (164 unitários + 109 integração) e 13 Python aprovados, zero falhas/ignorados; API 95,12%, demais assemblies >=98,93%. [Evidências](evidence/quality-m2/RESULTS.md), [guia](../development/CONFIGURATION.md). F5/Compose não alterados; reconstruir para executar o código novo.
+
+Próximo passo: M3 — validação HTTP, ator e ETag reutilizáveis. Integração coletiva/OS/Saga e entrega remota continuam no 7B.

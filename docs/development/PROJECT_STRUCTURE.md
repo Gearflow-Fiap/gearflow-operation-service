@@ -8,15 +8,17 @@ src/
   Operation.Domain/
     Common/ Diagnostics/ Execution/ Operations/ Orders/
   Operation.Application/
+    DependencyInjection.cs
     Abstractions/Persistence/
     Catalog/ Diagnostics/ Observability/
     Operations/Commands/               # Casos de uso e pipeline atômico
     Operations/Queries/                # Consultas e projeções
     Operations/Queue/                  # Fila e durações
   Operation.Infrastructure/
-    Messaging/ Migrations/ Persistence/ Pricing/
+    Configuration/ Messaging/ Migrations/ Persistence/ Pricing/
+    DependencyInjection.cs
   Operation.Api/
-    Authentication/ Configuration/ Errors/ Health/ HostedServices/
+    Authentication/ Composition/ Configuration/ Errors/ Health/ HostedServices/
     Endpoints/Catalog/ Endpoints/Operations/ Observability/ OpenApi/
     Program.cs Dockerfile
   Operation.Contracts/                 # Wire público versionado
@@ -39,3 +41,5 @@ OperationService possui partes por recebimento, diagnóstico, execução e admin
 MediatR foi avaliado e não adicionado neste checkpoint. A API já separa comandos e consultas, e o pipeline atual é explícito e testado. Adicionar um mediator apenas para encaminhar chamadas não melhora as fronteiras atuais. Se o número de handlers ou comportamentos justificar, migrar depois com testes de equivalência do pipeline, sem alterar contratos de integração.
 
 [Execução Visual Studio](VISUAL_STUDIO.md) e [mapa dos testes](../../tests/README.md).
+
+[Composição DI e configuração tipada](CONFIGURATION.md): responsabilidades, lifetimes e condições de ativação das integrações.

@@ -1,0 +1,33 @@
+{
+  "step": "M2",
+  "status": "complete-local",
+  "dotnetCasesPassed": 273,
+  "unitCasesPassed": 164,
+  "integrationCasesPassed": 109,
+  "newConfigurationCases": 37,
+  "pythonTestsPassed": 13,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "report": "TestResults/quality-m2/miran_MIRANDA_2026-10-29_19_56_40_net10.0.trx",
+      "passed": 109,
+      "total": 109,
+      "failed": 0
+    },
+    {
+      "report": "TestResults/quality-m2/miran_MIRANDA_2026-10-29_19_59_30_net10.0.trx",
+      "passed": 164,
+      "total": 164,
+      "failed": 0
+    }
+  ],
+  "coverage": {
+    "GearFlow.Contracts.Operation": "26/26 (100.00%)",
+    "Operation.Api": "429/451 (95.12%)",
+    "Operation.Application": "351/351 (100.00%)",
+    "Operation.Domain": "370/374 (98.93%)",
+    "Operation.Infrastructure": "2557/2578 (99.19%)"
+  },
+  "productionDeploy": false
+}

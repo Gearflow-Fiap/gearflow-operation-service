@@ -15,14 +15,16 @@ public static class Observability
         builder.Logging.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
         builder.Logging.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning);
         builder.Logging.AddJsonConsole(options => { options.IncludeScopes = true; options.UseUtcTimestamp = true; options.TimestampFormat = "O"; });
-        var export = builder.Configuration.GetValue<bool>("Telemetry:ExportEnabled");
-        var endpoint = builder.Configuration["Otlp:Endpoint"] ?? builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-        Uri? target = null;
-        if (export && (!Uri.TryCreate(endpoint, UriKind.Absolute, out target) || target.UserInfo.Length != 0 || target.Query.Length != 0 || target.Fragment.Length != 0 ||
-            (target.Scheme != "https" && !(target.Scheme == "http" && (target.IsLoopback || builder.Configuration.GetValue<bool>("Telemetry:AllowInsecureHttp"))))))
-            throw new InvalidOperationException("Endpoint OTLP válido obrigatório para exportação.");
-        var protocol = builder.Configuration["OTEL_EXPORTER_OTLP_PROTOCOL"] ?? "grpc";
-        if (export && protocol is not ("grpc" or "http/protobuf")) throw new InvalidOperationException("Protocolo OTLP inválido.");
+        builder.Services.AddOptions<TelemetryOptions>().Bind(builder.Configuration.GetSection(TelemetryOptions.SectionName));
+        var settings = builder.Configuration.GetSection(TelemetryOptions.SectionName).Get<TelemetryOptions>() ?? new();
+        var otlp = OtlpOptions.Read(builder.Configuration);
+        builder.Services.AddOptions<OtlpOptions>().Configure(options =>
+        {
+            options.Endpoint = otlp.Endpoint; options.Protocol = otlp.Protocol; options.Headers = otlp.Headers;
+        });
+        var export = settings.ExportEnabled;
+        var target = otlp.Validate(settings);
+        var protocol = otlp.Protocol;
         var telemetry = builder.Services.AddOpenTelemetry().ConfigureResource(resource => resource.AddService(OperationTelemetry.Name,
             serviceVersion: typeof(Program).Assembly.GetName().Version?.ToString()).AddAttributes(new Dictionary<string, object> { ["deployment.environment.name"] = builder.Environment.EnvironmentName }));
         telemetry.WithTracing(traces =>
@@ -51,7 +53,7 @@ public static class Observability
             options.Protocol = protocol == "http/protobuf" ? OtlpExportProtocol.HttpProtobuf : OtlpExportProtocol.Grpc;
             options.Endpoint = options.Protocol == OtlpExportProtocol.HttpProtobuf ? new Uri(target!.AbsoluteUri.TrimEnd('/') + "/v1/" + signal) : target!;
             options.TimeoutMilliseconds = 5000;
-            options.Headers = builder.Configuration["OTEL_EXPORTER_OTLP_HEADERS"] ?? string.Empty;
+            options.Headers = otlp.Headers;
         }
     }
 }

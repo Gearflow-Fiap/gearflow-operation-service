@@ -10,7 +10,7 @@
 | Operation.UnitTests/Contracts | Projeção e serialização dos contratos públicos | Serializadores reais; sem broker |
 | Operation.UnitTests/Architecture | Dependências permitidas entre assemblies/camadas | Metadata dos assemblies |
 | Operation.UnitTests/Support | Dados de domínio, relógio e storage de teste compartilhados | Não são adapters de produção |
-| Operation.IntegrationTests/Api | JWT, endpoints, catálogo/preços, documentação/contrato HTTP e readiness/observabilidade | PostgreSQL e hosts HTTP de teste |
+| Operation.IntegrationTests/Api | JWT, endpoints, catálogo/preços, documentação/contrato HTTP e readiness/observabilidade | PostgreSQL e hosts HTTP de teste; ConfigurationTests verifica composição sem serviços externos |
 | Operation.IntegrationTests/Persistence | Transações, constraints, migrations, idempotência e concorrência | PostgreSQL 17 |
 | Operation.IntegrationTests/Messaging | Comandos/eventos, inbox/outbox, duplicatas, erro e recuperação | PostgreSQL e RabbitMQ |
 | Operation.IntegrationTests/Delivery | CLI de migration, trace no broker e exportação OTLP | PostgreSQL, RabbitMQ e coletor local |

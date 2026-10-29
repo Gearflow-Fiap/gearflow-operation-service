@@ -26,6 +26,10 @@ public class LayerDependencyTests
         Assert.DoesNotContain("MassTransit", names);
         Assert.DoesNotContain("Microsoft.EntityFrameworkCore", names);
         Assert.DoesNotContain("GearFlow.Contracts.Operation", names);
+        Assert.DoesNotContain(names, name => name is not null &&
+            (name.StartsWith("Microsoft.AspNetCore", StringComparison.Ordinal) ||
+             name.StartsWith("Microsoft.Extensions.Configuration", StringComparison.Ordinal) ||
+             name.StartsWith("Microsoft.Extensions.Options", StringComparison.Ordinal)));
     }
 
     [Fact]

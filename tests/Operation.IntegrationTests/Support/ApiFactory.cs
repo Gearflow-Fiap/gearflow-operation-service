@@ -23,6 +23,7 @@ internal sealed class ApiFactory(IntegrationHarness harness, bool prices = true)
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
+        builder.UseSetting("ConnectionStrings:Operation", harness.ConnectionString);
         builder.UseSetting("Jwt:Secret", Secret).UseSetting("Jwt:Issuer", "operation-tests").UseSetting("Jwt:Audience", "operation-api");
         builder.UseSetting("Authorization:StaffClaimType", "actor_type").UseSetting("Authorization:StaffClaimValue", "staff");
         builder.ConfigureServices(services =>

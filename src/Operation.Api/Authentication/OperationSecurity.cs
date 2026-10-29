@@ -9,13 +9,17 @@ public static class OperationSecurity
 {
     public static IServiceCollection AddOperationSecurity(this IServiceCollection services, IConfiguration config)
     {
-        string Required(string key) => string.IsNullOrWhiteSpace(config[key]) ? throw new InvalidOperationException($"{key} obrigatório.") : config[key]!;
-        var secret = Required("Jwt:Secret");
+        services.AddOptions<JwtOptions>().Bind(config.GetSection(JwtOptions.SectionName));
+        services.AddOptions<StaffAuthorizationOptions>().Bind(config.GetSection(StaffAuthorizationOptions.SectionName));
+        var jwt = config.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? new();
+        var staff = config.GetSection(StaffAuthorizationOptions.SectionName).Get<StaffAuthorizationOptions>() ?? new();
+        static string Required(string key, string value) => string.IsNullOrWhiteSpace(value) ? throw new InvalidOperationException($"{key} obrigatório.") : value;
+        var secret = Required("Jwt:Secret", jwt.Secret);
         if (Encoding.UTF8.GetByteCount(secret) < 32) throw new InvalidOperationException("Jwt:Secret deve ter ao menos 32 bytes.");
-        var issuer = Required("Jwt:Issuer");
-        var audience = Required("Jwt:Audience");
-        var claim = Required("Authorization:StaffClaimType");
-        var value = Required("Authorization:StaffClaimValue");
+        var issuer = Required("Jwt:Issuer", jwt.Issuer);
+        var audience = Required("Jwt:Audience", jwt.Audience);
+        var claim = Required("Authorization:StaffClaimType", staff.StaffClaimType);
+        var value = Required("Authorization:StaffClaimValue", staff.StaffClaimValue);
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
         {
             options.MapInboundClaims = false;
