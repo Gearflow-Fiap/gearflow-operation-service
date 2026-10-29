@@ -1,0 +1,31 @@
+{
+  "correlationId": "10000000-0000-4000-8000-000000000001",
+  "messageId": "10000000-0000-4000-8000-000000000002",
+  "occurredOn": "2026-10-29T12:00:00+00:00",
+  "budgetId": "10000000-0000-4000-8000-000000000005",
+  "budgetRevision": 1,
+  "snapshot": {
+    "diagnosticId": "10000000-0000-4000-8000-000000000004",
+    "currency": "BRL",
+    "pricingPolicyId": "per-unit-away-from-zero-v1",
+    "pricedAt": "2026-10-29T12:00:00+00:00",
+    "totalPriceCents": 1000,
+    "items": [
+      {
+        "lineId": "10000000-0000-4000-8000-000000000008",
+        "itemType": "Labor",
+        "itemId": "10000000-0000-4000-8000-000000000009",
+        "name": "M\u00E3o de obra",
+        "quantity": 1,
+        "unitPriceCents": 1000,
+        "lineTotalCents": 1000
+      }
+    ]
+  },
+  "jobs": [
+    {
+      "budgetJobId": "10000000-0000-4000-8000-000000000012",
+      "diagnosticLineId": "10000000-0000-4000-8000-000000000008"
+    }
+  ]
+}

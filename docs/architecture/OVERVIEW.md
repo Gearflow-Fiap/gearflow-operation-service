@@ -2,6 +2,8 @@
 
 **Status:** Proposed. **Data:** 2026-10-24.
 
+Atualização de 29/10/2026: persistência/API/catálogo/adapter de preços e participante RabbitMQ Operation estão implementados nos incrementos 4–6. [ADR-011](adr-011-mensageria-operation.md) e [contratos ativos](../contracts/README.md) prevalecem para runtime local; visão global/Saga/integração abaixo continua proposta. Infra-broker foi inspecionado no incremento 6 e tem envelope/topologia diferentes, pendentes de alinhamento.
+
 ## Evidências e limites
 
 Inspeção de código: gearflow-app, núcleo Operation e Inventory (contratos, consumers, EF/outbox, autenticação). Budget: README e fluxo-saga, sem código funcional. OS ainda não implementado segundo o responsável. Infra-k8s, infra-database, frontend e lambda não foram inspecionados nesta baseline. Resultados de testes declarados no README Inventory não foram reexecutados nesta análise.
@@ -11,7 +13,7 @@ Inspeção de código: gearflow-app, núcleo Operation e Inventory (contratos, c
 | Contexto | Dono | Banco de referência | Integração |
 |---|---|---|---|
 | OS e coordenação | OS Service | SQL Server planejado no Budget | API + Saga persistida |
-| Diagnóstico, fila e reparos | Operation | PostgreSQL proposto | API staff + comandos/eventos |
+| Diagnóstico, fila e reparos | Operation | PostgreSQL implementado | API staff + comandos/eventos |
 | Catálogo de mão de obra | Operation, proposta | Mesmo banco próprio Operation | CRUD + snapshots |
 | Orçamento, aprovação, cobrança | Budget/Billing | MongoDB planejado | Comandos/eventos + Mercado Pago |
 | Peças, insumos e reservas | Inventory | PostgreSQL implementado | API de catálogo/preço + comandos/eventos |

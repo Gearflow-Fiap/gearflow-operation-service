@@ -37,3 +37,5 @@ O script une os hits por assembly/classe/arquivo/linha entre unitários e integr
 A configuração exclui somente OpenApiXmlCommentSupport.generated.cs, gerado pela biblioteca Microsoft.AspNetCore.OpenApi. Código escrito do host, domínio, aplicação, infraestrutura e migrations continua medido.
 
 A migration AddLaborCatalog acrescenta catálogo local. Para migrar ambiente com dados, faça backup e aplique a migration progressiva; rollback da tabela remove apenas o catálogo e não deve ser usado como estratégia de reversão de dados em produção. Testes de down usam banco exclusivo vazio.
+
+Desde o incremento 6, a suíte completa de integração também exige RabbitMQ/management isolados, configurados em MESSAGING.md. A fixture nativa de PostgreSQL não fornece broker nem pula testes quando ele falta. CI sobe ambos os serviços.

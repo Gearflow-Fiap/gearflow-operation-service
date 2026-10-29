@@ -19,8 +19,19 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U operation_test -d operation_test_admin"
           --health-interval 5s --health-timeout 3s --health-retries 10
+      rabbitmq:
+        image: rabbitmq:4.1-management
+        env:
+          RABBITMQ_DEFAULT_USER: operation_test
+          RABBITMQ_DEFAULT_PASS: operation_ci_only
+        ports: ['5672:5672', '15672:15672']
+        options: >-
+          --health-cmd "rabbitmq-diagnostics -q ping"
+          --health-interval 5s --health-timeout 5s --health-retries 20
     env:
       OPERATION_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=operation_test_admin;Username=operation_test;Password=operation_ci_only
+      OPERATION_TEST_RABBITMQ: amqp://operation_test:operation_ci_only@127.0.0.1:5672/
+      OPERATION_TEST_RABBITMQ_MANAGEMENT: http://127.0.0.1:15672/
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
@@ -28,13 +39,21 @@ jobs:
           dotnet-version: '10.0.x'
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.12'
+      - run: python -m pip install -r scripts/contract_requirements.txt
       - run: dotnet restore GearFlow.Operation.slnx
       - run: dotnet build GearFlow.Operation.slnx --no-restore --configuration Release
+      - run: dotnet run --project tools/Operation.ContractArtifacts --configuration Release --no-build -- "$RUNNER_TEMP/operation-contracts"
+      - run: python scripts/validate_contracts.py docs/contracts/runtime-v1 --compare "$RUNNER_TEMP/operation-contracts"
       - run: dotnet test GearFlow.Operation.slnx --no-build --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults
       - run: python scripts/check_coverage.py TestResults
+      - run: dotnet pack src/Operation.Contracts/Operation.Contracts.csproj --no-build --configuration Release --output "$RUNNER_TEMP/operation-contract-package"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: operation-test-coverage
           path: TestResults
+      - uses: actions/upload-artifact@v4
+        with:
+          name: operation-contracts-preview
+          path: ${{ runner.temp }}/operation-contract-package

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using GearFlow.Operation.Infrastructure.Messaging;
 using System.Text.RegularExpressions;
 
 namespace GearFlow.Operation.Infrastructure.Persistence;
@@ -13,6 +14,15 @@ public sealed class OperationDbContext(DbContextOptions<OperationDbContext> opti
     protected override void OnModelCreating(ModelBuilder model)
     {
         model.HasDefaultSchema("operation");
+        var inbox = model.Entity<BrokerInboxRow>();
+        inbox.ToTable("broker_inbox", table => table.HasCheckConstraint("ck_broker_inbox_hash", "length(fingerprint) = 64"));
+        inbox.HasKey(row => row.MessageId);
+        inbox.Property(row => row.Fingerprint).HasMaxLength(64);
+        inbox.Property(row => row.CommandName).HasMaxLength(100);
+        inbox.Property(row => row.ReplyType).HasMaxLength(100);
+        inbox.Property(row => row.ReplyJson).HasColumnType("jsonb");
+        inbox.HasIndex(row => new { row.IsCompleted, row.ReceivedAt });
+        inbox.HasIndex(row => new { row.ProcessedAt, row.MessageId }).HasFilter("reply_json IS NOT NULL AND published_at IS NULL AND is_completed");
         var job = model.Entity<JobRow>();
         job.ToTable("catalog_jobs", table => table.HasCheckConstraint("ck_catalog_job", "price_cents >= 0 AND version > 0 AND length(trim(name)) > 0"));
         job.HasKey(row => row.Id);

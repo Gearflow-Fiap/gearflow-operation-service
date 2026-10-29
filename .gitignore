@@ -3,3 +3,5 @@
 **/TestResults/
 .vs/
 .idea/
+
+artifacts/

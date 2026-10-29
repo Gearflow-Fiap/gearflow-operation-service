@@ -23,6 +23,71 @@ namespace Operation.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GearFlow.Operation.Infrastructure.Messaging.BrokerInboxRow", b =>
+                {
+                    b.Property<Guid>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("message_id");
+
+                    b.Property<string>("CommandName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("command_name");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("correlation_id");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("fingerprint");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_completed");
+
+                    b.Property<DateTimeOffset?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("processed_at");
+
+                    b.Property<DateTimeOffset?>("PublishedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("published_at");
+
+                    b.Property<DateTimeOffset>("ReceivedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("received_at");
+
+                    b.Property<Guid?>("ReplyId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reply_id");
+
+                    b.Property<string>("ReplyJson")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("reply_json");
+
+                    b.Property<string>("ReplyType")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("reply_type");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("IsCompleted", "ReceivedAt");
+
+                    b.HasIndex("ProcessedAt", "MessageId")
+                        .HasFilter("reply_json IS NOT NULL AND published_at IS NULL AND is_completed");
+
+                    b.ToTable("broker_inbox", "operation", t =>
+                        {
+                            t.HasCheckConstraint("ck_broker_inbox_hash", "length(fingerprint) = 64");
+                        });
+                });
+
             modelBuilder.Entity("GearFlow.Operation.Infrastructure.Persistence.HistoryRow", b =>
                 {
                     b.Property<Guid>("ServiceOrderId")

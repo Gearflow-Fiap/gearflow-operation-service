@@ -1,0 +1,152 @@
+{
+  "type": "object",
+  "properties": {
+    "correlationId": {
+      "type": "string",
+      "format": "uuid",
+      "not": {
+        "const": "00000000-0000-0000-0000-000000000000"
+      }
+    },
+    "messageId": {
+      "type": "string",
+      "format": "uuid",
+      "not": {
+        "const": "00000000-0000-0000-0000-000000000000"
+      }
+    },
+    "causationId": {
+      "type": "string",
+      "format": "uuid",
+      "not": {
+        "const": "00000000-0000-0000-0000-000000000000"
+      }
+    },
+    "occurredOn": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "(Z|\\\u002B00:00)$"
+    },
+    "operationVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "actorId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "diagnosticId": {
+          "type": "string",
+          "format": "uuid",
+          "not": {
+            "const": "00000000-0000-0000-0000-000000000000"
+          }
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "const": "BRL"
+        },
+        "pricingPolicyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "pricedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "(Z|\\\u002B00:00)$"
+        },
+        "totalPriceCents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "lineId": {
+                "type": "string",
+                "format": "uuid",
+                "not": {
+                  "const": "00000000-0000-0000-0000-000000000000"
+                }
+              },
+              "itemType": {
+                "enum": [
+                  "Labor",
+                  "Part",
+                  "Consumable"
+                ]
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid",
+                "not": {
+                  "const": "00000000-0000-0000-0000-000000000000"
+                }
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "quantity": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "multipleOf": 0.001
+              },
+              "unitPriceCents": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "lineTotalCents": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              }
+            },
+            "required": [
+              "lineId",
+              "itemType",
+              "itemId",
+              "name",
+              "quantity",
+              "unitPriceCents",
+              "lineTotalCents"
+            ]
+          },
+          "maxItems": 200,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "diagnosticId",
+        "currency",
+        "pricingPolicyId",
+        "pricedAt",
+        "totalPriceCents",
+        "items"
+      ]
+    }
+  },
+  "required": [
+    "correlationId",
+    "messageId",
+    "causationId",
+    "occurredOn",
+    "operationVersion",
+    "actorId",
+    "snapshot"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GearFlow.Contracts.Operation.V1.DiagnosticFinished"
+}

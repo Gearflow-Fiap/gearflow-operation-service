@@ -1,0 +1,8 @@
+{
+  "correlationId": "10000000-0000-4000-8000-000000000001",
+  "messageId": "10000000-0000-4000-8000-000000000002",
+  "causationId": "10000000-0000-4000-8000-000000000003",
+  "occurredOn": "2026-10-29T12:00:00+00:00",
+  "operationVersion": null,
+  "code": "StateConflict"
+}

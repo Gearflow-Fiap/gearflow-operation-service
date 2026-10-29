@@ -1,60 +1,46 @@
 # GearFlow Operation Service
 
-Microsserviço de diagnóstico e execução da oficina, extraído do Workshop do gearflow-app para a fase 4 da FIAP.
+Microsserviço de diagnóstico e execução extraído do gearflow-app para a fase 4 da FIAP.
 
-## Status real e arquitetura de referência
+## Estado atual
 
-**Implementado:** domínio e casos de uso locais .NET 10, precificação por interface com política obrigatória, snapshot imutável, mapeamento de linhas do orçamento, comandos idempotentes por intenção, contrato de commit com CAS/receipt/eventos, consultas/DTOs/paginação e duração por fase. São 120 testes locais. O storage isolado e o catálogo simulados existem apenas nos testes; não há adapter de produção.
+Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 
-**Planejado:** PostgreSQL/EF e migrations, journal/outbox/inbox persistentes, API autenticada, catálogo e clients de preço reais, contratos wire/RabbitMQ, Saga/BDD integrado, OpenTelemetry, Docker/Kubernetes, Sonar e deploy. Políticas LegacyLinePriceV1 e PerUnitV1 estão implementadas sem default de produção; a escolha deve ser acordada com Budget.
+**Incremento 6 validado:** 215 testes distintos aprovados (159 unitários + 56 integração), sem falhas/ignorados. PostgreSQL 17.11 e RabbitMQ 4.1 reais; esquemas/exemplos dos 18 contratos validados e preview NuGet gerado. [Evidências](docs/planning/evidence/increment-6/RESULTS.md).
 
-**Contrato em revisão:** a especificação v1 em docs/contracts é uma baseline proposta para os integrantes. Não é um pacote publicado nem garantia de compatibilidade com outros serviços. As dependências e divergências estão na RFC-001. Implementação atual e desenho alvo não são equivalentes; veja o plano de migração.
+Pendente: homologação com OS/Budget/Inventory completos, decisão coletiva de envelope/topologia/owner dos contratos e credenciais, Saga/BDD distribuído, observabilidade e entrega Docker/K8s/Sonar/deploy. Identidade/claims reais também dependem do emissor. Testes locais do participante não equivalem à fase 4 completa.
 
-## Decisões de referência
+## Responsabilidades
 
-| Tema | Direção | Estado |
-|---|---|---|
-| Fronteiras | Operation controla diagnóstico/reparos; OS controla estado global/Saga; Budget cobra; Inventory movimenta estoque | Adotada como baseline local; revisar no grupo |
-| Coordenação | Saga orquestrada no OS Service, por RabbitMQ | Proposed, consistente com os documentos Budget/Inventory |
-| Tecnologia Operation | .NET 10, PostgreSQL exclusivo, EF Core e MassTransit na linha 8.5 usada pelo Inventory | Proposed; runtime já existe |
-| Catálogo | Mão de obra no Operation; peças/insumos no Inventory; orçamento guarda snapshot | Proposed |
-| Execução | StartExecution autoriza fila; ação autenticada inicia reparo físico | Implementado no domínio local; integração Proposed |
-| Conclusão | ExecutionFinished -> ConsumeStock -> StockConsumed -> OS Finalized | Proposed; coincide com ADR-0003 do Inventory |
-| Falhas | Cancelamento confirmado pelo Operation antes de liberar reserva; após início físico, recuperação | Proposed |
+| Serviço | Dono |
+|---|---|
+| Operation | catálogo de mão de obra, diagnóstico, fila e execução física |
+| Inventory | preços/saldo/reservas de peças e insumos |
+| Budget | orçamento, aprovação e pagamento |
+| OS (proposto) | pedido global e coordenação persistente da Saga |
+| infra-broker | infraestrutura, topologia acordada, credenciais e operação RabbitMQ |
 
-ADRs registram contexto, alternativas e consequências. Nenhuma aprovação dos outros integrantes foi presumida.
+StartDiagnostic recebe o pedido; início humano é HTTP. StartExecution autoriza execução após decisões do coordenador; não inicia reparo nem verifica pagamento/estoque por conta própria. Operation não é a Saga financeira. Snapshots/identidades de linhas permanecem imutáveis; conclusão exige todos os serviços executados.
 
-## Execução acompanhada — passos 1 a 3
+## Executar e configurar
 
-O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [acompanhamento](docs/planning/EXECUTION_TRACKER.md), a [matriz de paridade da fase 3](docs/planning/STEP_1_PARITY.md) e os [critérios de aceite](docs/planning/STEP_ACCEPTANCE.md). Os três passos locais foram concluídos em checkpoints separados; persistência e API foram acrescentadas nos incrementos 4/5; as próximas entregas são mensageria e homologação entre serviços. Os contratos propostos anteriormente ainda precisam dos ajustes de paridade registrados na matriz.
+Requer .NET 10 e banco exclusivo PostgreSQL 17. Migrations são tarefa explícita, não executadas no boot. Definir JWT/Staff, conexão e política de consumíveis por ambiente; sem segredos versionados.
 
-## Navegação
-
-- [Índice da documentação](docs/INDEX.md).
-- [Visão geral e fronteiras](docs/architecture/OVERVIEW.md).
-- [Diagramas de componentes, sequência e estados](docs/architecture/ARCHITECTURE_DIAGRAMS.md).
-- [Saga, falhas e compensações](docs/architecture/SAGA.md).
-- [Contratos de integração v1](docs/contracts/README.md).
+- [PostgreSQL, migrations e testes](docs/development/POSTGRESQL.md).
 - [API HTTP e configuração](docs/development/API_ENDPOINTS.md).
-- [Plano de implementação e dependências](docs/planning/IMPLEMENTATION_PLAN.md).
-- [Decisões a revisar com cada integrante](docs/rfcs/rfc-001-baseline-e-integracao.md).
-- [Análise inicial do PDF e legado](docs/FASE-4-ANALISE.md) (registro histórico).
+- [Catálogo e preços Inventory](docs/development/CATALOG_AND_PRICING.md).
+- [RabbitMQ, consumers, outbox e recuperação](docs/development/MESSAGING.md).
+- [Contratos executáveis, schemas e exemplos](docs/contracts/README.md).
 
-## Último checkpoint — incremento 5B
+Messaging:Enabled e Messaging:DispatchEnabled são flags explícitas; padrão desligado. Provisionar assinaturas duráveis e revisar pendências antes de ligar dispatcher. A topologia/envelope inicial do infra-broker difere do padrão MassTransit usado aqui e no Inventory; nenhuma infraestrutura compartilhada foi alterada automaticamente.
 
-**198 testes aprovados** (155 unitários + 43 integração), sem falhas/ignorados. API 98,45%; Application 100%; Domain 98,93%; Infrastructure 98,87% (inclui migrations). [Evidências](docs/planning/evidence/increment-5b/RESULTS.md).
+## Qualidade e checkpoints
 
-Catálogo de mão de obra PostgreSQL e adapter HTTP de preços Inventory implementados. CRUD autenticado, controle de versão/desativação, cotação com credencial própria e limites de tempo/resposta. Política financeira permanece explícita; para novos dados, proposta PerUnitV1. [Guia de configuração](docs/development/CATALOG_AND_PRICING.md) e [ADR-010](docs/architecture/adr-010-catalogo-e-precos.md).
+[Acompanhamento](docs/planning/EXECUTION_TRACKER.md), [próximos incrementos](docs/planning/NEXT_INCREMENTS.md) e [índice](docs/INDEX.md). Registros dos passos anteriores são históricos; o índice ativo de contratos é runtime-v1, não a proposta antiga da pasta v1.
 
-Homologação com Inventory/Budget completos e credencial real ainda pendente; testes HTTP usam servidor substituto com DTOs do Inventory e banco Operation real. Próxima etapa: contratos/broker e integração distribuída. Registros dos checkpoints anteriores abaixo são históricos.
-### Histórico — persistência
+Cobertura consolidada por assembly >=80%, com exclusão restrita ao arquivo gerado de biblioteca OpenAPI; migrations/modelos gerados continuam medidos. CI configura PostgreSQL/RabbitMQ, testa código e contratos, compara exportação CLR e empacota preview. Execução remota da CI/deploy não foi realizada neste checkpoint.
 
-Incremento 4 concluído: persistência PostgreSQL/EF, migrations, histórico, receipts idempotentes, concorrência e outbox interna transacional. **144 testes aprovados** (130 unitários e 14 de integração no PostgreSQL real), sem falhas/ignorados. Cobertura consolidada: Application 100%, Domain 98,93%, Infrastructure 98,50% (inclui migrations geradas).
-
-- [Evidências](docs/planning/evidence/increment-4/RESULTS.md).
-- [Decisão de persistência](docs/architecture/adr-008-persistencia-postgresql.md).
-- [Execução local e CI](docs/development/POSTGRESQL.md).
-- [Próximos incrementos](docs/planning/NEXT_INCREMENTS.md) e [acompanhamento](docs/planning/EXECUTION_TRACKER.md).
+Reentrega pode duplicar mensagem com mesmo ID; não prometemos exactly-once. Inbox e journal evitam repetir efeito; outbox só marca entrega após confirmação/rota no broker. Schema, corpo, envelope e idempotência têm testes próprios.
 
 ## Estrutura
 
@@ -64,9 +50,12 @@ src/
   Operation.Application/
   Operation.Infrastructure/
   Operation.Api/
+  Operation.Contracts/
 tests/
   Operation.Tests/
   Operation.IntegrationTests/
+tools/
+  Operation.ContractArtifacts/
 docs/
   architecture/
   contracts/
@@ -75,12 +64,4 @@ docs/
   rfcs/
 ```
 
-O slnx organiza projetos nas pastas src e tests. Requer SDK .NET 10; integração requer PostgreSQL 17, via Docker/Testcontainers ou OPERATION_TEST_POSTGRES. Consulte o guia acima para comandos e migrations.
-
-Host HTTP/JWT implementado no 5A; consulte [API e configuração](docs/development/API_ENDPOINTS.md). Catálogo e adapter Inventory implementados; faltam homologação coletiva/credenciais reais, contratos públicos, RabbitMQ/MassTransit, dispatcher da outbox e integração da Saga. OperationEvent é registro interno persistido, não um contrato RabbitMQ já publicado. Os outros serviços e gearflow-app não foram alterados neste incremento.
-
-## Padrão para alinhamento do grupo
-
-[RFC-003 — padrão da fase 4](docs/rfcs/rfc-003-padrao-fase-4.md): responsabilidades, preços por unidade, snapshot, autenticação entre serviços e Saga. É uma recomendação para revisão coletiva; infra-broker provisiona mensageria e não substitui o serviço de OS/coordenador.
-
-O incremento 5 foi dividido em 5A (HTTP) e 5B (catálogo/integração real de preços). No host atual, finalizar diagnóstico consulta o catálogo próprio e Inventory quando a configuração é fornecida; falta de configuração/cotação válida retorna 503. Testes do 5B usam transporte HTTP real com servidor substituto; não são evidência de deploy do Inventory completo.
+O slnx organiza projetos em src/tests/tools. GearFlow.Contracts.Operation 1.0.0-preview.1 foi empacotado localmente; não publicado em registry. Mudanças desta etapa permaneceram no Operation; demais serviços e infra-broker não foram alterados.

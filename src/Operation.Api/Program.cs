@@ -3,6 +3,7 @@ using GearFlow.Operation.Api;
 using GearFlow.Operation.Application;
 using GearFlow.Operation.Infrastructure.Persistence;
 using GearFlow.Operation.Infrastructure.Pricing;
+using GearFlow.Operation.Infrastructure.Messaging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,13 @@ builder.Services.AddScoped(services =>
     ConsumablePricingMode? mode = Enum.TryParse<ConsumablePricingMode>(configured, out var parsed) && Enum.IsDefined(parsed) ? parsed : null;
     return new DiagnosticPricer(services.GetRequiredService<IPriceCatalog>(), mode, services.GetRequiredService<TimeProvider>());
 });
+if (builder.Configuration.GetValue<bool>("Messaging:Enabled"))
+{
+    builder.Services.AddOperationMessaging(new(
+        builder.Configuration["RabbitMq:Host"] ?? "", builder.Configuration.GetValue<ushort>("RabbitMq:Port", 5672),
+        builder.Configuration["RabbitMq:VirtualHost"] ?? "", builder.Configuration["RabbitMq:Username"] ?? "", builder.Configuration["RabbitMq:Password"] ?? ""));
+    if (builder.Configuration.GetValue<bool>("Messaging:DispatchEnabled")) builder.Services.AddHostedService<OutboxWorker>();
+}
 var app = builder.Build();
 app.UseExceptionHandler();
 app.UseStatusCodePages(async status => await OperationErrors.Write(status.HttpContext, status.HttpContext.Response.StatusCode, "http_error"));

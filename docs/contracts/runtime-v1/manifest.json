@@ -1,0 +1,169 @@
+{
+  "status": "implemented-local-preview-not-published",
+  "package": "GearFlow.Contracts.Operation",
+  "version": "1.0.0-preview.1",
+  "messages": [
+    {
+      "name": "CancelOperation",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:CancelOperation",
+      "destinationQueue": "operation-cancel-operation",
+      "schema": "schemas/CancelOperation.schema.json",
+      "example": "examples/CancelOperation.json"
+    },
+    {
+      "name": "DeactivateOperation",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:DeactivateOperation",
+      "destinationQueue": "operation-deactivate",
+      "schema": "schemas/DeactivateOperation.schema.json",
+      "example": "examples/DeactivateOperation.json"
+    },
+    {
+      "name": "DiagnosticFailed",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:DiagnosticFailed",
+      "destinationQueue": null,
+      "schema": "schemas/DiagnosticFailed.schema.json",
+      "example": "examples/DiagnosticFailed.json"
+    },
+    {
+      "name": "DiagnosticFinished",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:DiagnosticFinished",
+      "destinationQueue": null,
+      "schema": "schemas/DiagnosticFinished.schema.json",
+      "example": "examples/DiagnosticFinished.json"
+    },
+    {
+      "name": "DiagnosticQueued",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:DiagnosticQueued",
+      "destinationQueue": null,
+      "schema": "schemas/DiagnosticQueued.schema.json",
+      "example": "examples/DiagnosticQueued.json"
+    },
+    {
+      "name": "DiagnosticStarted",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:DiagnosticStarted",
+      "destinationQueue": null,
+      "schema": "schemas/DiagnosticStarted.schema.json",
+      "example": "examples/DiagnosticStarted.json"
+    },
+    {
+      "name": "ExecutionAuthorized",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:ExecutionAuthorized",
+      "destinationQueue": null,
+      "schema": "schemas/ExecutionAuthorized.schema.json",
+      "example": "examples/ExecutionAuthorized.json"
+    },
+    {
+      "name": "ExecutionFinished",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:ExecutionFinished",
+      "destinationQueue": null,
+      "schema": "schemas/ExecutionFinished.schema.json",
+      "example": "examples/ExecutionFinished.json"
+    },
+    {
+      "name": "ExecutionStarted",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:ExecutionStarted",
+      "destinationQueue": null,
+      "schema": "schemas/ExecutionStarted.schema.json",
+      "example": "examples/ExecutionStarted.json"
+    },
+    {
+      "name": "JobExecuted",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:JobExecuted",
+      "destinationQueue": null,
+      "schema": "schemas/JobExecuted.schema.json",
+      "example": "examples/JobExecuted.json"
+    },
+    {
+      "name": "OperationCanceled",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:OperationCanceled",
+      "destinationQueue": null,
+      "schema": "schemas/OperationCanceled.schema.json",
+      "example": "examples/OperationCanceled.json"
+    },
+    {
+      "name": "OperationCancellationRejected",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:OperationCancellationRejected",
+      "destinationQueue": null,
+      "schema": "schemas/OperationCancellationRejected.schema.json",
+      "example": "examples/OperationCancellationRejected.json"
+    },
+    {
+      "name": "OperationCommandRejected",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:OperationCommandRejected",
+      "destinationQueue": null,
+      "schema": "schemas/OperationCommandRejected.schema.json",
+      "example": "examples/OperationCommandRejected.json"
+    },
+    {
+      "name": "OperationDeactivated",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:OperationDeactivated",
+      "destinationQueue": null,
+      "schema": "schemas/OperationDeactivated.schema.json",
+      "example": "examples/OperationDeactivated.json"
+    },
+    {
+      "name": "StartDiagnostic",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:StartDiagnostic",
+      "destinationQueue": "operation-start-diagnostic",
+      "schema": "schemas/StartDiagnostic.schema.json",
+      "example": "examples/StartDiagnostic.json"
+    },
+    {
+      "name": "StartExecution",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:StartExecution",
+      "destinationQueue": "operation-start-execution",
+      "schema": "schemas/StartExecution.schema.json",
+      "example": "examples/StartExecution.json"
+    },
+    {
+      "name": "UpdateOperationVehicle",
+      "kind": "command",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:UpdateOperationVehicle",
+      "destinationQueue": "operation-update-vehicle",
+      "schema": "schemas/UpdateOperationVehicle.schema.json",
+      "example": "examples/UpdateOperationVehicle.json"
+    },
+    {
+      "name": "VehicleUpdated",
+      "kind": "event",
+      "namespace": "GearFlow.Contracts.Operation.V1",
+      "urn": "urn:message:GearFlow.Contracts.Operation.V1:VehicleUpdated",
+      "destinationQueue": null,
+      "schema": "schemas/VehicleUpdated.schema.json",
+      "example": "examples/VehicleUpdated.json"
+    }
+  ]
+}

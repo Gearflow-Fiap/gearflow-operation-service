@@ -2,6 +2,8 @@
 
 **Status:** Proposed; revisar com OS, Budget e Inventory. Orquestrador proposto: state machine persistida no OS, via MassTransit/RabbitMQ. Um ciclo de negócio por ServiceOrderId nesta v1; não reutilizar uma OS cancelada para nova tentativa comercial. Alterações de orçamento e reabertura ficam para RFC posterior.
 
+Incremento 6 implementa apenas o participante Operation e seu protocolo de mensagens; esta Saga de referência ainda não é um runtime OS. Infra-broker não executa regras de Saga. A baseline wire atual está em docs/contracts/runtime-v1; a pasta antiga v1 é histórica.
+
 ## Caminho principal
 
 | Etapa | Ação / evento | Estado conceitual da Saga |
@@ -10,8 +12,8 @@
 | 2 | DiagnosticQueued; mecânico inicia; DiagnosticStarted | InDiagnostic |
 | 3 | DiagnosticFinished com snapshot imutável -> GenerateBudget | GeneratingBudget |
 | 4 | BudgetGenerated; aguarda BudgetApproved/Rejected | AwaitingApproval |
-| 5 | BudgetApproved -> RequestPayment -> PaymentConfirmed | AwaitingPayment |
-| 6 | ReserveStock -> StockReserved ou StockInsufficient | ReservingStock / AwaitingStock |
+| 5 | BudgetApproved -> ReserveStock -> StockReserved (ou pula sem estoque) | ReservingStock / AwaitingStock |
+| 6 | RequestPayment -> PaymentConfirmed | AwaitingPayment |
 | 7 | StartExecution com snapshot aprovado -> ExecutionAuthorized | ReadyForExecution |
 | 8 | API inicia reparo físico -> ExecutionStarted | InExecution |
 | 9 | API conclui reparo -> ExecutionFinished | AwaitingStockConsumption |
@@ -20,7 +22,7 @@
 
 Saga envia StartExecution somente com orçamento/pagamento/reserva confirmados. O participante confia no comando autenticado do orquestrador e valida a identidade e o snapshot local; não consulta três bancos para reconstruir autorização.
 
-Pagamento antes da reserva é hipótese extraída do Budget: pode resultar em reembolso por falta de estoque. Timeouts de aprovação/pagamento/estoque devem ser configuração de negócio aprovada (sem números presumidos aqui). Timeout inclui identificador da etapa esperada; mensagens agendadas antigas são ignoradas após saída da etapa.
+Proposta local atualizada na RFC-003: reservar antes de criar cobrança para reduzir pagamento sem peças. A hipótese anterior, pagamento antes de reserva, veio da documentação Budget e foi substituída nesta referência; homologar a ordem com o grupo. Timeouts de aprovação/pagamento/estoque devem ser configuração de negócio aprovada (sem números presumidos aqui). Timeout inclui identificador da etapa esperada; mensagens agendadas antigas são ignoradas após saída da etapa.
 
 ## OS sem itens de estoque
 

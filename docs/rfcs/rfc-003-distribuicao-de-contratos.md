@@ -30,6 +30,10 @@ Duplicar records por copiar/colar: drift e incompatibilidade de tipo. Gerar tipo
 
 Falta definir repositório canônico, mantenedor/revisores, registry, acesso de CI e primeira versão. Não afirmar que basta copiar JSON numa fila para falar com MassTransit: envelope, content-type e identidade de tipo precisam ser compatíveis.
 
+## Atualização local — incremento 6
+
+Operation implementou pacote separado GearFlow.Contracts.Operation 1.0.0-preview.1, namespace GearFlow.Contracts.Operation.V1 e target .NET 10. Preserva identidade URN e evita copiar/renomear Inventory. Nupkg local inclui schemas/exemplos gerados do código; sem publicação em registry. Esta alternativa transitória substitui a hipótese de assembly única nesta implementação local, sem presumir decisão coletiva sobre repo/owner/registry. Ver docs/contracts/README.md e ADR-011.
+
 ## Decision
 
 Pendente. Contratos podem ser usados para desenvolver simuladores e validar fixtures; publicação/código gerado virão em incremento separado.

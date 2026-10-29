@@ -160,8 +160,8 @@ public sealed class OperationService(IOperationUnitOfWork unitOfWork, Diagnostic
     {
         if (!operation.IsActive) throw new OperationConflictException("Operação inativa/cancelada não pode executar trabalho.");
     }
-    private static string Reason(string reason) => string.IsNullOrWhiteSpace(reason)
-        ? throw new ArgumentException("Motivo obrigatório.", nameof(reason)) : reason.Trim();
+    private static string Reason(string reason) => string.IsNullOrWhiteSpace(reason) || reason.Trim().Length > 2000
+        ? throw new ArgumentException("Motivo obrigatório, com até 2000 caracteres.", nameof(reason)) : reason.Trim();
     private static T[] Copy<T>(IEnumerable<T> items) where T : class
     {
         ArgumentNullException.ThrowIfNull(items);

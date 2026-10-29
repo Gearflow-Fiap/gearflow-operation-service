@@ -40,3 +40,5 @@ Definir por ambiente/user-secrets, sem versionar segredos:
 Executar migrations conforme POSTGRESQL.md e depois `dotnet run --project src/Operation.Api`. Não há migration automática na inicialização. Não copiar security_stamp como política de revogação remota nem consultar banco Identity.
 
 A RFC-003 apresenta o padrão recomendado para a revisão coletiva. A API exige configuração explícita em vez de tratar qualquer JWT como staff.
+
+Motivos de falha/cancelamento/desativação têm limite de 2000 caracteres na aplicação, alinhado aos contratos de mensagens. Sem alteração de estado quando a validação falha.
