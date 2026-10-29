@@ -4,9 +4,9 @@ Microsserviço de diagnóstico e execução da oficina, extraído do Workshop do
 
 ## Status real e arquitetura de referência
 
-**Implementado:** núcleo Domain/Application .NET 10, estados herdados do monólito, histórico, progresso, fila, porta de unidade de trabalho e 19 testes. Build/testes e cobertura inicial foram executados localmente; CI está preparado, sem execução remota verificada.
+**Implementado:** modelo operacional .NET 10 com veículo, itens solicitados/diagnosticados, snapshots imutáveis, mapeamento de linhas do orçamento, autorização distinta de início físico, atividade/cancelamento, histórico e versão. São 72 testes locais de domínio e regressão do núcleo Application. CI está preparado, sem execução remota verificada.
 
-**Planejado:** catálogo de mão de obra, diagnóstico com itens/preços, fila autorizada distinta de reparo iniciado, API autenticada, PostgreSQL próprio, EF/migrations, RabbitMQ/MassTransit, inbox/outbox, simulador, BDD, OpenTelemetry, Docker/Kubernetes, Sonar e deploy.
+**Planejado:** casos de uso completos, consultas/paginação, fonte/política de preços por portas, catálogo de mão de obra, API autenticada, PostgreSQL próprio, EF/migrations, RabbitMQ/MassTransit, inbox/outbox, simulador, BDD, OpenTelemetry, Docker/Kubernetes, Sonar e deploy. Snapshot de valores no domínio não equivale à consulta de preços real.
 
 **Contrato em revisão:** a especificação v1 em docs/contracts é uma baseline proposta para os integrantes. Não é um pacote publicado nem garantia de compatibilidade com outros serviços. As dependências e divergências estão na RFC-001. Implementação atual e desenho alvo não são equivalentes; veja o plano de migração.
 
@@ -18,7 +18,7 @@ Microsserviço de diagnóstico e execução da oficina, extraído do Workshop do
 | Coordenação | Saga orquestrada no OS Service, por RabbitMQ | Proposed, consistente com os documentos Budget/Inventory |
 | Tecnologia Operation | .NET 10, PostgreSQL exclusivo, EF Core e MassTransit na linha 8.5 usada pelo Inventory | Proposed; runtime já existe |
 | Catálogo | Mão de obra no Operation; peças/insumos no Inventory; orçamento guarda snapshot | Proposed |
-| Execução | StartExecution autoriza fila; ação autenticada inicia reparo físico | Proposed; exige evolução do núcleo |
+| Execução | StartExecution autoriza fila; ação autenticada inicia reparo físico | Implementado no domínio local; integração Proposed |
 | Conclusão | ExecutionFinished -> ConsumeStock -> StockConsumed -> OS Finalized | Proposed; coincide com ADR-0003 do Inventory |
 | Falhas | Cancelamento confirmado pelo Operation antes de liberar reserva; após início físico, recuperação | Proposed |
 
@@ -39,6 +39,10 @@ O trabalho segue checkpoints por passo, com evidência de testes. Consulte o [ac
 - [Plano de implementação e dependências](docs/planning/IMPLEMENTATION_PLAN.md).
 - [Decisões a revisar com cada integrante](docs/rfcs/rfc-001-baseline-e-integracao.md).
 - [Análise inicial do PDF e legado](docs/FASE-4-ANALISE.md) (registro histórico).
+
+## Último checkpoint
+
+Passo 2 concluído no modelo local; passo 3 não iniciado funcionalmente. [Modelo e limites](docs/planning/STEP_2_MODEL.md), [evidência](docs/planning/evidence/step-2/RESULTS.md) e [acompanhamento](docs/planning/EXECUTION_TRACKER.md). Resultado: 72 testes aprovados, 100% das 342 linhas e 150/153 branches (98,03%) no código instrumentado atual. O histórico do passo 1 permanece preservado.
 
 ## Executar o que existe hoje
 
@@ -69,4 +73,4 @@ docs/
   rfcs/                      # propostas para revisão do grupo
 ```
 
-Operation.Infrastructure, Operation.Api e o pacote de contratos serão adicionados nos incrementos previstos. OperationEvent atual é interno e provisório: não deve ser publicado como contrato RabbitMQ.
+Operation.Infrastructure, Operation.Api e o pacote de contratos serão adicionados nos incrementos previstos. A aplicação existente teve apenas assinaturas/fila adaptadas ao domínio; consultas, resolução de preços, unidade de trabalho isolada e intenções idempotentes ainda são trabalho do passo 3. OperationEvent atual é interno e provisório: não deve ser publicado como contrato RabbitMQ.

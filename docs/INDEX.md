@@ -21,7 +21,7 @@ Data da baseline: 2026-10-24. Esta é a proposta de referência para planejar a 
 
 ## ADRs
 
-Todos Proposed até revisão; decisão local de planejamento não equivale à adoção em todos os repositórios.
+ADRs 001–005 continuam Proposed até revisão coletiva. ADR-006 registra a escolha local do modelo implementado no passo 2; não equivale à adoção dos contratos em outros repositórios.
 
 | ADR | Assunto |
 |---|---|
@@ -30,6 +30,7 @@ Todos Proposed até revisão; decisão local de planejamento não equivale à ad
 | [003](architecture/adr-003-catalogo-e-snapshots.md) | Catálogo de mão de obra, preços e snapshots |
 | [004](architecture/adr-004-execucao-e-compensacao.md) | Autorização, início físico, conclusão e cancelamento |
 | [005](architecture/adr-005-contratos-e-versionamento.md) | Identidade de mensagens, contratos e evolução |
+| [006](architecture/adr-006-modelo-local-e-precificacao.md) | Modelo local e limite da precificação no passo 2 |
 
 ## Governança
 
@@ -50,3 +51,5 @@ Schemas e exemplos em contracts/v1 definem o corpo lógico das mensagens novas d
 - [Critérios de qualidade por passo](planning/STEP_ACCEPTANCE.md).
 
 Esta sequência local não é a mesma numeração P0-P8 do plano geral. O acompanhamento registra a conclusão de cada passo e a parada solicitada antes de prosseguir.
+
+- [Passo 2: modelo operacional implementado e limites](planning/STEP_2_MODEL.md).

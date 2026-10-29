@@ -2,6 +2,8 @@
 
 **Data:** 28/10/2026. **Natureza:** escopo local para a extração; não é implementação completa nem aprovação coletiva de contratos. **Fonte:** código e testes locais da fase 3. [Manifesto com caminhos e SHA-256](PARITY_MANIFEST.json) registra os arquivos efetivamente comparados. Nenhum teste do monólito foi executado nesta etapa; seus cenários foram lidos como referência.
 
+> Fotografia do passo 1: lacunas e nomes de testes abaixo são históricos daquele checkpoint. Para o estado após implementação do domínio, consultar [passo 2](STEP_2_MODEL.md) e [critérios atualizados](STEP_ACCEPTANCE.md). O manifesto do passo 1 não foi reescrito para esconder mudanças posteriores.
+
 ## Delimitação do serviço
 
 **Operation escreve:** estado técnico de diagnóstico/reparo, dados operacionais recebidos da OS, itens diagnosticados, snapshot das linhas aprovadas, progresso e histórico local. **OS escreve:** abertura, alterações cadastrais da ordem, desativação/estado global/entrega e coordenação se mantida a Saga no OS. **Budget escreve:** orçamento, aprovação/rejeição e pagamentos. **Inventory escreve:** estoque/reserva/liberação/consumo. Identity/Customers permanecem suporte externo durante transição.

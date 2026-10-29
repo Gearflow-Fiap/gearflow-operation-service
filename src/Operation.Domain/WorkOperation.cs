@@ -1,90 +1,241 @@
 namespace GearFlow.Operation.Domain;
 
-/// <summary>Estado operacional local. Não é a OS nem o orçamento dos outros serviços.</summary>
+/// <summary>Agregado operacional local; não abre a OS, aprova orçamento ou movimenta estoque.</summary>
 public sealed class WorkOperation
 {
     private readonly List<OperationHistory> history = [];
     private readonly List<JobProgress> jobs = [];
     public Guid ServiceOrderId { get; }
+    public int? ServiceOrderCode { get; }
+    public Guid? VehicleId { get; private set; }
+    public Guid? DiagnosticId { get; }
     public OperationStatus Status { get; private set; } = OperationStatus.Received;
+    public bool IsActive { get; private set; } = true;
+    public bool IsTombstone { get; }
+    public long Version { get; private set; } = 1;
     public DateTimeOffset CreatedAt { get; }
+    public DateTimeOffset UpdatedAt { get; private set; }
+    public DateTimeOffset? DiagnosticStartedAt { get; private set; }
+    public DateTimeOffset? DiagnosticCompletedAt { get; private set; }
+    public DateTimeOffset? ExecutionAuthorizedAt { get; private set; }
+    public DateTimeOffset? ExecutionStartedAt { get; private set; }
+    public DateTimeOffset? ExecutionCompletedAt { get; private set; }
+    public string? DiagnosticFailureReason { get; private set; }
+    public string? DeactivationReason { get; private set; }
+    public string? CancellationReason { get; private set; }
+    public DiagnosticSnapshot? Diagnostic { get; private set; }
+    public ExecutionAuthorization? Authorization { get; private set; }
+    public IReadOnlyList<RequestedJob> RequestedJobs { get; } = Array.AsReadOnly(Array.Empty<RequestedJob>());
+    public IReadOnlyList<RequestedPart> RequestedParts { get; } = Array.AsReadOnly(Array.Empty<RequestedPart>());
+    public IReadOnlyList<DiagnosticConsumable> Consumables { get; private set; } = Array.AsReadOnly(Array.Empty<DiagnosticConsumable>());
     public IReadOnlyList<OperationHistory> History => history.AsReadOnly();
     public IReadOnlyList<JobProgress> Jobs => jobs.AsReadOnly();
 
-    public WorkOperation(Guid serviceOrderId, string actor, DateTimeOffset now)
+    public WorkOperation(Guid serviceOrderId, Guid vehicleId, IEnumerable<RequestedJob> requestedJobs,
+        IEnumerable<RequestedPart> requestedParts, string actor, DateTimeOffset now, int? serviceOrderCode = null, Guid? diagnosticId = null)
     {
-        if (serviceOrderId == Guid.Empty) throw new ArgumentException("OS obrigatória.", nameof(serviceOrderId));
-        ValidateActor(actor);
-        ServiceOrderId = serviceOrderId;
-        CreatedAt = now;
-        history.Add(new(Status, actor, now));
+        ServiceOrderId = DomainGuard.Id(serviceOrderId, nameof(serviceOrderId));
+        VehicleId = DomainGuard.Id(vehicleId, nameof(vehicleId));
+        DiagnosticId = DomainGuard.Id(diagnosticId ?? Guid.NewGuid(), nameof(diagnosticId));
+        if (serviceOrderCode is <= 0) throw new ArgumentOutOfRangeException(nameof(serviceOrderCode));
+        ServiceOrderCode = serviceOrderCode;
+        var by = DomainGuard.Text(actor, nameof(actor));
+        var jobCopy = DomainGuard.CopyItems(requestedJobs, nameof(requestedJobs));
+        var partCopy = DomainGuard.CopyItems(requestedParts, nameof(requestedParts));
+        if (jobCopy.Length == 0 || jobCopy.Length + partCopy.Length > DiagnosticSnapshot.MaximumLines)
+            throw new ArgumentException("Ao menos um serviço e no máximo 200 linhas são necessários.", nameof(requestedJobs));
+        var ids = jobCopy.Select(job => job.LineId).Concat(partCopy.Select(part => part.LineId)).ToArray();
+        if (ids.Distinct().Count() != ids.Length)
+            throw new ArgumentException("LineId deve ser único entre serviços e peças.", nameof(requestedJobs));
+        RequestedJobs = Array.AsReadOnly(jobCopy);
+        RequestedParts = Array.AsReadOnly(partCopy);
+        CreatedAt = UpdatedAt = now.ToUniversalTime();
+        history.Add(new(Version, Status, OperationAction.Received, by, CreatedAt, "Operação recebida da OS."));
     }
 
-    public void StartDiagnostic(string actor, DateTimeOffset now) =>
-        Move(OperationStatus.Received, OperationStatus.InDiagnostic, actor, now);
-    public void CompleteDiagnostic(string actor, DateTimeOffset now) =>
-        Move(OperationStatus.InDiagnostic, OperationStatus.AwaitingApproval, actor, now);
-
-    // Chamado somente depois da aprovação e do resultado da reserva, confirmados externamente.
-    public void AcceptExecution(IEnumerable<Guid> approvedJobIds, bool stockReserved, string actor, DateTimeOffset now)
+    private WorkOperation(Guid serviceOrderId, string reason, string actor, DateTimeOffset now)
     {
-        Require(OperationStatus.AwaitingApproval);
-        ValidateActor(actor);
-        var ids = approvedJobIds.ToArray();
-        if (ids.Any(id => id == Guid.Empty) || ids.Distinct().Count() != ids.Length)
-            throw new ArgumentException("Serviços devem ter IDs válidos e únicos.", nameof(approvedJobIds));
-        jobs.AddRange(ids.Select(id => new JobProgress(id, null)));
-        Move(OperationStatus.AwaitingApproval, stockReserved ? OperationStatus.InExecution :
-            OperationStatus.AwaitingPartsOrConsumables, actor, now);
+        ServiceOrderId = DomainGuard.Id(serviceOrderId, nameof(serviceOrderId));
+        CancellationReason = DomainGuard.Text(reason, nameof(reason));
+        var by = DomainGuard.Text(actor, nameof(actor));
+        IsTombstone = true;
+        IsActive = false;
+        Status = OperationStatus.Canceled;
+        CreatedAt = UpdatedAt = now.ToUniversalTime();
+        history.Add(new(Version, Status, OperationAction.Canceled, by, CreatedAt, CancellationReason));
     }
 
-    // O adaptador deve confirmar a reserva antes de chamar este método.
-    public void ResumeExecution(string actor, DateTimeOffset now) =>
-        Move(OperationStatus.AwaitingPartsOrConsumables, OperationStatus.InExecution, actor, now);
+    // Fence sem inventar veículo/serviços; persistência e unicidade por OS virão em outro incremento.
+    public static WorkOperation CreateCanceled(Guid serviceOrderId, string reason, string actor, DateTimeOffset now) =>
+        new(serviceOrderId, reason, actor, now);
 
-    public void ExecuteJob(Guid jobId, string actor, DateTimeOffset now)
+    public bool UpdateVehicle(Guid vehicleId, string actor, DateTimeOffset now)
     {
+        RequireActive();
+        if (Status is not (OperationStatus.Received or OperationStatus.InDiagnostic))
+            throw new OperationConflictException("Veículo bloqueado após a conclusão do diagnóstico.");
+        DomainGuard.Id(vehicleId, nameof(vehicleId));
+        var by = PrepareChange(actor, now);
+        if (VehicleId == vehicleId) return false;
+        VehicleId = vehicleId;
+        Record(OperationAction.VehicleUpdated, by, now, "Veículo atualizado pela OS.", vehicleId);
+        return true;
+    }
+
+    public void StartDiagnostic(string actor, DateTimeOffset now)
+    {
+        RequireActive();
+        Require(OperationStatus.Received);
+        var by = PrepareChange(actor, now);
+        Status = OperationStatus.InDiagnostic;
+        DiagnosticStartedAt = now.ToUniversalTime();
+        Record(OperationAction.DiagnosticStarted, by, now, "Diagnóstico iniciado.");
+    }
+
+    public void CompleteDiagnostic(DiagnosticSnapshot snapshot, IEnumerable<DiagnosticConsumable> consumables,
+        string actor, DateTimeOffset now)
+    {
+        RequireActive();
+        Require(OperationStatus.InDiagnostic);
+        ArgumentNullException.ThrowIfNull(snapshot);
+        var copy = DomainGuard.CopyItems(consumables, nameof(consumables));
+        var expected = RequestedJobs.Select(job => (job.LineId, Type: OperationItemType.Labor, Id: job.CatalogJobId, Quantity: 1m))
+            .Concat(RequestedParts.Select(part => (part.LineId, Type: OperationItemType.Part, Id: part.PartId, Quantity: (decimal)part.Quantity)))
+            .Concat(copy.Select(item => (item.LineId, Type: OperationItemType.Consumable, Id: item.ConsumableId, item.Quantity))).ToArray();
+        if (expected.Select(item => item.LineId).Distinct().Count() != expected.Length || expected.Length != snapshot.Lines.Count ||
+            expected.Any(item => !snapshot.Lines.Any(line => line.LineId == item.LineId && line.ItemType == item.Type &&
+                line.ItemId == item.Id && line.Quantity == item.Quantity)))
+            throw new OperationConflictException("Snapshot deve preservar todos os serviços/peças solicitados e consumíveis informados.");
+        var by = PrepareChange(actor, now);
+        if (snapshot.DiagnosticId != DiagnosticId) throw new OperationConflictException("Snapshot pertence a outro diagnóstico.");
+        if (snapshot.PricedAt > now.ToUniversalTime() || snapshot.PricedAt < DiagnosticStartedAt)
+            throw new OperationConflictException("Preço precisa estar na janela do diagnóstico.");
+        Consumables = Array.AsReadOnly(copy);
+        Diagnostic = snapshot;
+        Status = OperationStatus.AwaitingExecutionAuthorization;
+        DiagnosticCompletedAt = now.ToUniversalTime();
+        Record(OperationAction.DiagnosticCompleted, by, now, "Diagnóstico concluído; aguardando autorização.", snapshot.DiagnosticId);
+    }
+
+    public void FailDiagnostic(string reason, string actor, DateTimeOffset now)
+    {
+        RequireActive();
+        Require(OperationStatus.InDiagnostic);
+        var detail = DomainGuard.Text(reason, nameof(reason));
+        var by = PrepareChange(actor, now);
+        DiagnosticFailureReason = detail;
+        Status = OperationStatus.DiagnosticFailed;
+        Record(OperationAction.DiagnosticFailed, by, now, detail);
+    }
+
+    // Autorização comercial/reserva é confirmada pela coordenação externa, não por bool livre do operador.
+    public bool AuthorizeExecution(ExecutionAuthorization authorization, string actor, DateTimeOffset now)
+    {
+        RequireActive();
+        ArgumentNullException.ThrowIfNull(authorization);
+        var by = PrepareChange(actor, now);
+        if (Authorization is not null)
+        {
+            if (!Authorization.HasSameTerms(authorization)) throw new OperationConflictException("Autorização conflitante com a já aceita.");
+            return false;
+        }
+        Require(OperationStatus.AwaitingExecutionAuthorization);
+        if (Diagnostic is null || !Diagnostic.HasSameContent(authorization.Snapshot))
+            throw new OperationConflictException("Orçamento autorizado diverge do diagnóstico local.");
+        // Construir tudo antes de alterar o agregado para não deixar progresso parcial em caso de erro.
+        var progress = authorization.Jobs.Select(job => new JobProgress(job.BudgetJobId, job.DiagnosticLineId,
+            Diagnostic.Lines.Single(line => line.LineId == job.DiagnosticLineId).ItemId)).ToArray();
+        Authorization = authorization;
+        jobs.AddRange(progress);
+        Status = OperationStatus.ReadyForExecution;
+        ExecutionAuthorizedAt = now.ToUniversalTime();
+        Record(OperationAction.ExecutionAuthorized, by, now, "Execução autorizada; aguardando início físico.", authorization.AuthorizationId);
+        return true;
+    }
+
+    public void StartExecution(string actor, DateTimeOffset now)
+    {
+        RequireActive();
+        Require(OperationStatus.ReadyForExecution);
+        var by = PrepareChange(actor, now);
+        Status = OperationStatus.InExecution;
+        ExecutionStartedAt = now.ToUniversalTime();
+        Record(OperationAction.ExecutionStarted, by, now, "Reparo físico iniciado.");
+    }
+
+    public void ExecuteJob(Guid budgetJobId, string actor, DateTimeOffset now)
+    {
+        RequireActive();
         Require(OperationStatus.InExecution);
-        ValidateActor(actor);
-        var index = jobs.FindIndex(j => j.JobId == jobId);
-        if (index < 0) throw new OperationConflictException("Serviço não pertence à execução aprovada.");
-        if (jobs[index].ExecutedAt is not null) throw new OperationConflictException("Serviço já executado.");
-        jobs[index] = jobs[index] with { ExecutedAt = now };
-        history.Add(new(Status, actor, now));
+        DomainGuard.Id(budgetJobId, nameof(budgetJobId));
+        var by = PrepareChange(actor, now);
+        var index = jobs.FindIndex(job => job.BudgetJobId == budgetJobId);
+        if (index < 0) throw new OperationConflictException("Linha não pertence ao orçamento autorizado.");
+        if (jobs[index].ExecutedAt is not null) throw new OperationConflictException("Linha já executada.");
+        jobs[index] = jobs[index].Execute(by, now.ToUniversalTime());
+        Record(OperationAction.JobExecuted, by, now, "Serviço executado.", budgetJobId);
     }
 
-    // Preserva a regra do monólito: exige InExecution, sem novo bloqueio por jobs pendentes.
-    // Finaliza apenas a execução LOCAL. A Saga ainda deve comandar ConsumeStock e aguardar StockConsumed.
-    public void FinalizeExecution(string actor, DateTimeOffset now) =>
-        Move(OperationStatus.InExecution, OperationStatus.Finalized, actor, now);
-
-    public void RejectBudget(string actor, DateTimeOffset now) =>
-        Move(OperationStatus.AwaitingApproval, OperationStatus.Canceled, actor, now);
-
-    // Compensação local pré-execução; repetir confirma sucesso sem duplicar histórico.
-    // Não desfaz trabalho físico já iniciado nem movimenta estoque ou pagamento.
-    public void CancelDiagnostic(string actor, DateTimeOffset now)
+    // Preserva o legado: não introduzir bloqueio por jobs pendentes. Não declara estoque consumido/OS entregue.
+    public void FinalizeExecution(string actor, DateTimeOffset now)
     {
-        ValidateActor(actor);
-        if (Status == OperationStatus.Canceled) return;
-        if (Status is OperationStatus.InExecution or OperationStatus.Finalized)
-            throw new OperationConflictException("Execução iniciada exige recuperação, não rollback físico.");
-        Move(Status, OperationStatus.Canceled, actor, now);
+        RequireActive();
+        Require(OperationStatus.InExecution);
+        var by = PrepareChange(actor, now);
+        Status = OperationStatus.ExecutionCompleted;
+        ExecutionCompletedAt = now.ToUniversalTime();
+        Record(OperationAction.ExecutionCompleted, by, now, "Execução local concluída.");
     }
 
-    private void Move(OperationStatus expected, OperationStatus target, string actor, DateTimeOffset now)
+    public bool Deactivate(string reason, string actor, DateTimeOffset now)
     {
-        Require(expected);
-        ValidateActor(actor);
-        Status = target;
-        history.Add(new(target, actor, now));
+        if (Status is not (OperationStatus.Received or OperationStatus.InDiagnostic))
+            throw new OperationConflictException("Desativação permitida somente antes da conclusão do diagnóstico.");
+        var detail = DomainGuard.Text(reason, nameof(reason));
+        var by = PrepareChange(actor, now);
+        if (!IsActive) return false;
+        IsActive = false;
+        DeactivationReason = detail;
+        Record(OperationAction.Deactivated, by, now, detail);
+        return true;
     }
+
+    public bool CancelOperation(string reason, string actor, DateTimeOffset now)
+    {
+        var detail = DomainGuard.Text(reason, nameof(reason));
+        var by = PrepareChange(actor, now);
+        if (Status == OperationStatus.Canceled) return false;
+        if (Status is OperationStatus.InExecution or OperationStatus.ExecutionCompleted)
+            throw new OperationConflictException("Reparo já iniciado/concluído exige recuperação, não rollback físico.");
+        IsActive = false;
+        Status = OperationStatus.Canceled;
+        CancellationReason = detail;
+        Record(OperationAction.Canceled, by, now, detail);
+        return true;
+    }
+
+    private string PrepareChange(string actor, DateTimeOffset now)
+    {
+        var by = DomainGuard.Text(actor, nameof(actor));
+        if (now.ToUniversalTime() < UpdatedAt) throw new OperationConflictException("Data de alteração anterior ao último registro.");
+        _ = checked(Version + 1);
+        return by;
+    }
+
+    private void Record(OperationAction action, string actor, DateTimeOffset now, string description, Guid? subjectId = null)
+    {
+        Version++;
+        UpdatedAt = now.ToUniversalTime();
+        history.Add(new(Version, Status, action, actor, UpdatedAt, description, subjectId));
+    }
+
+    private void RequireActive()
+    {
+        if (!IsActive) throw new OperationConflictException("Operação inativa/cancelada não pode executar trabalho.");
+    }
+
     private void Require(OperationStatus expected)
     {
         if (Status != expected) throw new OperationConflictException($"Esperado {expected}; estado atual {Status}.");
-    }
-    private static void ValidateActor(string actor)
-    {
-        if (string.IsNullOrWhiteSpace(actor)) throw new ArgumentException("Autor obrigatório.", nameof(actor));
     }
 }

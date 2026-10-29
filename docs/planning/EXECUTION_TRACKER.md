@@ -1,12 +1,12 @@
 # Acompanhamento dos passos 1 a 3
 
-Atualizado em 28/10/2026. **Ponto de retomada: passo 1 concluído; passo 2 não iniciado.** Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
+Atualizado em 28/10/2026. **Ponto de retomada: passos 1 e 2 concluídos; passo 3 não iniciado.** Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
 
 | Passo solicitado | Escopo | Situação | Evidência |
 |---|---|---|---|
 | 1 — Paridade e escopo | Inventário fase 3, donos novos, lacunas e critérios de teste | **Concluído em 28/10/2026** | [Matriz](STEP_1_PARITY.md), [manifesto](PARITY_MANIFEST.json), [testes](evidence/step-1/RESULTS.md) |
-| 2 — Modelo operacional | Implementar dados/identidades/estados necessários ao Operation, com testes de domínio | **Não iniciado** | Aguardar checkpoint com usuário após passo 1 |
-| 3 — Casos de uso | Implementar fluxo local completo com portas e testes de aplicação | **Não iniciado** | Aguardar conclusão do passo 2 e seu checkpoint |
+| 2 — Modelo operacional | Implementar dados/identidades/estados necessários ao Operation, com testes de domínio | **Concluído em 28/10/2026** | [Modelo](STEP_2_MODEL.md), [testes](evidence/step-2/RESULTS.md), [aceite](STEP_2_ACCEPTANCE.json) |
+| 3 — Casos de uso | Implementar fluxo local completo com portas e testes de aplicação | **Não iniciado** | Aguardar retorno ao usuário após passo 2 |
 
 ## Regra de trabalho
 
@@ -35,8 +35,34 @@ Atualizado em 28/10/2026. **Ponto de retomada: passo 1 concluído; passo 2 não 
 - Código de src/tests, scripts e CI permaneceu idêntico ao início do passo, conferido por hash. Passo 2 não começou.
 - Nenhum teste do monólito/banco/broker/API/Saga foi executado; cenários legados foram inspecionados como referência.
 
+## Passo 2 — registro de conclusão
+
+### Implementado
+
+- Dados iniciais completos (OS/veículo/código opcional/serviços/peças), identidade estável de diagnóstico e consumíveis decimais.
+- Snapshot imutável e autoritativo de itens/valores, com política identificada e overflow verificado; sem mudar implicitamente cálculo financeiro de consumíveis.
+- Mapeamento explícito BudgetJobId/DiagnosticLineId/CatalogJobId, com linhas repetidas de catálogo executadas independentemente.
+- Estados locais: Received, InDiagnostic, AwaitingExecutionAuthorization, ReadyForExecution, InExecution, ExecutionCompleted, DiagnosticFailed e Canceled.
+- Autorização separada do reparo físico; cancelamento/desativação, tombstone, histórico/versão e datas UTC sem regressão.
+- Ajuste mínimo das assinaturas/fila do núcleo Application para compilar com o modelo; regressão preservada com os novos dados. Não são casos de uso completos do passo 3.
+- [ADR-006](../architecture/adr-006-modelo-local-e-precificacao.md) registra escolha local, sem atribuir aprovação coletiva dos contratos.
+
+### Validado
+
+- **72 testes aprovados em Release**, 0 falhas/ignorados. Testes anteriores foram reorganizados/evoluídos; não são 19 antigos mais 72 novos.
+- **342/342 linhas (100%) e 150/153 branches (98,03%)** instrumentados; gate >=80% de linhas por assembly aprovado.
+- Formatação whitespace C# em modo folder verificada e diff conferido.
+- Resultado, teste a teste, cobertura e limites em [evidence/step-2](evidence/step-2/RESULTS.md).
+- [Critérios AT atualizados](STEP_ACCEPTANCE.md): separar o que o domínio já prova do que depende de aplicação/persistência/integração.
+
+### Limites e parada
+
+Não foram implementados consultas/paginação, fonte de preço por portas, journal, unidade de trabalho isolada, banco, API, broker, Saga ou BDD. O esqueleto Application ainda retorna conflito no recebimento repetido e não cria tombstone ao cancelar operação ausente. O modelo não autentica fonte de preço nem autoriza pagamento/reserva: essas fronteiras dependem de implementação/revisão posteriores. Nenhum arquivo de runtime dos outros repositórios foi alterado.
+
+**Passo 2 concluído. Parar e informar ao usuário antes de iniciar o passo 3.**
+
 ## Próximo incremento — somente após retorno ao usuário
 
-**Passo 2:** completar o modelo com dados e identidades sem depender de mensagens de outros serviços estarem publicadas. Preservar serviços/peças iniciais, consumíveis decimais e progresso por linha aprovada; testar coleções defensivas, transições, atividade/cancelamento e histórico. Usar [critérios de aceite](STEP_ACCEPTANCE.md), atualizar evidência e avisar ao concluir antes do passo 3.
+**Passo 3:** completar casos de uso locais sobre o novo domínio, com portas de consulta de preços/política explícita, DTOs/queries, métricas de duração, autorizações/cancelamentos e tratamento de intenções repetidas. Criar unidade de trabalho de teste isolada para provar falha de commit sem deixar mutação persistida; não confundir com transação real de banco. Registrar testes/evidência novos e avisar a conclusão.
 
-O contrato wire com OS/Budget, a política financeira de consumíveis e o dono do catálogo ainda precisam de revisão coletiva antes da integração. Isso não impede modelar os dados locais, mas não autoriza declarar compatibilidade distribuída.
+Contratos reais OS/Budget, cálculo financeiro e dono do catálogo continuam em revisão coletiva. Banco/API/mensageria serão incrementos próprios depois do núcleo funcional.

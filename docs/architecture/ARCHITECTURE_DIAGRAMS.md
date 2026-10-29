@@ -83,7 +83,7 @@ stateDiagram-v2
     ExecutionCompleted --> [*]
 ```
 
-CancelOperation sem agregado cria tombstone Canceled. Cancelamento em InExecution/ExecutionCompleted responde rejeição. O enum atual ainda é o do primeiro incremento e não implementa esta máquina.
+CancelOperation sem agregado cria tombstone Canceled. Cancelamento em InExecution/ExecutionCompleted responde rejeição. O modelo local do passo 2 implementa essa máquina. Os comandos/consumers e eventos wire representados no desenho continuam planejados.
 
 ## Cancelamento seguro
 

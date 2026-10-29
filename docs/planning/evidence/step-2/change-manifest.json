@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-28",
+  "step": 2,
+  "baselineCommit": "e9dc40f00b7f691bb53bb4e147e2c1fc6bcf6be9",
+  "runtimeFiles": [
+    {
+      "path": "src/Operation.Application/ExecutionQueue.cs",
+      "sha256": "0994fda68f22740c036a9316dc768e5223305ec642b10a5ca8bc497005151ec6"
+    },
+    {
+      "path": "src/Operation.Application/Operation.Application.csproj",
+      "sha256": "a0afe3a2d3fd9ac1d95de0d3a7ee77ff6717f7af48c444d900681c1781ab390c"
+    },
+    {
+      "path": "src/Operation.Application/OperationService.cs",
+      "sha256": "aac070be9c842cffbee718da86f3b7cb2b19f3b652cdf96135d8778f329ed9a3"
+    },
+    {
+      "path": "src/Operation.Application/Ports.cs",
+      "sha256": "227c2019d0e4c8718dfe1c7934157bd12a531938f0569b13e1885de80b33646c"
+    },
+    {
+      "path": "src/Operation.Domain/DiagnosticSnapshot.cs",
+      "sha256": "37eacdc160085a7dc199bbf50981506735ae107ff7582c1a98ec612a6b1da022"
+    },
+    {
+      "path": "src/Operation.Domain/DomainGuard.cs",
+      "sha256": "439bf6ccc5e01b5e0cb2158b01e2761a5277673699ea491741258818d5d1c13a"
+    },
+    {
+      "path": "src/Operation.Domain/ExecutionAuthorization.cs",
+      "sha256": "0be7f6590d578da91addfec13d613f68c0c88038fda34b0a702eea0bfaa17227"
+    },
+    {
+      "path": "src/Operation.Domain/Operation.Domain.csproj",
+      "sha256": "3e1a9f612f8cfcc2e2a8b2ef085685f9f3d1a55c4b901e8d88af6ec37d283195"
+    },
+    {
+      "path": "src/Operation.Domain/OperationStatus.cs",
+      "sha256": "fc10945c1c757d20622a32f298c0358735f944cf4b3fd0648a67c4e7e56887d1"
+    },
+    {
+      "path": "src/Operation.Domain/RequestedItems.cs",
+      "sha256": "4c53abfae7f12466a496221347ec582c82499809db271510f01a227214a8407d"
+    },
+    {
+      "path": "src/Operation.Domain/WorkOperation.cs",
+      "sha256": "4377850999e152acc7a70611774cc92a620904fe8e697005e1636885cbc0849c"
+    },
+    {
+      "path": "tests/Operation.Tests/CancellationTests.cs",
+      "sha256": "5273bbafcbd3457585b947ca706f88f838df5d75ca6a87c72c1df84bac3ce540"
+    },
+    {
+      "path": "tests/Operation.Tests/DiagnosticTests.cs",
+      "sha256": "ddc527d90254a6f6630be1f5377b1be272391dd18452c3ce481b57fe95156746"
+    },
+    {
+      "path": "tests/Operation.Tests/DomainFixture.cs",
+      "sha256": "2143d895e08c00c271d2cd43c64ee96bb9843ea90a7df070645d9bf2cb6e3054"
+    },
+    {
+      "path": "tests/Operation.Tests/ExecutionTests.cs",
+      "sha256": "f9832a83672fffba941f753e86de5c1ac74a26d37a3a10553dc3d6ad69669c11"
+    },
+    {
+      "path": "tests/Operation.Tests/IntakeTests.cs",
+      "sha256": "a142a5c18e5f2c239e3c501cb4236e5842ee4eb50d345bb83d19af923c879be1"
+    },
+    {
+      "path": "tests/Operation.Tests/Operation.Tests.csproj",
+      "sha256": "7c21a9b03946b00fb2d1e03479fca034fb747841485d121aa555c6ba725e95b9"
+    },
+    {
+      "path": "tests/Operation.Tests/OperationTests.cs",
+      "sha256": "e167ebc50878f5ccbe3ab845781e7693faec80ad1e84e1643489a6b26be4bc6c"
+    },
+    {
+      "path": "tests/Operation.Tests/QueueTests.cs",
+      "sha256": "47abd604faca86131e7e99a1d4d6670cac15bc1333cc311ffec989f707a8c05c"
+    },
+    {
+      "path": "tests/Operation.Tests/SnapshotTests.cs",
+      "sha256": "25352276825bd800b9ef5e76f51cf858acb26d76809d838696d998c4eee0d141"
+    }
+  ],
+  "localLinksChecked": 149,
+  "brokenLinks": [],
+  "acceptanceCriteriaReviewed": 22,
+  "step3Started": false,
+  "applicationChanges": "signature/state migration and regression only; complete use cases remain pending"
+}

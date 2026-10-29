@@ -34,7 +34,7 @@ Não criar agora um serviço separado de catálogo nem um orquestrador em outro 
 
 OS é a visão para o cliente e dona do histórico global. Operation guarda histórico técnico e diagnóstico; Budget guarda estado financeiro; Inventory guarda reserva. Estados locais não são sincronizados por escrita direta nem precisam ter enums idênticos.
 
-Alvo Operation: Received -> InDiagnostic -> AwaitingExecutionAuthorization -> ReadyForExecution -> InExecution -> ExecutionCompleted. DiagnosticFailed aguarda cancelamento e bloqueia conclusão posterior. Canceled é terminal pré-início físico. Espera por pagamento/estoque fica na Saga. O núcleo inicial ainda usa AwaitingApproval, AwaitingPartsOrConsumables e Finalized; precisa ser migrado, conforme plano.
+Alvo Operation: Received -> InDiagnostic -> AwaitingExecutionAuthorization -> ReadyForExecution -> InExecution -> ExecutionCompleted. DiagnosticFailed aguarda cancelamento e bloqueia conclusão posterior. Canceled é terminal pré-início físico. Espera por pagamento/estoque fica na Saga. O domínio do passo 2 já usa os estados técnicos alvo; os adapters e contratos wire ainda não foram implementados. [Modelo local](../planning/STEP_2_MODEL.md).
 
 ## Filiais
 

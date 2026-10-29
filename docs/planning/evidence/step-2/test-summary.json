@@ -1,0 +1,420 @@
+{
+  "date": "2026-10-28",
+  "step": 2,
+  "sdk": "10.0.402",
+  "command": "dotnet test GearFlow.Operation.slnx --no-restore --configuration Release -m:1 -nr:false --collect:\"XPlat Code Coverage\" --logger \"trx;LogFileName=step-2.trx\" --results-directory TestResults/step-2-final-2026-10-28",
+  "exitCode": 0,
+  "counters": {
+    "total": "72",
+    "executed": "72",
+    "passed": "72",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "coverage": {
+    "line-rate": "1",
+    "branch-rate": "0.9803000000000001",
+    "version": "1.9",
+    "timestamp": "1793238642",
+    "lines-covered": "342",
+    "lines-valid": "342",
+    "branches-covered": "150",
+    "branches-valid": "153"
+  },
+  "packages": [
+    {
+      "name": "Operation.Application",
+      "line-rate": "1",
+      "branch-rate": "1",
+      "complexity": "31"
+    },
+    {
+      "name": "Operation.Domain",
+      "line-rate": "1",
+      "branch-rate": "0.9772",
+      "complexity": "206"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRejectsAnySnapshotDivergenceWithoutPartialProgress(change: 5)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001482"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotCannotOmitReplaceAddOrChangeRequestedItems(change: 5)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000949"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.SnapshotRejectsOverflowInsteadOfWrappingTotal",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007066"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.FinalizationPreservesLegacyRuleWithoutNewPendingJobGuard",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007852"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.DiagnosticIdentityAndPricingWindowAreCheckedBeforeMutation(change: 0)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003147"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.CancellationIsIdempotentInEveryPreRepairState(stage: 4)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012620"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakePreservesOrderVehicleRequestedItemsAndDistinctOccurrences",
+      "outcome": "Passed",
+      "duration": "00:00:00.0362088"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.CancellationIsIdempotentInEveryPreRepairState(stage: 0)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006017"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.ConsumableInputAlsoEnforcesPrecisionAndPositiveQuantity(input: \"-1\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000255"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.SameTermsCanBeReorderedWithoutBeingMistakenForDifferentBudget",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012649"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationQueuesWorkWithoutClaimingPhysicalStartOrConsumingStock",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008915"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.InvalidActorNullSnapshotAndWrongStateDoNotConcludeDiagnostic",
+      "outcome": "Passed",
+      "duration": "00:00:00.0011116"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakeRejectsEmptyIdentities(target: 2)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003601"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakeCopiesCallerCollectionsAndExposesReadOnlyViews",
+      "outcome": "Passed",
+      "duration": "00:00:00.0013107"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRejectsAnySnapshotDivergenceWithoutPartialProgress(change: 3)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0494856"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.InvalidItemQuantitiesAreRejected(type: Part, input: \"1.5\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000348"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakeRejectsEmptyIdentities(target: 0)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000288"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRequiresCompletedDiagnosticAndRejectsNullPayload",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007988"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakeRejectsNullEnumerablesAndElements",
+      "outcome": "Passed",
+      "duration": "00:00:00.0009369"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.ActorIsRequiredAtIntakeAndMutationWithoutPartialChange(actor: \"\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006791"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.NoOpCancellationDoesNotCreateAnotherLocalEvent",
+      "outcome": "Passed",
+      "duration": "00:00:00.0018397"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.ConsumableInputAlsoEnforcesPrecisionAndPositiveQuantity(input: \"0\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002408"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.DiagnosticIdentityAndPricingWindowAreCheckedBeforeMutation(change: 1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001132"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.DeactivationAfterDiagnosticAndInvalidReasonsAreRejected",
+      "outcome": "Passed",
+      "duration": "00:00:00.0501933"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRejectsAnySnapshotDivergenceWithoutPartialProgress(change: 4)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001299"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.InvalidItemQuantitiesAreRejected(type: Consumable, input: \"-1\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000314"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.InvalidTransitionDoesNotCommitAnEvent",
+      "outcome": "Passed",
+      "duration": "00:00:00.0048415"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.TombstoneDoesNotInventVehicleOrRequestedItemsAndCannotAuthorizeLateWork",
+      "outcome": "Passed",
+      "duration": "00:00:00.0030083"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.ActorIsRequiredAtIntakeAndMutationWithoutPartialChange(actor: \" \")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002511"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.CancellationIsIdempotentInEveryPreRepairState(stage: 3)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003352"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.VersionAndHistoryDescribeActualActionsInOrder",
+      "outcome": "Passed",
+      "duration": "00:00:00.0071703"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakeRequiresJobsAndGloballyUniqueLineIds",
+      "outcome": "Passed",
+      "duration": "00:00:00.0019173"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotCannotOmitReplaceAddOrChangeRequestedItems(change: 1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001106"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.VehicleChangesBeforeDiagnosticCompletionButNotAfter",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014019"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRejectsAnySnapshotDivergenceWithoutPartialProgress(change: 2)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001527"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.RepeatedAuthorizationDoesNotCreateAnotherLocalEvent",
+      "outcome": "Passed",
+      "duration": "00:00:00.0538801"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.IntakeRejectsEmptyIdentities(target: 1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0066463"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.ApplicationStillCommitsLocalFlowAfterDomainSignatureMigration",
+      "outcome": "Passed",
+      "duration": "00:00:00.0027862"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.DuplicateReceiveRemainsExplicitlyPendingApplicationIdempotencyWork",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006726"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRejectsAnySnapshotDivergenceWithoutPartialProgress(change: 1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004386"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationRejectsAnySnapshotDivergenceWithoutPartialProgress(change: 0)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008392"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.MissingOperationAndInvalidCorrelationDoNotCommit",
+      "outcome": "Passed",
+      "duration": "00:00:00.0024499"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotCannotOmitReplaceAddOrChangeRequestedItems(change: 0)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000972"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.InvalidItemQuantitiesAreRejected(type: Labor, input: \"2\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004452"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.AuthorizationCopiesMappingAndRequiresExactlyTheApprovedLaborLines",
+      "outcome": "Passed",
+      "duration": "00:00:00.0018445"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.CancellationAndPhysicalStartHaveMutuallyExclusiveSequentialOutcomes",
+      "outcome": "Passed",
+      "duration": "00:00:00.0011874"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.DeactivationIsDifferentFromCancellationAndBlocksFurtherWork(startDiagnostic: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003742"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.JobsAreExecutedByBudgetLineAndRepeatedCatalogJobsHaveIndependentProgress",
+      "outcome": "Passed",
+      "duration": "00:00:00.0065629"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.FractionalConsumableAndExplicitZeroPriceAreValid",
+      "outcome": "Passed",
+      "duration": "00:00:00.0053083"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.ConsumableInputAlsoEnforcesPrecisionAndPositiveQuantity(input: \"0.0001\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004115"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.ExplicitFailureBlocksSuccessAndAllowsCancellation",
+      "outcome": "Passed",
+      "duration": "00:00:00.0516038"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.InvalidItemQuantitiesAreRejected(type: Consumable, input: \"0\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0066356"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotCannotOmitReplaceAddOrChangeRequestedItems(change: 3)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004462"
+    },
+    {
+      "name": "Operation.Tests.QueueTests.ActionableQueueExcludesCommercialWaitInactiveFailedAndTerminalWork",
+      "outcome": "Passed",
+      "duration": "00:00:00.0549684"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotCannotOmitReplaceAddOrChangeRequestedItems(change: 2)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0016950"
+    },
+    {
+      "name": "Operation.Tests.OperationTests.FailedCommitOnCreationDoesNotClaimSuccess",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008611"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.ReadableCodeIsPositiveWhenSupplied(code: -1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0005449"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.SnapshotIsDefensiveAndKeepsAuthoritativeAmountsWithoutInventingConsumableFormula",
+      "outcome": "Passed",
+      "duration": "00:00:00.0075960"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.DiagnosticIdentityAndPricingWindowAreCheckedBeforeMutation(change: 2)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014284"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.CancellationIsIdempotentInEveryPreRepairState(stage: 2)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003189"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.LineInputRequiresValidIdentityTypeNameAndNonNegativePrices",
+      "outcome": "Passed",
+      "duration": "00:00:00.0030567"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.ActorAndTimestampsAreNormalizedAndPastMutationIsRejected",
+      "outcome": "Passed",
+      "duration": "00:00:00.0022606"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.SnapshotRequiresIdentityPolicyUniqueNonNullLinesAndBoundedSize",
+      "outcome": "Passed",
+      "duration": "00:00:00.0036846"
+    },
+    {
+      "name": "Operation.Tests.SnapshotTests.InvalidItemQuantitiesAreRejected(type: Consumable, input: \"0.0001\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000372"
+    },
+    {
+      "name": "Operation.Tests.IntakeTests.ReadableCodeIsPositiveWhenSupplied(code: 0)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002627"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotMustMatchAllConsumablesWithoutReusingAnInitialLine",
+      "outcome": "Passed",
+      "duration": "00:00:00.0013373"
+    },
+    {
+      "name": "Operation.Tests.QueueTests.QueueBreaksTiesByAgeAndOrderIdWithoutChangingAggregates",
+      "outcome": "Passed",
+      "duration": "00:00:00.0024822"
+    },
+    {
+      "name": "Operation.Tests.ExecutionTests.SemanticallyRepeatedAuthorizationDoesNotRegressWorkOrReplaceFirstAuthorization",
+      "outcome": "Passed",
+      "duration": "00:00:00.0015602"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.CompleteDiagnosticPreservesRequestedItemsAndFractionalConsumables",
+      "outcome": "Passed",
+      "duration": "00:00:00.0044556"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.CancellationIsIdempotentInEveryPreRepairState(stage: 1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002474"
+    },
+    {
+      "name": "Operation.Tests.CancellationTests.DeactivationIsDifferentFromCancellationAndBlocksFurtherWork(startDiagnostic: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014811"
+    },
+    {
+      "name": "Operation.Tests.DiagnosticTests.SnapshotCannotOmitReplaceAddOrChangeRequestedItems(change: 4)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001248"
+    }
+  ],
+  "trxPath": "TestResults/step-2-final-2026-10-28/step-2.trx",
+  "trxSha256": "a481bbe6a41851b4eacb610293a024fd57550d71150eb363e5603b0d7436b1ba",
+  "coverageSha256": "b1e6bc58dd7ad243b738c6b3cc58a0d3afcd3069c53ddfd29a80077b85b79c00",
+  "limits": [
+    "Domain model plus signature migration/regression of initial Application",
+    "No complete application use cases, external pricing or isolated work unit",
+    "No database/broker/API/Saga/BDD",
+    "Proposed wire contracts not changed/published"
+  ]
+}

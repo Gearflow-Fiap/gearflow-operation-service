@@ -1,11 +1,28 @@
 namespace GearFlow.Operation.Domain;
 
-// Valores preservados do Workshop. Delivered pertence ao OS Service.
+// Estado técnico local: os valores não são contrato wire nem o enum global da OS.
 public enum OperationStatus
 {
-    Received = 1, InDiagnostic = 2, AwaitingApproval = 3, InExecution = 4,
-    Finalized = 5, Canceled = 7, AwaitingPartsOrConsumables = 8
+    Received = 1,
+    InDiagnostic = 2,
+    AwaitingExecutionAuthorization = 3,
+    ReadyForExecution = 4,
+    InExecution = 5,
+    ExecutionCompleted = 6,
+    DiagnosticFailed = 7,
+    Canceled = 8
 }
-public sealed record OperationHistory(OperationStatus Status, string Actor, DateTimeOffset At);
-public sealed record JobProgress(Guid JobId, DateTimeOffset? ExecutedAt);
+
+public enum OperationAction
+{
+    Received, VehicleUpdated, DiagnosticStarted, DiagnosticCompleted, DiagnosticFailed,
+    ExecutionAuthorized, ExecutionStarted, JobExecuted, ExecutionCompleted, Deactivated, Canceled
+}
+
+public enum OperationItemType { Labor, Part, Consumable }
+
+public sealed record OperationHistory(
+    long Version, OperationStatus Status, OperationAction Action, string Actor,
+    DateTimeOffset At, string Description, Guid? SubjectId = null);
+
 public sealed class OperationConflictException(string message) : Exception(message);

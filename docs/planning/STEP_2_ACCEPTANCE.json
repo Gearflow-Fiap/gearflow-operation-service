@@ -1,0 +1,116 @@
+{
+  "date": "2026-10-28",
+  "step": 2,
+  "criteria": [
+    {
+      "id": "AT-01",
+      "status": "Domínio atendido; integração pendente",
+      "representativeTest": "IntakePreservesOrderVehicleRequestedItemsAndDistinctOccurrences"
+    },
+    {
+      "id": "AT-02",
+      "status": "Domínio atendido",
+      "representativeTest": "IntakeRejectsEmptyIdentities"
+    },
+    {
+      "id": "AT-03",
+      "status": "Domínio atendido",
+      "representativeTest": "IntakeCopiesCallerCollectionsAndExposesReadOnlyViews"
+    },
+    {
+      "id": "AT-04",
+      "status": "Domínio atendido; fronteira da aplicação pendente",
+      "representativeTest": "ActorIsRequiredAtIntakeAndMutationWithoutPartialChange"
+    },
+    {
+      "id": "AT-05",
+      "status": "Validação de snapshot no domínio atendida; obtenção de preços/caso de uso pendentes",
+      "representativeTest": "CompleteDiagnosticPreservesRequestedItemsAndFractionalConsumables"
+    },
+    {
+      "id": "AT-06",
+      "status": "Pendente no passo 3",
+      "representativeTest": null
+    },
+    {
+      "id": "AT-07",
+      "status": "Quantidade/linhas no domínio atendidas; fórmula financeira depende de acordo",
+      "representativeTest": "FractionalConsumableAndExplicitZeroPriceAreValid"
+    },
+    {
+      "id": "AT-08",
+      "status": "Guard local atendido; propagação/concorrência externas pendentes",
+      "representativeTest": "VehicleChangesBeforeDiagnosticCompletionButNotAfter"
+    },
+    {
+      "id": "AT-09",
+      "status": "Domínio atendido; aplicação/persistência pendentes",
+      "representativeTest": "DeactivationIsDifferentFromCancellationAndBlocksFurtherWork"
+    },
+    {
+      "id": "AT-10",
+      "status": "Autorização local atendida; validações comerciais externas pendentes",
+      "representativeTest": "AuthorizationQueuesWorkWithoutClaimingPhysicalStartOrConsumingStock"
+    },
+    {
+      "id": "AT-11",
+      "status": "Domínio atendido; contrato externo de mapping pendente",
+      "representativeTest": "JobsAreExecutedByBudgetLineAndRepeatedCatalogJobsHaveIndependentProgress"
+    },
+    {
+      "id": "AT-12",
+      "status": "Guard/auditoria por linha atendidos; replay de intenção pendente",
+      "representativeTest": "JobsAreExecutedByBudgetLineAndRepeatedCatalogJobsHaveIndependentProgress"
+    },
+    {
+      "id": "AT-13",
+      "status": "Domínio atendido; entrega de evento externo pendente",
+      "representativeTest": "FinalizationPreservesLegacyRuleWithoutNewPendingJobGuard"
+    },
+    {
+      "id": "AT-14",
+      "status": "Domínio atendido",
+      "representativeTest": "VersionAndHistoryDescribeActualActionsInOrder"
+    },
+    {
+      "id": "AT-15",
+      "status": "Pendente no passo 3",
+      "representativeTest": null
+    },
+    {
+      "id": "AT-16",
+      "status": "Fila local atendida; paginação/query pendentes",
+      "representativeTest": "ActionableQueueExcludesCommercialWaitInactiveFailedAndTerminalWork"
+    },
+    {
+      "id": "AT-17",
+      "status": "Timestamps representados; cálculo/query/exportação pendentes",
+      "representativeTest": null
+    },
+    {
+      "id": "AT-18",
+      "status": "Falhas de validação sem mutação atendidas; unidade de trabalho isolada/rollback pendentes",
+      "representativeTest": "SnapshotCannotOmitReplaceAddOrChangeRequestedItems"
+    },
+    {
+      "id": "AT-19",
+      "status": "Autorização/cancelamento locais idempotentes; recebimento/journal pendentes",
+      "representativeTest": "SemanticallyRepeatedAuthorizationDoesNotRegressWorkOrReplaceFirstAuthorization"
+    },
+    {
+      "id": "AT-20",
+      "status": "Interleavings locais atendidos; concorrência real/persistência posteriores",
+      "representativeTest": "CancellationAndPhysicalStartHaveMutuallyExclusiveSequentialOutcomes"
+    },
+    {
+      "id": "AT-21",
+      "status": "Fronteiras preservadas no domínio; integração/BDD posteriores",
+      "representativeTest": null
+    },
+    {
+      "id": "AT-22",
+      "status": "Sem mudança; catálogo continua suporte proposto",
+      "representativeTest": null
+    }
+  ]
+}

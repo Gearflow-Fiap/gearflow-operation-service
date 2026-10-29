@@ -118,3 +118,7 @@ Consumers e filas `_error` com alerta; parâmetros de retry/timeout ainda depend
 ## Validar os exemplos
 
 Com PowerShell 7, executar `pwsh -File docs/contracts/Validate-Examples.ps1` a partir da raiz do repositório. O script seleciona a definição correta de cada mensagem. Não valida envelope/URN MassTransit nem as regras semânticas entre campos/serviços; essas exigem testes do pacote e integração.
+
+## Compatibilidade com o modelo implementado no passo 2
+
+Os tipos de domínio não são os records wire desta proposta. O modelo local agora tem RequestedParts, identidade estável de diagnóstico, mapping BudgetJobId/DiagnosticLineId e PricingPolicyId, ainda não representados integralmente nestes exemplos. Antes da integração, revisar a especificação com OS/Budget e gerar records com validação de serialização real. Não serializar WorkOperation/DiagnosticSnapshot diretamente como contrato externo. Consulte [modelo e limites](../planning/STEP_2_MODEL.md).

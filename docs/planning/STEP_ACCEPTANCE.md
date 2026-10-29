@@ -50,3 +50,34 @@ A meta >=80% será mantida por serviço e novas camadas, mas 100% de linhas do n
 **Passo 2:** novos testes de domínio significativos (dados iniciais, coleções defensivas, estados, linhas, atividade/cancelamento) aprovados e checklist AT atualizado; parar e avisar conclusão antes do passo 3.
 
 **Passo 3:** testes de aplicação de diagnóstico/queries/autorização/progresso/conclusão e falhas usando portas e unidade de trabalho isolada; delimitar o que ainda depende de integração. Parar e relatar próximo incremento (banco/API/mensageria), sem declarar serviço completo.
+
+## Situação após o passo 2
+
+A tabela inicial é a fotografia anterior à implementação. Resultado atual por critério, sem presumir conclusão das camadas externas:
+
+| ID | Situação no checkpoint 2 | Teste representativo |
+|---|---|---|
+| AT-01 | Domínio atendido; integração pendente | `IntakePreservesOrderVehicleRequestedItemsAndDistinctOccurrences` |
+| AT-02 | Domínio atendido | `IntakeRejectsEmptyIdentities` |
+| AT-03 | Domínio atendido | `IntakeCopiesCallerCollectionsAndExposesReadOnlyViews` |
+| AT-04 | Domínio atendido; fronteira da aplicação pendente | `ActorIsRequiredAtIntakeAndMutationWithoutPartialChange` |
+| AT-05 | Validação de snapshot no domínio atendida; obtenção de preços/caso de uso pendentes | `CompleteDiagnosticPreservesRequestedItemsAndFractionalConsumables` |
+| AT-06 | Pendente no passo 3 | posterior |
+| AT-07 | Quantidade/linhas no domínio atendidas; fórmula financeira depende de acordo | `FractionalConsumableAndExplicitZeroPriceAreValid` |
+| AT-08 | Guard local atendido; propagação/concorrência externas pendentes | `VehicleChangesBeforeDiagnosticCompletionButNotAfter` |
+| AT-09 | Domínio atendido; aplicação/persistência pendentes | `DeactivationIsDifferentFromCancellationAndBlocksFurtherWork` |
+| AT-10 | Autorização local atendida; validações comerciais externas pendentes | `AuthorizationQueuesWorkWithoutClaimingPhysicalStartOrConsumingStock` |
+| AT-11 | Domínio atendido; contrato externo de mapping pendente | `JobsAreExecutedByBudgetLineAndRepeatedCatalogJobsHaveIndependentProgress` |
+| AT-12 | Guard/auditoria por linha atendidos; replay de intenção pendente | `JobsAreExecutedByBudgetLineAndRepeatedCatalogJobsHaveIndependentProgress` |
+| AT-13 | Domínio atendido; entrega de evento externo pendente | `FinalizationPreservesLegacyRuleWithoutNewPendingJobGuard` |
+| AT-14 | Domínio atendido | `VersionAndHistoryDescribeActualActionsInOrder` |
+| AT-15 | Pendente no passo 3 | posterior |
+| AT-16 | Fila local atendida; paginação/query pendentes | `ActionableQueueExcludesCommercialWaitInactiveFailedAndTerminalWork` |
+| AT-17 | Timestamps representados; cálculo/query/exportação pendentes | posterior |
+| AT-18 | Falhas de validação sem mutação atendidas; unidade de trabalho isolada/rollback pendentes | `SnapshotCannotOmitReplaceAddOrChangeRequestedItems` |
+| AT-19 | Autorização/cancelamento locais idempotentes; recebimento/journal pendentes | `SemanticallyRepeatedAuthorizationDoesNotRegressWorkOrReplaceFirstAuthorization` |
+| AT-20 | Interleavings locais atendidos; concorrência real/persistência posteriores | `CancellationAndPhysicalStartHaveMutuallyExclusiveSequentialOutcomes` |
+| AT-21 | Fronteiras preservadas no domínio; integração/BDD posteriores | posterior |
+| AT-22 | Sem mudança; catálogo continua suporte proposto | posterior |
+
+[Evidência do passo 2](evidence/step-2/RESULTS.md) e [modelo implementado](STEP_2_MODEL.md).
