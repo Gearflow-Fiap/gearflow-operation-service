@@ -60,3 +60,5 @@ Esta sequência local não é a mesma numeração P0-P8 do plano geral. O acompa
 - [Persistência PostgreSQL](architecture/adr-008-persistencia-postgresql.md) e [execução local/CI](development/POSTGRESQL.md).
 
 - [Padrão proposto ao grupo](rfcs/rfc-003-padrao-fase-4.md), [API HTTP](development/API_ENDPOINTS.md) e [ADR-009](architecture/adr-009-api-http.md).
+
+- [Catálogo e preços](development/CATALOG_AND_PRICING.md) e [ADR-010](architecture/adr-010-catalogo-e-precos.md).

@@ -29,7 +29,7 @@ public sealed class PersistenceTests(PostgresFixture postgres)
         await using (var db = test.Factory.CreateDbContext())
         {
             await db.Database.MigrateAsync(); await db.Database.MigrateAsync();
-            Assert.Single(await db.Database.GetAppliedMigrationsAsync());
+            Assert.Equal(2, (await db.Database.GetAppliedMigrationsAsync()).Count());
             Assert.Empty(await db.Database.GetPendingMigrationsAsync());
             Assert.False(db.Database.HasPendingModelChanges());
             await db.GetService<IMigrator>().MigrateAsync("0");

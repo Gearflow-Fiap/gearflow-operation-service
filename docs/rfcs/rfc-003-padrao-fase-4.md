@@ -66,7 +66,6 @@ Finish diagnostic aceita apenas consumables [{lineId,consumableId,quantity}]; se
 
 ## Entrega incremental e revisão do grupo
 
-Implementado até incremento 4: núcleo e persistência. Incremento 5A entregou HTTP/staff/erros/precondições/OpenAPI com testes; produção ainda usa catálogo bloqueado (503), sem preço inventado. Incremento 5B deve persistir catálogo de mão de obra, conectar GET Inventory e autenticação após revisão desta proposta. Incremento 6 implementa broker e contratos homologados. Infra-broker não foi inspecionado localmente nem modificado.
+Implementado até incremento 4: núcleo e persistência. Incremento 5A entregou HTTP/staff/erros/precondições/OpenAPI com testes; o 5B acrescentou catálogo PostgreSQL e adapter HTTP Inventory com credencial do ambiente. Ausência de configuração/preços válidos mantém 503, sem preço inventado. Homologação coletiva de política, emissor/claims e credencial real ainda é necessária. Incremento 6 implementa broker e contratos homologados. Infra-broker não foi inspecionado localmente nem modificado.
 
 Para o grupo revisar: confirmar OS/Saga, aprovar per-unit-v1 e unidades de insumos, definir emissor/claims/credencial de serviço e validar payloads públicos com exemplos de falha. Mudanças nesses itens devem atualizar esta RFC e ADRs, preservando compatibilidade.
-

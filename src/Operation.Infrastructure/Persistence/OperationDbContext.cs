@@ -13,6 +13,14 @@ public sealed class OperationDbContext(DbContextOptions<OperationDbContext> opti
     protected override void OnModelCreating(ModelBuilder model)
     {
         model.HasDefaultSchema("operation");
+        var job = model.Entity<JobRow>();
+        job.ToTable("catalog_jobs", table => table.HasCheckConstraint("ck_catalog_job", "price_cents >= 0 AND version > 0 AND length(trim(name)) > 0"));
+        job.HasKey(row => row.Id);
+        job.Property(row => row.Name).HasMaxLength(128);
+        job.Property(row => row.Description).HasMaxLength(2000);
+        job.Property(row => row.UpdatedBy).HasMaxLength(200);
+        job.Property(row => row.Version).IsConcurrencyToken();
+        job.HasIndex(row => new { row.IsActive, row.Name, row.Id });
         var operation = model.Entity<OperationRow>();
         operation.ToTable("operations", table =>
         {

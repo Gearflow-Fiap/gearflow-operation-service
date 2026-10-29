@@ -12,13 +12,14 @@ public sealed class OperationOpenApi : IOpenApiDocumentTransformer
         document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT" };
         foreach (var (path, item) in document.Paths)
         {
-            if (!path.StartsWith("/api/operation", StringComparison.Ordinal) || item.Operations is null) continue;
+            var operational = path.StartsWith("/api/operation", StringComparison.Ordinal);
+            if ((!operational && !path.StartsWith("/api/catalog/jobs", StringComparison.Ordinal)) || item.Operations is null) continue;
             foreach (var (method, operation) in item.Operations)
             {
                 operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document)] = [] }];
-                if (method != HttpMethod.Post) continue;
+                if (!(operational && method == HttpMethod.Post) && !(method == HttpMethod.Put || method == HttpMethod.Delete)) continue;
                 operation.Parameters ??= [];
-                operation.Parameters.Add(new OpenApiParameter { Name = "Idempotency-Key", In = ParameterLocation.Header, Required = true,
+                if (operational) operation.Parameters.Add(new OpenApiParameter { Name = "Idempotency-Key", In = ParameterLocation.Header, Required = true,
                     Schema = new OpenApiSchema { Type = JsonSchemaType.String, Format = "uuid" } });
                 operation.Parameters.Add(new OpenApiParameter { Name = "If-Match", In = ParameterLocation.Header, Required = true,
                     Description = "ETag forte recebido no GET, por exemplo: \"3\". Replay exato devolve o resultado original.", Schema = new OpenApiSchema { Type = JsonSchemaType.String } });

@@ -1,6 +1,6 @@
 # Acompanhamento da implementação
 
-Atualizado em 29/10/2026. **Ponto de retomada: núcleo e persistência concluídos; incremento 5A (API) concluído; 5B (catálogo/preços reais) pendente.** Os registros dos passos anteriores abaixo são históricos. Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
+Atualizado em 29/10/2026. **Ponto de retomada: núcleo e persistência concluídos; incrementos 5A/5B implementados e validados localmente; homologação externa e incremento 6 pendentes.** Os registros dos passos anteriores abaixo são históricos. Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
 
 | Passo solicitado | Escopo | Situação | Evidência |
 |---|---|---|---|
@@ -110,3 +110,9 @@ O texto de limites do passo 3 registra o estado histórico daquele checkpoint. E
 Host HTTP/JWT, policy staff explícita, ProblemDetails, OpenAPI e comandos com ETag/idempotência. **166 aprovados** (131 unitários + 35 integração), sem falhas/ignorados; API 97,97%, demais assemblies >=98,61%. [Evidências](evidence/increment-5a/RESULTS.md), [ADR-009](../architecture/adr-009-api-http.md), [rotas/configuração](../development/API_ENDPOINTS.md), [proposta ao grupo](../rfcs/rfc-003-padrao-fase-4.md).
 
 Retomada: 5B, catálogo de mão de obra e preços reais. Host ainda retorna 503 na cotação por falta de adapter; não declarar incremento 5 completo nem fluxo distribuído pronto. Preservar regra de checkpoint/testes por entrega.
+
+## Incremento 5B — concluído localmente
+
+Catálogo PostgreSQL, CRUD Staff com versão/desativação e adapter de cotação HTTP Inventory. **198 aprovados** (155 unitários + 43 integração), sem falhas/ignorados; todos os assemblies >=98,45%. [Evidências](evidence/increment-5b/RESULTS.md), [ADR-010](../architecture/adr-010-catalogo-e-precos.md), [configuração](../development/CATALOG_AND_PRICING.md).
+
+Retomar no incremento 6: contratos públicos/broker e homologação com serviços reais. O Inventory dos testes 5B é servidor substituto; token real, policy do emissor e política financeira comum ainda exigem alinhamento. Preservar snapshots e histórico; não importar dados do legado trocando IDs silenciosamente.
