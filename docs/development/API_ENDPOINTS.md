@@ -1,6 +1,6 @@
-# API HTTP — incremento 5A
+# API HTTP do Operation
 
-Status: host e endpoints operacionais implementados. HTTP usa PostgreSQL real. Catálogo próprio e adapter HTTP Inventory implementados no 5B; cotação retorna 503 quando falta configuração, item ou dependência válida. Integração de broker segue no incremento 6.
+Status: host e endpoints operacionais implementados. HTTP usa PostgreSQL real. Catálogo próprio e adapter HTTP Inventory implementados no 5B; cotação retorna 503 quando falta configuração, item ou dependência válida. Consumers/outbox de broker implementados; a integração coletiva com os outros serviços continua em homologação.
 
 Base: /api/operation. Autenticação JWT HS256 + policy Staff em todos os endpoints abaixo.
 
@@ -42,3 +42,14 @@ Executar migrations conforme POSTGRESQL.md e depois `dotnet run --project src/Op
 A RFC-003 apresenta o padrão recomendado para a revisão coletiva. A API exige configuração explícita em vez de tratar qualquer JWT como staff.
 
 Motivos de falha/cancelamento/desativação têm limite de 2000 caracteres na aplicação, alinhado aos contratos de mensagens. Sem alteração de estado quando a validação falha.
+
+
+## Contrato executável da documentação (M1)
+
+Todas as rotas /api/** possuem resumo, descrição, tipo de sucesso e erros aplicáveis em ProblemDetails. O esquema inclui exemplos de entrada/erro, paginação e headers. ETag e Cache-Control estão documentados onde o runtime os devolve; criação de catálogo também informa Location.
+
+Os testes EndpointContractTests descobrem as rotas reais no EndpointDataSource e verificam documentação/policy Staff, chamadas anônimas/cliente sem efeitos, conteúdo OpenAPI e exemplos executáveis. A criação de catálogo não ganha Idempotency-Key/If-Match por causa da documentação; atualização/desativação exigem apenas If-Match. Os comandos de operação exigem os dois headers.
+
+Os IDs nos exemplos são ilustrativos. Para comandos distintos, gere um novo Idempotency-Key; reutilize apenas numa repetição exata da mesma intenção. O exemplo de conclusão de diagnóstico com consumables vazio serve para casos sem insumos; preços de peças continuam dependendo do Inventory quando aplicável.
+
+Plano de melhoria: [M1–M5](../planning/CODE_QUALITY_PLAN.md). Para ver as novas descrições/exemplos na imagem local, reinicie o perfil Docker Compose com F5.

@@ -1,0 +1,24 @@
+{
+  "step": "M1",
+  "status": "complete-local",
+  "businessEndpointsDocumented": 16,
+  "dotnetCasesPassed": 236,
+  "pythonTestsPassed": 13,
+  "supplementalFocusedTestsPassed": 5,
+  "runs": [
+    {
+      "report": "TestResults/quality-m1/miran_MIRANDA_2026-10-29_19_35_07_net10.0.trx",
+      "passed": 72,
+      "total": 72,
+      "failed": 0
+    },
+    {
+      "report": "TestResults/quality-m1/miran_MIRANDA_2026-10-29_19_37_57_net10.0.trx",
+      "passed": 164,
+      "total": 164,
+      "failed": 0
+    }
+  ],
+  "apiCoverage": "427/448 (95.31%)",
+  "productionDeploy": false
+}

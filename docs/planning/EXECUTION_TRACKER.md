@@ -150,3 +150,11 @@ Retomada de negócio permanece 7B: dono OS/Saga e contratos/topologia/credenciai
 Scalar em /scalar/v1 e esquema público apenas em Development; APIs de negócio continuam Staff. Fora de Development, UI 404 e esquema protegido. Visual Studio abre Scalar após reconstruir com F5; helper New-LocalStaffToken.ps1 gera token temporário local sem embutir credenciais na página.
 
 231 testes .NET distintos aprovados (164 unitários + 67 integração), incluindo três reexecuções após recuperar broker inicialmente indisponível; 13 Python aprovados. Cobertura API 93,64%, demais assemblies >=98,93%. [Evidências](evidence/scalar/RESULTS.md) e [uso](../development/VISUAL_STUDIO.md). Sem deploy remoto; imagem local precisa de reconstrução para exibir a nova UI.
+
+## Evolução de código M1–M5 — M1 concluído
+
+Plano registrado em [CODE_QUALITY_PLAN](CODE_QUALITY_PLAN.md), separado dos passos iniciais/incrementos 7B. M1 documenta as 16 rotas no Scalar/OpenAPI e acrescenta testes descobrindo rotas reais para documentação, policy Staff, acesso anônimo/cliente, respostas/headers e exemplo executável.
+
+236 testes .NET distintos (164 unitários + 72 integração) e 13 Python aprovados, sem falhas/ignorados; API 95,31% e demais assemblies >=98,93%. Cinco testes focados adicionais são reexecuções dos casos já incluídos no total. [Evidências](evidence/quality-m1/RESULTS.md).
+
+Próximo passo dessa sequência: M2 — DI por camada e opções tipadas. Demais pendências de integração coletiva/OS/Saga continuam no 7B. Reiniciar F5 para ver as novas descrições no Scalar.
