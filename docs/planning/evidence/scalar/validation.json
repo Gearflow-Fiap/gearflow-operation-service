@@ -1,0 +1,28 @@
+{
+  "distinctDotnetCasesPassedByTestId": 231,
+  "pythonTestsPassed": 13,
+  "initialBrokerTimeoutsRetriedSuccessfully": 3,
+  "remainingFailures": 0,
+  "runs": [
+    {
+      "report": "TestResults/scalar/miran_MIRANDA_2026-10-29_19_12_57_net10.0.trx",
+      "passed": 64,
+      "failed": 3,
+      "total": 67
+    },
+    {
+      "report": "TestResults/scalar/miran_MIRANDA_2026-10-29_19_16_28_net10.0.trx",
+      "passed": 164,
+      "failed": 0,
+      "total": 164
+    },
+    {
+      "report": "TestResults/scalar/retry/miran_MIRANDA_2026-10-29_19_17_13_net10.0.trx",
+      "passed": 3,
+      "failed": 0,
+      "total": 3
+    }
+  ],
+  "apiCoverage": "309/330 (93.64%)",
+  "visualStudioImageRebuildRequired": true
+}

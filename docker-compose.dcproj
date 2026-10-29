@@ -12,7 +12,7 @@
     <DockerComposeProjectsToIgnore>tools/Operation.Migrate/Operation.Migrate.csproj</DockerComposeProjectsToIgnore>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceName>api</DockerServiceName>
-    <DockerServiceUrl>http://localhost:5085/health/ready</DockerServiceUrl>
+    <DockerServiceUrl>http://localhost:5085/scalar/v1</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="compose.local.yml" />

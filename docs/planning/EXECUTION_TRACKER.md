@@ -144,3 +144,9 @@ Atendidas as três frentes solicitadas: suporte Visual Studio Docker Compose; c�
 **228 testes .NET + 12 Python aprovados**, sem falhas/ignorados, cobertura mínima 93,52% e 18 contratos preservados. Projeto/perfil Compose reconhecidos na IDE; smoke HTTP do ambiente iniciado passou. Usuário confirmou F5 abrindo readiness; smoke HTTP final repetido pelo agente. Breakpoint específico não foi confirmado. [Evidências](evidence/project-organization/RESULTS.md), [Visual Studio](../development/VISUAL_STUDIO.md), [estrutura](../development/PROJECT_STRUCTURE.md), [testes](../../tests/README.md).
 
 Retomada de negócio permanece 7B: dono OS/Saga e contratos/topologia/credenciais coletivos, integração real e entrega remota. Não confundir reorganização local com conclusão dessa homologação.
+
+## Scalar — concluído localmente
+
+Scalar em /scalar/v1 e esquema público apenas em Development; APIs de negócio continuam Staff. Fora de Development, UI 404 e esquema protegido. Visual Studio abre Scalar após reconstruir com F5; helper New-LocalStaffToken.ps1 gera token temporário local sem embutir credenciais na página.
+
+231 testes .NET distintos aprovados (164 unitários + 67 integração), incluindo três reexecuções após recuperar broker inicialmente indisponível; 13 Python aprovados. Cobertura API 93,64%, demais assemblies >=98,93%. [Evidências](evidence/scalar/RESULTS.md) e [uso](../development/VISUAL_STUDIO.md). Sem deploy remoto; imagem local precisa de reconstrução para exibir a nova UI.

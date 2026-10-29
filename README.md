@@ -4,7 +4,7 @@ Microsserviço de diagnóstico e execução extraído do gearflow-app para a fas
 
 ## Executar no Visual Studio
 
-Abra `GearFlow.Operation.slnx`, defina **docker-compose** como Startup Project e execute o perfil **Docker Compose** (F5/Ctrl+F5), com Docker Desktop Linux ativo. A API abre em http://localhost:5085/health/ready. Credenciais locais são inicializadas apenas quando ausentes, sem substituir valores existentes. [Guia](docs/development/VISUAL_STUDIO.md).
+Abra `GearFlow.Operation.slnx`, defina **docker-compose** como Startup Project e execute o perfil **Docker Compose** (F5/Ctrl+F5), com Docker Desktop Linux ativo. O Scalar abre em http://localhost:5085/scalar/v1; o health check continua em /health/ready. Credenciais locais são inicializadas apenas quando ausentes, sem substituir valores existentes. [Guia](docs/development/VISUAL_STUDIO.md).
 
 CLI/CI: use `GearFlow.Operation.CI.slnf` para build/test de todos os projetos .NET sem o SDK Docker da IDE. [Estrutura de pastas](docs/development/PROJECT_STRUCTURE.md) e [testes por camada](tests/README.md).
 
@@ -12,7 +12,7 @@ CLI/CI: use `GearFlow.Operation.CI.slnf` para build/test de todos os projetos .N
 
 Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 
-**Organização e execução local validadas:** 228 testes .NET (164 unitários + 64 integração) e 12 testes Python aprovados, sem falhas/ignorados. Cobertura por assembly >=93,52%; 18 contratos preservados. [Evidências](docs/planning/evidence/project-organization/RESULTS.md).
+**Scalar e documentação local validados:** 231 testes .NET distintos e 13 testes Python aprovados; cobertura da API 93,64%. Scalar disponível em Development; APIs de negócio continuam protegidas por Staff. [Evidências](docs/planning/evidence/scalar/RESULTS.md).
 
 Incremento 7A acrescenta imagem/Compose, migration CLI, probes, logs JSON, traces/métricas OTLP e manifests/workflows. [Guia](docs/development/DELIVERY_AND_OBSERVABILITY.md), [Kubernetes](k8s/README.md), [ADR-012](docs/architecture/adr-012-observabilidade.md), [ADR-013](docs/architecture/adr-013-entrega-operation.md).
 

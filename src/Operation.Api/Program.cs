@@ -82,7 +82,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapGet("/health/live", () => Results.Ok(new { status = "alive" })).AllowAnonymous();
 OperationReadiness.Map(app);
-app.MapOpenApi().RequireAuthorization("Staff");
+app.MapOperationDocumentation();
 app.MapOperationEndpoints();
 app.MapCatalogEndpoints();
 app.Run();

@@ -26,7 +26,7 @@ Não há endpoints HTTP para receber OS, autorizar execução, reservar estoque,
 
 Erros seguem application/problem+json com code e traceId, sem stack trace ou detalhe de JWT. 400 validação; 401 token ausente/inválido; 403 falta policy staff/sub; 404 ausência; 409 conflito; 412 versão; 428 precondição; 503 cotação indisponível; 500 erro interno.
 
-OpenAPI gerado: GET /openapi/v1.json (Staff). Liveness público: GET /health/live, sem afirmar prontidão do banco/broker. Catálogo /api/catalog/jobs implementado: veja CATALOG_AND_PRICING.md.
+OpenAPI gerado: GET /openapi/v1.json (Staff fora de Development; público em Development para a UI). Scalar: GET /scalar/v1 apenas em Development. As APIs de negócio continuam exigindo Staff em todos os ambientes. Liveness público: GET /health/live, sem afirmar prontidão do banco/broker. Catálogo /api/catalog/jobs implementado: veja CATALOG_AND_PRICING.md.
 
 ## Configurar e executar
 

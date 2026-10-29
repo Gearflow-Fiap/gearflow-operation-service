@@ -5,7 +5,7 @@
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "api",
-      "composeLaunchUrl": "http://localhost:5085/health/ready",
+      "composeLaunchUrl": "http://localhost:5085/scalar/v1",
       "serviceActions": {
         "postgres": "StartWithoutDebugging",
         "migrate": "StartWithoutDebugging",
