@@ -66,6 +66,11 @@ Finish diagnostic aceita apenas consumables [{lineId,consumableId,quantity}]; se
 
 ## Entrega incremental e revisão do grupo
 
-Implementado até incremento 4: núcleo e persistência. Incremento 5A entregou HTTP/staff/erros/precondições/OpenAPI com testes; o 5B acrescentou catálogo PostgreSQL e adapter HTTP Inventory com credencial do ambiente. Ausência de configuração/preços válidos mantém 503, sem preço inventado. Homologação coletiva de política, emissor/claims e credencial real ainda é necessária. Incremento 6 implementa broker e contratos homologados. Infra-broker não foi inspecionado localmente nem modificado.
+Implementado até incremento 4: núcleo e persistência. Incremento 5A entregou HTTP/staff/erros/precondições/OpenAPI com testes; o 5B acrescentou catálogo PostgreSQL e adapter HTTP Inventory com credencial do ambiente. Ausência de configuração/preços válidos mantém 503, sem preço inventado. Homologação coletiva de política, emissor/claims e credencial real ainda é necessária. Incremento 6 implementa broker e contratos homologados. Infra-broker foi inspecionado nos incrementos 6/7B.1, sem alterações: há divergência de envelope/topologia documentada no kit de integração.
 
 Para o grupo revisar: confirmar OS/Saga, aprovar per-unit-v1 e unidades de insumos, definir emissor/claims/credencial de serviço e validar payloads públicos com exemplos de falha. Mudanças nesses itens devem atualizar esta RFC e ADRs, preservando compatibilidade.
+
+
+## Revisão 7B.1 — 29/10/2026
+
+Usuário ainda não sabe confirmar o owner OS/Saga. Budget documenta OS separado, mas não substitui decisão coletiva. [Kit para revisão](../integration/README.md) registra fontes, divergências, D-01..D-06 e cenários H-01..H-11. Nenhum acordo pendente foi marcado aprovado. Mensageria Operation já está implementada/validada localmente desde o incremento 6; homologação dos contratos/topologia com outros serviços segue pendente.

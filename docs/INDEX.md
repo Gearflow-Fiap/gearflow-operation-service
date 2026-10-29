@@ -66,3 +66,5 @@ Esta sequência local não é a mesma numeração P0-P8 do plano geral. O acompa
 - [Mensageria Operation](development/MESSAGING.md), [ADR-011](architecture/adr-011-mensageria-operation.md) e [contratos executáveis](contracts/README.md).
 
 - [Entrega e observabilidade](development/DELIVERY_AND_OBSERVABILITY.md), [ADR-012](architecture/adr-012-observabilidade.md), [ADR-013](architecture/adr-013-entrega-operation.md) e [Kubernetes](../k8s/README.md).
+
+- [Kit de integração 7B.1](integration/README.md), [compatibilidade](integration/compatibility.json), [decisões do grupo](integration/decisions.json) e [cenários conjuntos ainda não executados](integration/scenarios.json).

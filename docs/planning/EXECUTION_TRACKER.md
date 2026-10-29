@@ -1,6 +1,6 @@
 # Acompanhamento da implementação
 
-Atualizado em 29/10/2026. **Retomada: incremento 7A concluído localmente; próxima etapa 7B, homologação coletiva e infraestrutura/deploy remotos.** Os registros anteriores são históricos; os três passos solicitados diferem dos marcos P0-P8.
+Atualizado em 29/10/2026. **Retomada: 7A e preparo 7B.1 concluídos localmente; próximo marco é decisão coletiva OS/Saga/contratos e homologação real do 7B.** Registros anteriores são históricos; os três passos solicitados diferem dos marcos P0-P8.
 
 | Passo solicitado | Escopo | Situação | Evidência |
 |---|---|---|---|
@@ -130,3 +130,9 @@ Docker/Compose, migration CLI, probes, OpenTelemetry/logs/backlog, manifests Kus
 Reexecução Docker identificou histórico EF ambíguo quando usuário e schema se chamam operation. Corrigido para public.__EFMigrationsHistory e validado com reaplicação; dados preservados. Infraestrutura fase 3 inspecionada sem alterações: PostgreSQL próprio ainda precisa ser provisionado.
 
 Retomar no 7B: alinhar OS/Saga/contratos/topologia/credenciais com o grupo, provisionar banco/secrets/rede, configurar CI/Sonar/GHCR/environment/OIDC, homologar deploy/telemetria e executar Saga/BDD distribuídos. Nenhuma publicação/deploy foi executada. 7A não encerra a fase 4.
+
+## Incremento 7B.1 — kit para revisão do grupo concluído
+
+Guia do coordenador, matriz de oito achados com SHA-256 de 14 fontes, seis decisões pendentes e onze cenários conjuntos não executados. ZIP reproduzível contém NuGet preview e os 18 schemas/exemplos; exclui configurações privadas por lista explícita. Oito testes Python aprovados, export CLR/contratos e pacote/ZIP reais verificados. [Guia](../integration/README.md), [evidências](evidence/increment-7b1/RESULTS.md).
+
+Usuário informou não saber quem assume OS/Saga. Documentos Budget propõem OS separado, mas não há confirmação coletiva nem runtime disponível. Não transferimos silenciosamente essa responsabilidade ao Operation. Próximo marco: responsáveis revisam D-01..D-06 e alinham envelope/topologia, estoque, preços e identidade; depois executar H-01..H-11 no ambiente conjunto. 7B global, cloud e Saga completa permanecem pendentes.

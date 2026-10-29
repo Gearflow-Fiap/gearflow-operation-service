@@ -1,0 +1,151 @@
+{
+  "reviewedAt": "2026-10-29",
+  "method": "static-source-inspection",
+  "crossServiceRuntimeVerified": false,
+  "sources": [
+    {
+      "repository": "gearflow-budget-service",
+      "revisionMethod": "sha256-of-read-files",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "0c14fda6e444d0bc18a71d2c3b008657a0ca63be32c99bff14dfc6a840bd79c3"
+        },
+        {
+          "path": "docs/fluxo-saga.md",
+          "sha256": "5312f665b120c9032c1edb48cb7bfc24da90c8f975c1c35e828baa0b3e218087"
+        }
+      ]
+    },
+    {
+      "repository": "gearflow-inventory-service",
+      "revisionMethod": "sha256-of-read-files",
+      "files": [
+        {
+          "path": "src/GearFlow.Contracts/InventoryMessages.cs",
+          "sha256": "38c195958f19164afd040ac1fd725175e30730dc3bc2f5fd17468880febfcf99"
+        },
+        {
+          "path": "src/GearFlow.Inventory.Api/Configurations/JwtExtensions.cs",
+          "sha256": "87529433349b3b1ab974736cfbdf897f75f321c331e2680d5bca9aa29c4fc009"
+        },
+        {
+          "path": "src/GearFlow.Inventory.Api/Endpoints/PartEndpoints.cs",
+          "sha256": "0f8397d31950b540f5a966d6c95c6143ffe0f30eda7f4da358c7f4fde79f889d"
+        },
+        {
+          "path": "src/GearFlow.Inventory.Api/Endpoints/ConsumableEndpoints.cs",
+          "sha256": "ce5e24eb799af5007b30a1d8f520a515f25792d7b2137fa01d710a6d16a781ca"
+        },
+        {
+          "path": "src/GearFlow.Inventory.Application/Parts/PartDto.cs",
+          "sha256": "e37019297828bb54514a3914fc6dbc4698cda57ff9849a2a992e9df086dabb86"
+        },
+        {
+          "path": "src/GearFlow.Inventory.Application/Consumables/ConsumableDto.cs",
+          "sha256": "5056ff429a025a2ef4fcaa88f4bf15fb2ad106ff8ab46bc77b2dfe706ade9cba"
+        },
+        {
+          "path": "src/GearFlow.Inventory.Infrastructure/Messaging/MessagingServiceCollectionExtensions.cs",
+          "sha256": "0fa3f1e9f8fb9fde197bd65642c7db37d5adfac1a10f1fd12e2e9a03c39f8c05"
+        }
+      ]
+    },
+    {
+      "repository": "gearflow-infra-broker",
+      "revisionMethod": "sha256-of-read-files",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "bb3f2a314de9990cc8b3d2b9dcf770c80453eb98f0c8df612cb79ae84cc29965"
+        },
+        {
+          "path": "docs/messaging.md",
+          "sha256": "4aeaaa6ceb16b520112975fd3026d3e1dd57b229be5fe3da3db7f6a354b5966d"
+        },
+        {
+          "path": "rabbitmq/definitions.json",
+          "sha256": "a51fe4e95d85579e0a5d3dac11bed78f009da9c4f3c35a35649df0d4fe4228e7"
+        }
+      ]
+    },
+    {
+      "repository": "gearflow-infra-database",
+      "revisionMethod": "sha256-of-read-files",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "eb7a7ec2aa964e2f4f1eca6dc65c15dd756c0ea9e0986f369eb834ada6d601af"
+        }
+      ]
+    },
+    {
+      "repository": "gearflow-infra-k8s",
+      "revisionMethod": "sha256-of-read-files",
+      "files": [
+        {
+          "path": "README.md",
+          "sha256": "6c841943f4e2eb899e3420b68d8f8193628ab874c58fbd3c2533d47db38dd150"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "INT-01",
+      "area": "OS/Saga",
+      "status": "decision-pending",
+      "observed": "Budget documents a separate OS coordinator; no OS runtime is available and group ownership is unconfirmed.",
+      "next": "Assign persistent OS/Saga state, timeouts and reconciliation to a named service."
+    },
+    {
+      "id": "INT-02",
+      "area": "Broker transport",
+      "status": "incompatible-defaults",
+      "observed": "Infra-broker defines topic gearflow.events, os.order-created.v1 and an eventType/data wrapper. Operation/Inventory use native MassTransit envelope and type exchanges.",
+      "next": "Agree envelope, URNs, topology, subscribers and ACL before connecting shared services."
+    },
+    {
+      "id": "INT-03",
+      "area": "Stock ownership",
+      "status": "documentation-conflict",
+      "observed": "Budget flow assigns reservation/final stock update to Execution; Inventory implements ReserveStock/ReleaseStock/ConsumeStock. Operation does not own stock.",
+      "next": "Revise Budget diagram with Inventory and explicit acknowledgement of stock consumption."
+    },
+    {
+      "id": "INT-04",
+      "area": "Reserve/payment order",
+      "status": "decision-pending",
+      "observed": "Budget flow pays before reservation; Operation reference recommends reservation before payment request.",
+      "next": "Approve ordering, expiry and compensation policy; require all applicable confirmations before StartExecution."
+    },
+    {
+      "id": "INT-05",
+      "area": "Inventory HTTP DTO",
+      "status": "source-compatible-not-homologated",
+      "observed": "GET paths and id/name/priceCents or unitPriceCents match the adapter. DTOs have no isActive field; Operation treats it as optional.",
+      "next": "Test actual Inventory host with service credential and known IDs. Confirm units/rounding."
+    },
+    {
+      "id": "INT-06",
+      "area": "Identity",
+      "status": "decision-pending",
+      "observed": "Inventory requires authenticated JWT; Operation additionally requires a configured Staff claim. No common service identity agreement is available.",
+      "next": "Define emitter, audience, permissions, expiry and rotation. Do not forward human tokens."
+    },
+    {
+      "id": "INT-07",
+      "area": "Budget wire contracts",
+      "status": "documentation-only",
+      "observed": "Budget snapshot has README/saga documentation, without executable CLR contracts or schemas. Nine event names are documented; payload/URN compatibility cannot be verified.",
+      "next": "Budget owner provides canonical typed contracts and examples; do not invent financial payloads in Operation."
+    },
+    {
+      "id": "INT-08",
+      "area": "Database/cloud",
+      "status": "provisioning-pending",
+      "observed": "Database infrastructure targets phase-3 SQL Server; Operation needs exclusive PostgreSQL. Budget MongoDB is a documented plan, not a verified runtime.",
+      "next": "Prepare reviewed infrastructure, secrets and connectivity changes. No cloud apply is included in this kit."
+    }
+  ]
+}

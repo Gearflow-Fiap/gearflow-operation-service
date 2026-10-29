@@ -12,6 +12,8 @@ Incremento 7A acrescenta imagem/Compose, migration CLI, probes, logs JSON, trace
 
 Pendente (7B): homologação com OS/Budget/Inventory, owner OS/Saga, contratos/topologia/credenciais, BDD distribuído, PostgreSQL/telemetria/Sonar e deploy remotos. Identidade/claims dependem do emissor. Testes locais não encerram a fase 4.
 
+**7B.1 — kit para revisão do grupo:** [guia de integração](docs/integration/README.md), matriz de compatibilidade, decisões pendentes e cenários conjuntos. Gerador de ZIP validado por oito testes Python; CI prepara o artifact com contratos/exemplos e NuGet, sem publicação. O dono da OS/Saga continua sem confirmação do grupo. [Evidências](docs/planning/evidence/increment-7b1/RESULTS.md).
+
 ## Responsabilidades
 
 | Serviço | Dono |

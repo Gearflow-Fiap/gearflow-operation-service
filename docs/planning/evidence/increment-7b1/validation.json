@@ -1,0 +1,10 @@
+{
+  "artifact": "gearflow-operation-integration-preview-7b1.zip",
+  "sha256": "7519596c956d828515753e9a3e1931fca4049028531383b8dd39aeb9b14e5cbe",
+  "bytes": 62089,
+  "contracts": 18,
+  "pythonTests": 8,
+  "runtimeDotnetTestsRepeated": false,
+  "remoteCI": false,
+  "crossServiceScenariosRun": 0
+}

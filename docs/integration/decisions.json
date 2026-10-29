@@ -1,0 +1,11 @@
+{
+  "status": "pending-group-review",
+  "decisions": [
+    {"id":"D-01","question":"Qual serviço é dono da OS e da Saga persistente?","recommendation":"OS Service separado, com responsável, estado persistente, timeouts e reconciliação.","status":"pending","owner":null,"acceptedRevision":null},
+    {"id":"D-02","question":"Qual envelope e topologia compartilhados?","recommendation":"MassTransit nativo; namespace/URN canônicos; infra mantém broker, vhosts e ACL.","status":"pending","owner":null,"acceptedRevision":null},
+    {"id":"D-03","question":"Reserva antes ou depois da cobrança?","recommendation":"Reservar antes de cobrar; definir expiração e compensações em conjunto.","status":"pending","owner":null,"acceptedRevision":null},
+    {"id":"D-04","question":"Qual política de preço e unidade de consumível?","recommendation":"per-unit-away-from-zero-v1, BRL/centavos, unidade explícita e arredondamento por linha.","status":"pending","owner":null,"acceptedRevision":null},
+    {"id":"D-05","question":"Como serviços autenticam e quem publica contratos?","recommendation":"Credencial por serviço, ACL mínima, emissor/audience/rotação e feed versionado canônico.","status":"pending","owner":null,"acceptedRevision":null},
+    {"id":"D-06","question":"Quem prepara banco, rede, CI/Sonar e deploy?","recommendation":"PostgreSQL próprio, secrets/rede, environment protegido e OIDC antes de habilitar entrega.","status":"pending","owner":null,"acceptedRevision":null}
+  ]
+}

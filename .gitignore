@@ -10,3 +10,5 @@ artifacts/
 
 k8s/overlays/release/
 .sonarqube/
+__pycache__/
+*.pyc

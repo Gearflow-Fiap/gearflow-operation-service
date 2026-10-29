@@ -2,6 +2,8 @@
 
 Baseline local implementada em 29/10/2026; **preview sob revisão coletiva**, sem pacote publicado em registry. Fonte canônica local: src/Operation.Contracts/Messages.cs. Pacote separado GearFlow.Contracts.Operation 1.0.0-preview.1 (.NET 10), sem copiar contratos Inventory. Namespace/URN continuam GearFlow.Contracts.Operation.V1.<Tipo>. Assembly não define o URN.
 
+Para compartilhar os contratos sem copiar código nem configurações privadas, gerar o [kit de integração 7B.1](../integration/README.md). O ZIP reúne NuGet, schemas/exemplos, decisões e matriz de compatibilidade; não representa aprovação coletiva ou publicação em registry.
+
 - [Manifesto ativo](runtime-v1/manifest.json): 5 comandos e 13 eventos/respostas.
 - Schemas Draft 2020-12 e exemplos do serializador real em runtime-v1/schemas e runtime-v1/examples.
 - [Operação e topologia](../development/MESSAGING.md).

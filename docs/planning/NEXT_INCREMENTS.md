@@ -37,3 +37,10 @@ Antes da entrega global: alinhar topologia/envelope com infra-broker e OS/Budget
 Infraestrutura fase 3 inspecionada: EKS/Kong usa namespace gearflow; database provisiona SQL Server do monólito. Operation precisa de PostgreSQL exclusivo. Não alteramos esses repositórios. [Guia de entrega/observabilidade](../development/DELIVERY_AND_OBSERVABILITY.md), [ADR-012](../architecture/adr-012-observabilidade.md), [ADR-013](../architecture/adr-013-entrega-operation.md).
 
 Próximo 7B: (1) acordar owner OS/Saga, contratos/envelope/topologia e credenciais; (2) provisionar PostgreSQL e secrets/rede próprios na infraestrutura; (3) configurar Sonar, GHCR e environment/OIDC com proteções; (4) executar CI e rollout homologado; (5) validar traces/métricas/logs no backend e fluxo distribuído/compensações com os responsáveis. Entrega local não encerra a fase 4.
+
+## Subdivisão atual do 7B
+
+- **7B.1 concluído localmente:** kit offline de integração, matriz das fontes, decisões e cenários pendentes, geração/verificação testadas. [Guia](../integration/README.md) e [evidências](evidence/increment-7b1/RESULTS.md).
+- **7B.2 depende do grupo:** confirmar dono OS/Saga, publicar/revisar contratos canônicos Budget/Inventory/Operation, escolher envelope/topologia e definir identidades. Recomendação OS separado continua proposta; não mover Saga financeira para Operation sem decisão.
+- **7B.3 homologação real:** ambiente isolado com serviços completos, PostgreSQL próprio e cenários/compensações correlacionados. Nenhum cenário conjunto foi marcado aprovado pelo teste local do participante.
+- **7B.4 entrega remota:** CI/Sonar, registry, environment/OIDC, rollout e backend de telemetria com evidências reais. Flags de entrega continuam controladas por configuração e nenhum recurso foi aplicado.

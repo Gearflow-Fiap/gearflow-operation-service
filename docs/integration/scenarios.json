@@ -1,0 +1,17 @@
+{
+  "status": "planned-not-run-cross-service",
+  "requiredEvidence": ["revisões/digests dos serviços", "ambiente isolado sem segredos no relatório", "IDs de OS/correlação/intenção", "estado esperado e real de cada serviço", "referência ao teste e trace/backend"],
+  "scenarios": [
+    {"id":"H-01","name":"Fluxo completo com estoque","acceptance":"Diagnóstico e orçamento preservam snapshot/linhas. Pagamento e reserva aplicáveis precedem StartExecution. Finalizar OS após ExecutionFinished e StockConsumed.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-02","name":"Somente mão de obra","acceptance":"Não enviar reserva vazia nem ConsumeStock; concluir após execução e condições comerciais aplicáveis.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-03","name":"Reentrega após reinício","acceptance":"Mesmo ID/corpo não duplica cobrança, reserva, histórico ou baixa. Registrar commits/mensagens.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-04","name":"Cancelamento vence início físico","acceptance":"OperationCanceled/tombstone impede reparo atrasado. Só liberar/estornar depois do fence e confirmações aplicáveis.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-05","name":"Início físico vence cancelamento","acceptance":"OperationCancellationRejected exige reconciliação; não liberar estoque/reembolsar automaticamente.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-06","name":"Estoque insuficiente e reposição","acceptance":"OS aguarda estoque, nova intenção após reposição, sem reparo indevido; cobrança segue D-03.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-07","name":"Pagamento chega durante compensação","acceptance":"Não reabrir OS; reconciliar/reembolsar conforme política e aguardar confirmações reais.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-08","name":"Contrato ou credencial inválidos","acceptance":"Sem efeito de negócio; erro/401/403 sem expor segredo; corrigir contrato/credencial antes de retry.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-09","name":"Inventory indisponível ao precificar","acceptance":"503, sem diagnóstico parcial ou evento de orçamento; repetir a intenção após recuperação.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-10","name":"Broker ou dispatcher indisponível","acceptance":"Outbox persiste e entrega após recuperação com ID/correlação/trace preservados; consumidores toleram duplicatas.","status":"not-run-cross-service","evidence":null},
+    {"id":"H-11","name":"Rollout e observabilidade remotos","acceptance":"Migração/probes/digest aprovados, trace entre serviços e dados no backend, CI/Sonar/rollout com evidências remotas.","status":"not-run-cross-service","evidence":null}
+  ]
+}
