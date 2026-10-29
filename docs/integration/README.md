@@ -62,7 +62,7 @@ Revisar decisions.json e compatibility.json com cada responsável; registrar dec
 Para gerar o kit no repositório Operation:
 
 ```powershell
-dotnet build GearFlow.Operation.slnx -c Release
+dotnet build GearFlow.Operation.CI.slnf -c Release
 dotnet run --project tools/Operation.ContractArtifacts -c Release --no-build -- artifacts/handoff-clr
 dotnet pack src/Operation.Contracts -c Release --no-build --output artifacts/handoff-package
 python -m pip install -r scripts/contract_requirements.txt

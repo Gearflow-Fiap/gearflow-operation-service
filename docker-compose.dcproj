@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>2951a47f-ef53-49d0-8d06-c7c32233ec31</ProjectGuid>
+    <DockerComposeBaseFilePath>compose.local</DockerComposeBaseFilePath>
+    <DockerComposeEnvFilePath>.env.local</DockerComposeEnvFilePath>
+    <DockerComposeProjectName>gearflow-operation-local</DockerComposeProjectName>
+    <DockerDevelopmentMode>Regular</DockerDevelopmentMode>
+    <AdditionalComposeFilePaths>compose.visualstudio.yml</AdditionalComposeFilePaths>
+    <DockerComposeProjectsToIgnore>tools/Operation.Migrate/Operation.Migrate.csproj</DockerComposeProjectsToIgnore>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceName>api</DockerServiceName>
+    <DockerServiceUrl>http://localhost:5085/health/ready</DockerServiceUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="compose.local.yml" />
+    <None Include="compose.visualstudio.yml"><DependentUpon>compose.local.yml</DependentUpon></None>
+    <None Include="docker-compose.vs.release.yml"><DependentUpon>compose.local.yml</DependentUpon></None>
+    <None Include="compose.messaging-tests.yml" />
+    <None Include="launchSettings.json" />
+    <None Include="src/Operation.Api/Dockerfile"><Link>Dockerfile</Link></None>
+    <None Include=".dockerignore" />
+    <None Include=".env.local.example" />
+  </ItemGroup>
+  <Target Name="InitializeOperationLocalEnvironment" BeforeTargets="DockerResolveTargetOS;DockerGetServiceReferences;PrepareForBuild" Condition="'$(BuildingInsideVisualStudio)' == 'true'">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\scripts\Initialize-LocalEnvironment.ps1&quot;" />
+  </Target>
+</Project>

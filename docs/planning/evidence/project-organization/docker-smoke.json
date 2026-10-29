@@ -1,0 +1,10 @@
+{
+  "checkedAtUtc": "2026-10-29T22:05:21.0490066+00:00",
+  "liveness": 200,
+  "readiness": 200,
+  "anonymous": 401,
+  "customer": 403,
+  "catalogCreate": 201,
+  "catalogRead": 200,
+  "catalogDeactivate": 200
+}

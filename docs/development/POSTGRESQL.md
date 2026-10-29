@@ -3,7 +3,7 @@
 SDK .NET 10. Unitários não exigem banco:
 
 ```powershell
-dotnet test tests/Operation.Tests --configuration Release
+dotnet test tests/Operation.UnitTests --configuration Release
 ```
 
 Integração usa PostgreSQL 17 via Testcontainers quando Docker Linux está disponível:
@@ -28,7 +28,7 @@ O compose usa senha exclusivamente local, substituível por OPERATION_POSTGRES_P
 Cobertura consolidada, em diretório limpo por execução:
 
 ```powershell
-dotnet test GearFlow.Operation.slnx --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults/current
+dotnet test GearFlow.Operation.CI.slnf --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults/current
 python scripts/check_coverage.py TestResults/current
 ```
 

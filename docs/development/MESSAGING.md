@@ -62,7 +62,7 @@ Broker exclusivo de testes:
 ```powershell
 docker compose -f compose.messaging-tests.yml up -d --wait
 # PostgreSQL 17 via OPERATION_TEST_POSTGRES ou Testcontainers, conforme POSTGRESQL.md.
-dotnet test GearFlow.Operation.slnx --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults/current
+dotnet test GearFlow.Operation.CI.slnf --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults/current
 python scripts/check_coverage.py TestResults/current
 ```
 

@@ -1,0 +1,25 @@
+{
+  "observedFailure": {
+    "program": "dotnet",
+    "arguments": "/app/Operation.Api.dll",
+    "exitCode": 155,
+    "effect": "CoreCLR startup event missing, empty HTTP response"
+  },
+  "imagePublishedAssembly": "/app/api/Operation.Api.dll",
+  "fix": {
+    "DockerDebuggeeProgram": "dotnet",
+    "DockerDebuggeeArguments": "/app/api/Operation.Api.dll",
+    "DockerDebuggeeWorkingDirectory": "/app/api"
+  },
+  "msbuildPropertiesVerified": true,
+  "breakpointVerified": false,
+  "composeFix": {
+    "file": "docker-compose.vs.release.yml",
+    "order": "after Visual Studio generated Regular Mode file",
+    "arguments": "/app/api/Operation.Api.dll",
+    "workingDirectory": "/app/api",
+    "actualGeneratedFileMergeVerified": true
+  },
+  "finalF5ReadinessConfirmedByUser": true,
+  "finalImageSmokePassed": true
+}

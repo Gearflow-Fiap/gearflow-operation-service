@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../src/Operation.Application/Operation.Application.csproj" />
+    <ProjectReference Include="../../src/Operation.Infrastructure/Operation.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/contracts/runtime-v1/**/*.json" Link="Contracts/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -136,3 +136,11 @@ Retomar no 7B: alinhar OS/Saga/contratos/topologia/credenciais com o grupo, prov
 Guia do coordenador, matriz de oito achados com SHA-256 de 14 fontes, seis decisões pendentes e onze cenários conjuntos não executados. ZIP reproduzível contém NuGet preview e os 18 schemas/exemplos; exclui configurações privadas por lista explícita. Oito testes Python aprovados, export CLR/contratos e pacote/ZIP reais verificados. [Guia](../integration/README.md), [evidências](evidence/increment-7b1/RESULTS.md).
 
 Usuário informou não saber quem assume OS/Saga. Documentos Budget propõem OS separado, mas não há confirmação coletiva nem runtime disponível. Não transferimos silenciosamente essa responsabilidade ao Operation. Próximo marco: responsáveis revisam D-01..D-06 e alinham envelope/topologia, estoque, preços e identidade; depois executar H-01..H-11 no ambiente conjunto. 7B global, cloud e Saga completa permanecem pendentes.
+
+## Organização e experiência local — 29/10/2026
+
+Atendidas as três frentes solicitadas: suporte Visual Studio Docker Compose; código agrupado por responsabilidades/features, sem novo mediator; testes separados por camada e tipo de integração, com fixtures próprias. Solução CLI filtrada contém todos os nove projetos .NET e dispensa SDK Docker da IDE. Credenciais locais inicializadas com preservação de valores existentes.
+
+**228 testes .NET + 12 Python aprovados**, sem falhas/ignorados, cobertura mínima 93,52% e 18 contratos preservados. Projeto/perfil Compose reconhecidos na IDE; smoke HTTP do ambiente iniciado passou. Usuário confirmou F5 abrindo readiness; smoke HTTP final repetido pelo agente. Breakpoint específico não foi confirmado. [Evidências](evidence/project-organization/RESULTS.md), [Visual Studio](../development/VISUAL_STUDIO.md), [estrutura](../development/PROJECT_STRUCTURE.md), [testes](../../tests/README.md).
+
+Retomada de negócio permanece 7B: dono OS/Saga e contratos/topologia/credenciais coletivos, integração real e entrega remota. Não confundir reorganização local com conclusão dessa homologação.

@@ -1,4 +1,7 @@
 <Solution>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
   <Folder Name="/src/">
     <Project Path="src/Operation.Contracts/Operation.Contracts.csproj" />
     <Project Path="src/Operation.Api/Operation.Api.csproj" />
@@ -7,8 +10,15 @@
     <Project Path="src/Operation.Infrastructure/Operation.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Operation.Tests/Operation.Tests.csproj" />
+    <Project Path="tests/Operation.UnitTests/Operation.UnitTests.csproj" />
     <Project Path="tests/Operation.IntegrationTests/Operation.IntegrationTests.csproj" />
   </Folder>
-  <Folder Name="/tools/"><Project Path="tools/Operation.Migrate/Operation.Migrate.csproj" /><Project Path="tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj" /></Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Operation.Migrate/Operation.Migrate.csproj" />
+    <Project Path="tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj" />
+  </Folder>
+  <Folder Name="/docs/">
+    <File Path="README.md" />
+    <File Path="docs/INDEX.md" />
+  </Folder>
 </Solution>

@@ -1,0 +1,26 @@
+{
+  "dotnetTests": 228,
+  "pythonTests": 12,
+  "runs": [
+    {
+      "report": "TestResults/reorganization/miran_MIRANDA_2026-10-29_17_41_53_net10.0.trx",
+      "passed": 64,
+      "total": 64,
+      "failed": 0
+    },
+    {
+      "report": "TestResults/reorganization/miran_MIRANDA_2026-10-29_17_44_15_net10.0.trx",
+      "passed": 164,
+      "total": 164,
+      "failed": 0
+    }
+  ],
+  "contractsValidated": 18,
+  "visualStudioComposeProfileObserved": true,
+  "breakpointVerified": false,
+  "remoteDeploy": false,
+  "debuggerOverrideMergeVerified": true,
+  "visualStudioF5ReadinessConfirmedByUser": true,
+  "finalImageSmokePassed": true,
+  "visualStudioFinalMergedCacheCorrect": true
+}

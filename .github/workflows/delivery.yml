@@ -39,7 +39,7 @@ jobs:
         id: build
         with:
           context: .
-          file: Dockerfile
+          file: src/Operation.Api/Dockerfile
           push: true
           tags: ${{ steps.image.outputs.name }}:${{ github.event.workflow_run.head_sha }}
           labels: org.opencontainers.image.revision=${{ github.event.workflow_run.head_sha }}

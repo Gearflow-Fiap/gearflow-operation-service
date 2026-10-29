@@ -1,0 +1,16 @@
+{
+  "solution": {
+    "path": "GearFlow.Operation.slnx",
+    "projects": [
+      "src/Operation.Contracts/Operation.Contracts.csproj",
+      "src/Operation.Api/Operation.Api.csproj",
+      "src/Operation.Domain/Operation.Domain.csproj",
+      "src/Operation.Application/Operation.Application.csproj",
+      "src/Operation.Infrastructure/Operation.Infrastructure.csproj",
+      "tests/Operation.UnitTests/Operation.UnitTests.csproj",
+      "tests/Operation.IntegrationTests/Operation.IntegrationTests.csproj",
+      "tools/Operation.Migrate/Operation.Migrate.csproj",
+      "tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj"
+    ]
+  }
+}

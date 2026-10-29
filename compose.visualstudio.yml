@@ -1,0 +1,20 @@
+# Applied by the .dcproj only. CLI/CI keep the hardened compose.local.yml defaults.
+services:
+  api:
+    image: gearflow-operation-service:dev
+    build:
+      context: .
+      dockerfile: src/Operation.Api/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_EnableDiagnostics: "1"
+    read_only: false
+  migrate:
+    image: gearflow-operation-service:dev
+    build:
+      context: .
+      dockerfile: src/Operation.Api/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Debug

@@ -1,0 +1,8 @@
+# Visual Studio loads this AFTER its generated Regular Mode compose file.
+# The image publishes the API separately from the migration executable.
+services:
+  api:
+    labels:
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.arguments: /app/api/Operation.Api.dll
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app/api

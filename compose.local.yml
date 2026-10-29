@@ -15,7 +15,9 @@ services:
       retries: 15
   migrate:
     image: gearflow-operation-service:local
-    build: .
+    build:
+      context: .
+      dockerfile: src/Operation.Api/Dockerfile
     entrypoint: ["dotnet", "/app/migrate/Operation.Migrate.dll", "--apply"]
     environment:
       ConnectionStrings__Operation: Host=postgres;Port=5432;Database=gearflow_operation;Username=operation;Password=${OPERATION_POSTGRES_PASSWORD:?configure .env.local};GSS Encryption Mode=Disable
@@ -25,7 +27,9 @@ services:
     restart: "no"
   api:
     image: gearflow-operation-service:local
-    build: .
+    build:
+      context: .
+      dockerfile: src/Operation.Api/Dockerfile
     ports:
       - "127.0.0.1:5085:8080"
     environment:

@@ -43,7 +43,7 @@ jobs:
       - run: python -m pip install -r scripts/contract_requirements.txt
       - name: Test offline integration handoff
         run: python -m unittest discover -s tests/python -v
-      - run: dotnet restore GearFlow.Operation.slnx
+      - run: dotnet restore GearFlow.Operation.CI.slnf
       - name: Prepare Sonar scanner when configured
         if: vars.SONAR_PROJECT_KEY != ''
         run: dotnet tool install --global dotnet-sonarscanner --version 12.0.0
@@ -60,10 +60,10 @@ jobs:
           sonar_args=("/k:$SONAR_PROJECT_KEY" "/d:sonar.host.url=$SONAR_HOST_URL" "/d:sonar.token=$SONAR_TOKEN" "/d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml" "/d:sonar.qualitygate.wait=true")
           if test -n "$SONAR_ORGANIZATION"; then sonar_args+=("/o:$SONAR_ORGANIZATION"); fi
           dotnet sonarscanner begin "${sonar_args[@]}"
-      - run: dotnet build GearFlow.Operation.slnx --no-restore --configuration Release
+      - run: dotnet build GearFlow.Operation.CI.slnf --no-restore --configuration Release
       - run: dotnet run --project tools/Operation.ContractArtifacts --configuration Release --no-build -- "$RUNNER_TEMP/operation-contracts"
       - run: python scripts/validate_contracts.py docs/contracts/runtime-v1 --compare "$RUNNER_TEMP/operation-contracts"
-      - run: dotnet test GearFlow.Operation.slnx --no-build --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults
+      - run: dotnet test GearFlow.Operation.CI.slnf --no-build --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults
       - run: python scripts/check_coverage.py TestResults
       - name: Complete Sonar quality gate
         if: always() && steps.sonar_begin.outcome == 'success'

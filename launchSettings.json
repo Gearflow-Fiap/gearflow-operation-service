@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "api",
+      "composeLaunchUrl": "http://localhost:5085/health/ready",
+      "serviceActions": {
+        "postgres": "StartWithoutDebugging",
+        "migrate": "StartWithoutDebugging",
+        "api": "StartDebugging"
+      }
+    }
+  }
+}
