@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gearflow-operation
+  annotations:
+    konghq.com/plugins: gearflow-jwt,gearflow-rate-limit
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - path: /api/operation
+            pathType: Prefix
+            backend:
+              service:
+                name: gearflow-operation
+                port:
+                  number: 8080
+          - path: /api/catalog/jobs
+            pathType: Prefix
+            backend:
+              service:
+                name: gearflow-operation
+                port:
+                  number: 8080

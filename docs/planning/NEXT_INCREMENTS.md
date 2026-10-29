@@ -7,17 +7,19 @@ Baseline em 28/10/2026. Passos 1–3 concluíram domínio/aplicação. O usuári
 | 4 — persistência | PostgreSQL exclusivo, EF/migrations, rehidratação, histórico, journal/inbox de aplicação, CAS e outbox persistente | Banco real comprova roundtrip em novos contextos, atomicidade, replay, concorrência, consultas paginadas e retenção sem limpeza perigosa | Concluído; ver evidência do incremento 4 |
 | 5 — API e preços reais | Host ASP.NET Core, JWT staff, ProblemDetails, ETag/idempotência, OpenAPI, integração de preços autenticada | Testes HTTP/auth e preço, sem acesso a banco alheio; regras comerciais alinhadas | 5A/5B implementados; homologação entre serviços pendente |
 | 6 — contratos e mensageria | Pacote tipado acordado, MassTransit/RabbitMQ, consumers/replies, entrega da outbox e inbox de transporte | Banco/broker reais, duplicatas, reinício, DLQ e compatibilidade com OS/Budget/Inventory | Participante local implementado/validado; homologação coletiva pendente |
-| 7 — integração e entrega | Saga/BDD, Docker/K8s, Sonar/CI/CD, métricas/traces e documentação final | Fluxo real com compensação, >=80%, deploy e evidências da fase 4 | Planejado |
+| 7A — fundações de entrega | Docker, migration CLI, probes, OTLP, manifests e workflows | Testes locais, imagem/smoke e renderização offline | Concluído localmente; evidências 7A |
+| 7B — homologação coletiva | Saga/BDD, backend de telemetria, Sonar e deploy reais | Fluxo com compensação, >=80%, rollout e evidências remotas | Pendente: grupo/infraestrutura |
 
 A ordem de contratos/preço pode ser refinada com os outros responsáveis. Não escolher silenciosamente política financeira de consumíveis. No incremento 4 a outbox apenas persistia; o incremento 6 acrescentou consumidores e dispatcher reais. A inbox própria de transporte recupera processamento via journal da aplicação; não usa as tabelas inbox EF do MassTransit.
 
 O incremento 4 não modifica bancos existentes nem publica/deploya serviços. Testes usam database/container exclusivo e credenciais de desenvolvimento.
 
-
 ## Detalhamento do incremento 5
 
 - 5A: host HTTP, JWT/policy staff explícita, ProblemDetails, consultas, comandos com If-Match e Idempotency-Key, OpenAPI e testes HTTP/PostgreSQL.
+
 - 5B: persistir catálogo de mão de obra, implementar adapter Inventory com timeout/credencial, homologar per-unit-v1 com Budget e claims com o emissor. Adapter composto implementado: mão de obra PostgreSQL e GET Inventory. Testes 5B usam HTTP real com servidor substituto; homologação com Inventory completo/credencial real pendente.
+
 - Padrão recomendado para o grupo: [RFC-003](../rfcs/rfc-003-padrao-fase-4.md). Três serviços + infra-broker ainda precisam do dono da OS/Saga; manter OS separado é a proposta.
 
 ## Retomada após 5B
@@ -29,3 +31,9 @@ O incremento 4 não modifica bancos existentes nem publica/deploya serviços. Te
 Operation tem participante validado com PostgreSQL/RabbitMQ, inbox/dispatcher, pacote preview e schemas gerados. [Evidências](evidence/increment-6/RESULTS.md), [mensageria](../development/MESSAGING.md), [ADR-011](../architecture/adr-011-mensageria-operation.md).
 
 Antes da entrega global: alinhar topologia/envelope com infra-broker e OS/Budget/Inventory, confirmar dono da OS/Saga, credenciais/claims e política financeira, publicar versão canônica aprovada dos contratos e executar fluxo real/compensações. Incremento 7 inclui BDD distribuído, observabilidade, Docker/K8s, Sonar/CI/CD e evidências finais. Não confundir testes do participante com Saga completa.
+
+## Retomada do incremento 7A
+
+Infraestrutura fase 3 inspecionada: EKS/Kong usa namespace gearflow; database provisiona SQL Server do monólito. Operation precisa de PostgreSQL exclusivo. Não alteramos esses repositórios. [Guia de entrega/observabilidade](../development/DELIVERY_AND_OBSERVABILITY.md), [ADR-012](../architecture/adr-012-observabilidade.md), [ADR-013](../architecture/adr-013-entrega-operation.md).
+
+Próximo 7B: (1) acordar owner OS/Saga, contratos/envelope/topologia e credenciais; (2) provisionar PostgreSQL e secrets/rede próprios na infraestrutura; (3) configurar Sonar, GHCR e environment/OIDC com proteções; (4) executar CI e rollout homologado; (5) validar traces/métricas/logs no backend e fluxo distribuído/compensações com os responsáveis. Entrega local não encerra a fase 4.

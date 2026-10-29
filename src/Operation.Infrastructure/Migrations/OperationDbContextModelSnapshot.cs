@@ -75,6 +75,16 @@ namespace Operation.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("reply_type");
 
+                    b.Property<string>("TraceParent")
+                        .HasMaxLength(55)
+                        .HasColumnType("character varying(55)")
+                        .HasColumnName("trace_parent");
+
+                    b.Property<string>("TraceState")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("trace_state");
+
                     b.HasKey("MessageId");
 
                     b.HasIndex("IsCompleted", "ReceivedAt");

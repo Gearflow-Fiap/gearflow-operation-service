@@ -10,7 +10,7 @@ public enum OperationEventKind
 
 /// <summary>Registro interno completo para o futuro adapter outbox. Não é o contrato RabbitMQ publicado.</summary>
 public sealed record OperationEvent(Guid EventId, Guid ServiceOrderId, Guid CausationId,
-    OperationEventKind Kind, long Version, DateTimeOffset OccurredAt, string Actor, OperationDetails Data);
+    OperationEventKind Kind, long Version, DateTimeOffset OccurredAt, string Actor, OperationDetails Data, string? TraceParent = null, string? TraceState = null);
 
 public sealed record OperationWrite(WorkOperation Operation, long? ExpectedStoredVersion,
     CommandReceipt Receipt, IReadOnlyList<OperationEvent> PendingEvents);

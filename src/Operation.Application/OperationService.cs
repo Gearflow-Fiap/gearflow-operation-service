@@ -133,11 +133,13 @@ public sealed class OperationService(IOperationUnitOfWork unitOfWork, Diagnostic
     {
         ArgumentNullException.ThrowIfNull(context);
         ct.ThrowIfCancellationRequested();
+        using var telemetry = OperationTelemetry.Start(action, context.ServiceOrderId, context.IntentId);
         var fingerprint = CommandFingerprint.Create(action, context, payload);
         var previous = await unitOfWork.FindReceipt(context.IntentId, ct);
         if (previous is not null)
         {
             if (previous.Fingerprint != fingerprint) throw new IntentConflictException("Intenção reutilizada com ação, OS, ator ou conteúdo diferentes.");
+            telemetry.Complete("replay");
             return previous.Result; // Replay vem antes de precondição de versão e de consultas externas.
         }
         var existing = await unitOfWork.Load(context.ServiceOrderId, ct);
@@ -149,10 +151,12 @@ public sealed class OperationService(IOperationUnitOfWork unitOfWork, Diagnostic
         var result = new CommandResult(operation.ServiceOrderId, operation.Status, operation.Version,
             operation.DiagnosticId, operation.Authorization?.BudgetId, changed);
         var events = changed ? new[] { new OperationEvent(Guid.NewGuid(), operation.ServiceOrderId, context.IntentId,
-            kind, operation.Version, operation.UpdatedAt, context.Actor, OperationDetails.From(operation)) } : [];
+            kind, operation.Version, operation.UpdatedAt, context.Actor, OperationDetails.From(operation), OperationTelemetry.TraceParent, OperationTelemetry.TraceState) } : [];
         var receipt = new CommandReceipt(context.IntentId, fingerprint, result);
         ct.ThrowIfCancellationRequested();
-        return await unitOfWork.Commit(new(operation, storedVersion, receipt, Array.AsReadOnly(events)), ct);
+        var committed = await unitOfWork.Commit(new(operation, storedVersion, receipt, Array.AsReadOnly(events)), ct);
+        telemetry.Complete(committed.StateChanged ? "changed" : "unchanged");
+        return committed;
     }
 
     private static WorkOperation Found(WorkOperation? operation) => operation ?? throw new KeyNotFoundException("Operação não encontrada.");

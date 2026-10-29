@@ -10,4 +10,5 @@
     <PackageReference Include="Testcontainers.PostgreSql" Version="4.16.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.4" PrivateAssets="all" />
   </ItemGroup>
+  <ItemGroup><ProjectReference Include="../../tools/Operation.Migrate/Operation.Migrate.csproj" ReferenceOutputAssembly="false" /></ItemGroup>
 </Project>

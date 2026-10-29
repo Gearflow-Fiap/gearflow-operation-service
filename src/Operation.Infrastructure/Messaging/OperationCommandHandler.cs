@@ -17,6 +17,8 @@ internal sealed class BrokerInboxRow
     public Guid CorrelationId { get; set; }
     public string Fingerprint { get; set; } = "";
     public string CommandName { get; set; } = "";
+    public string? TraceParent { get; set; }
+    public string? TraceState { get; set; }
     public bool IsCompleted { get; set; }
     public DateTimeOffset ReceivedAt { get; set; }
     public DateTimeOffset? ProcessedAt { get; set; }
@@ -49,7 +51,7 @@ public sealed class OperationCommandHandler(IDbContextFactory<OperationDbContext
             else
             {
                 db.Add(new BrokerInboxRow { MessageId = command.Id, CorrelationId = command.Order, Fingerprint = fingerprint,
-                    CommandName = message.GetType().Name, ReceivedAt = clock.GetUtcNow() });
+                    CommandName = message.GetType().Name, ReceivedAt = clock.GetUtcNow(), TraceParent = OperationTelemetry.TraceParent, TraceState = OperationTelemetry.TraceState });
                 await db.SaveChangesAsync(ct);
             }
             await registration.CommitAsync(ct);
@@ -147,6 +149,3 @@ public sealed class OperationCommandHandler(IDbContextFactory<OperationDbContext
     private static bool ValidReason(string value) => !string.IsNullOrWhiteSpace(value) && value.Length <= 2000;
     private sealed record Prepared(Guid Order, Guid Id, DateTimeOffset At, Func<CommandContext, CancellationToken, Task<CommandResult>> Apply);
 }
-
-
-

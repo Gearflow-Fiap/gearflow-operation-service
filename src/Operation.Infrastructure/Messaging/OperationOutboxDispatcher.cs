@@ -41,8 +41,11 @@ public sealed class OperationOutboxDispatcher(IDbContextFactory<OperationDbConte
         if (rows.Length == 0) return false;
         var row = rows[0]; var value = StoredJson.Read<GearFlow.Operation.Application.OperationEvent>(row.EventJson);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct); deadline.CancelAfter(TimeSpan.FromSeconds(5));
+        using var activity = GearFlow.Operation.Application.OperationTelemetry.Delivery(value.TraceParent, value.TraceState);
         await publisher.Publish(OperationWire.Project(value), row.EventId, row.ServiceOrderId, row.CausationId, deadline.Token);
-        row.DispatchedAt = clock.GetUtcNow(); await db.SaveChangesAsync(ct); await transaction.CommitAsync(ct); return true;
+        row.DispatchedAt = clock.GetUtcNow(); await db.SaveChangesAsync(ct); await transaction.CommitAsync(ct);
+        activity.Complete();
+        GearFlow.Operation.Application.OperationTelemetry.Delivered("event"); return true;
     }
     private async Task<bool> Reply(CancellationToken ct)
     {
@@ -51,8 +54,10 @@ public sealed class OperationOutboxDispatcher(IDbContextFactory<OperationDbConte
         var rows = await db.Set<BrokerInboxRow>().FromSqlRaw("SELECT * FROM operation.broker_inbox WHERE is_completed AND reply_json IS NOT NULL AND published_at IS NULL ORDER BY processed_at, message_id LIMIT 1 FOR UPDATE SKIP LOCKED").ToArrayAsync(ct);
         if (rows.Length == 0) return false;
         var row = rows[0]; using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct); deadline.CancelAfter(TimeSpan.FromSeconds(5));
+        using var activity = GearFlow.Operation.Application.OperationTelemetry.Delivery(row.TraceParent, row.TraceState);
         await publisher.Publish(OperationWire.Deserialize(row.ReplyType!, row.ReplyJson!), row.ReplyId!.Value, row.CorrelationId, row.MessageId, deadline.Token);
-        row.PublishedAt = clock.GetUtcNow(); await db.SaveChangesAsync(ct); await transaction.CommitAsync(ct); return true;
+        row.PublishedAt = clock.GetUtcNow(); await db.SaveChangesAsync(ct); await transaction.CommitAsync(ct);
+        activity.Complete();
+        GearFlow.Operation.Application.OperationTelemetry.Delivered("reply"); return true;
     }
 }
-

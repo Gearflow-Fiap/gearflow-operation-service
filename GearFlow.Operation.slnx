@@ -10,5 +10,5 @@
     <Project Path="tests/Operation.Tests/Operation.Tests.csproj" />
     <Project Path="tests/Operation.IntegrationTests/Operation.IntegrationTests.csproj" />
   </Folder>
-  <Folder Name="/tools/"><Project Path="tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj" /></Folder>
+  <Folder Name="/tools/"><Project Path="tools/Operation.Migrate/Operation.Migrate.csproj" /><Project Path="tools/Operation.ContractArtifacts/Operation.ContractArtifacts.csproj" /></Folder>
 </Solution>

@@ -6,9 +6,11 @@ Microsserviço de diagnóstico e execução extraído do gearflow-app para a fas
 
 Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 
-**Incremento 6 validado:** 215 testes distintos aprovados (159 unitários + 56 integração), sem falhas/ignorados. PostgreSQL 17.11 e RabbitMQ 4.1 reais; esquemas/exemplos dos 18 contratos validados e preview NuGet gerado. [Evidências](docs/planning/evidence/increment-6/RESULTS.md).
+**Incremento 7A validado localmente:** 225 testes distintos aprovados (161 unitários + 64 integração), sem falhas/ignorados; cobertura por assembly >=93,52%. Imagem/Compose com migration e smoke HTTP aprovados; 18 contratos preservados. [Evidências](docs/planning/evidence/increment-7a/RESULTS.md).
 
-Pendente: homologação com OS/Budget/Inventory completos, decisão coletiva de envelope/topologia/owner dos contratos e credenciais, Saga/BDD distribuído, observabilidade e entrega Docker/K8s/Sonar/deploy. Identidade/claims reais também dependem do emissor. Testes locais do participante não equivalem à fase 4 completa.
+Incremento 7A acrescenta imagem/Compose, migration CLI, probes, logs JSON, traces/métricas OTLP e manifests/workflows. [Guia](docs/development/DELIVERY_AND_OBSERVABILITY.md), [Kubernetes](k8s/README.md), [ADR-012](docs/architecture/adr-012-observabilidade.md), [ADR-013](docs/architecture/adr-013-entrega-operation.md).
+
+Pendente (7B): homologação com OS/Budget/Inventory, owner OS/Saga, contratos/topologia/credenciais, BDD distribuído, PostgreSQL/telemetria/Sonar e deploy remotos. Identidade/claims dependem do emissor. Testes locais não encerram a fase 4.
 
 ## Responsabilidades
 
@@ -26,6 +28,7 @@ StartDiagnostic recebe o pedido; início humano é HTTP. StartExecution autoriza
 
 Requer .NET 10 e banco exclusivo PostgreSQL 17. Migrations são tarefa explícita, não executadas no boot. Definir JWT/Staff, conexão e política de consumíveis por ambiente; sem segredos versionados.
 
+- [Docker, entrega e observabilidade](docs/development/DELIVERY_AND_OBSERVABILITY.md).
 - [PostgreSQL, migrations e testes](docs/development/POSTGRESQL.md).
 - [API HTTP e configuração](docs/development/API_ENDPOINTS.md).
 - [Catálogo e preços Inventory](docs/development/CATALOG_AND_PRICING.md).
@@ -56,6 +59,7 @@ tests/
   Operation.IntegrationTests/
 tools/
   Operation.ContractArtifacts/
+  Operation.Migrate/
 docs/
   architecture/
   contracts/

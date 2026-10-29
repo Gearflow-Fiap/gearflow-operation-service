@@ -11,7 +11,7 @@ using W = GearFlow.Contracts.Operation.V1;
 
 namespace Operation.IntegrationTests;
 
-internal sealed record ReceivedWire(object Body, Guid? Id, Guid? Correlation, Guid? Cause);
+internal sealed record ReceivedWire(object Body, Guid? Id, Guid? Correlation, Guid? Cause, string? TraceId = null);
 internal sealed class BrokerHarness : IAsyncDisposable
 {
     private readonly HttpClient management;
@@ -57,7 +57,7 @@ internal sealed class BrokerHarness : IAsyncDisposable
                 Attach<W.OperationCommandRejected>(endpoint); Attach<W.OperationCancellationRejected>(endpoint);
                 void Attach<T>(IRabbitMqReceiveEndpointConfigurator receive) where T : class => receive.Handler<T>(context =>
                 {
-                    harness!.Events.Enqueue(new(context.Message, context.MessageId, context.CorrelationId, context.InitiatorId)); return Task.CompletedTask;
+                    harness!.Events.Enqueue(new(context.Message, context.MessageId, context.CorrelationId, context.InitiatorId, System.Diagnostics.Activity.Current?.TraceId.ToString())); return Task.CompletedTask;
                 });
             });
         });
@@ -110,6 +110,3 @@ internal sealed class BrokerHarness : IAsyncDisposable
         }
     }
 }
-
-
-

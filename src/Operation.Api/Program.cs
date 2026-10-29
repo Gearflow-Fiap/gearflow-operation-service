@@ -6,9 +6,25 @@ using GearFlow.Operation.Infrastructure.Pricing;
 using GearFlow.Operation.Infrastructure.Messaging;
 using Microsoft.EntityFrameworkCore;
 
+if (args is ["--health-probe"])
+{
+    try
+    {
+        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) };
+        using var response = await client.GetAsync("http://127.0.0.1:8080/health/ready");
+        Environment.ExitCode = response.IsSuccessStatusCode ? 0 : 1;
+    }
+    catch (HttpRequestException) { Environment.ExitCode = 1; }
+    catch (OperationCanceledException) { Environment.ExitCode = 1; }
+    return;
+}
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOperationSecurity(builder.Configuration);
-builder.Services.AddProblemDetails();
+builder.AddOperationObservability();
+builder.Services.AddHealthChecks().AddCheck<OperationReadiness>("operation_database", timeout: TimeSpan.FromSeconds(3));
+builder.Services.AddProblemDetails(options => options.CustomizeProblemDetails = context =>
+    context.ProblemDetails.Extensions["traceId"] = context.HttpContext.Items["Operation.TraceId"] as string
+        ?? System.Diagnostics.Activity.Current?.TraceId.ToString() ?? context.HttpContext.TraceIdentifier);
 builder.Services.AddExceptionHandler<OperationErrors>();
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -22,6 +38,9 @@ builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services.AddSingleton<IDbContextFactory<OperationDbContext>>(_ => new OperationContextFactory(
     builder.Configuration.GetConnectionString("Operation") ?? throw new InvalidOperationException("ConnectionStrings:Operation obrigatório.")));
 builder.Services.AddScoped<PostgresOperationStore>();
+builder.Services.AddScoped<MessagingDiagnostics>();
+builder.Services.AddSingleton<BacklogMetrics>();
+if (builder.Configuration.GetValue("Telemetry:BacklogEnabled", true)) builder.Services.AddHostedService<BacklogWorker>();
 builder.Services.AddScoped<IOperationUnitOfWork>(services => services.GetRequiredService<PostgresOperationStore>());
 builder.Services.AddScoped<IOperationReadStore>(services => services.GetRequiredService<PostgresOperationStore>());
 builder.Services.AddScoped<OperationQueries>();
@@ -55,11 +74,14 @@ if (builder.Configuration.GetValue<bool>("Messaging:Enabled"))
     if (builder.Configuration.GetValue<bool>("Messaging:DispatchEnabled")) builder.Services.AddHostedService<OutboxWorker>();
 }
 var app = builder.Build();
+app.UseRouting();
+app.UseMiddleware<OperationRequestLogging>();
 app.UseExceptionHandler();
 app.UseStatusCodePages(async status => await OperationErrors.Write(status.HttpContext, status.HttpContext.Response.StatusCode, "http_error"));
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapGet("/health/live", () => Results.Ok(new { status = "alive" })).AllowAnonymous();
+OperationReadiness.Map(app);
 app.MapOpenApi().RequireAuthorization("Staff");
 app.MapOperationEndpoints();
 app.MapCatalogEndpoints();

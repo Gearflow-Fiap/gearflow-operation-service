@@ -3,6 +3,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
+          <Format>cobertura,opencover</Format>
           <!-- Código gerado pela biblioteca Microsoft.AspNetCore.OpenApi, não código do serviço. -->
           <ExcludeByFile>**/OpenApiXmlCommentSupport.generated.cs</ExcludeByFile>
         </Configuration>

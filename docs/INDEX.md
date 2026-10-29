@@ -64,3 +64,5 @@ Esta sequência local não é a mesma numeração P0-P8 do plano geral. O acompa
 - [Catálogo e preços](development/CATALOG_AND_PRICING.md) e [ADR-010](architecture/adr-010-catalogo-e-precos.md).
 
 - [Mensageria Operation](development/MESSAGING.md), [ADR-011](architecture/adr-011-mensageria-operation.md) e [contratos executáveis](contracts/README.md).
+
+- [Entrega e observabilidade](development/DELIVERY_AND_OBSERVABILITY.md), [ADR-012](architecture/adr-012-observabilidade.md), [ADR-013](architecture/adr-013-entrega-operation.md) e [Kubernetes](../k8s/README.md).

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using GearFlow.Operation.Application;
 using GearFlow.Operation.Domain;
 using Microsoft.AspNetCore.Diagnostics;
@@ -31,6 +32,6 @@ public sealed class OperationErrors : IExceptionHandler
     }
 
     public static Task Write(HttpContext context, int status, string code) => Results.Problem(
-        statusCode: status, title: code, extensions: new Dictionary<string, object?> { ["code"] = code, ["traceId"] = context.TraceIdentifier })
+        statusCode: status, title: code, extensions: new Dictionary<string, object?> { ["code"] = code, ["traceId"] = context.Items["Operation.TraceId"] as string ?? Activity.Current?.TraceId.ToString() ?? context.TraceIdentifier, ["requestId"] = context.TraceIdentifier })
         .ExecuteAsync(context);
 }

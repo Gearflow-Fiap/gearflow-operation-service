@@ -5,3 +5,8 @@
 .idea/
 
 artifacts/
+
+.env.local
+
+k8s/overlays/release/
+.sonarqube/

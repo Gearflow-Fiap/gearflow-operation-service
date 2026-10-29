@@ -1,0 +1,20 @@
+{
+  "distinctTests": 225,
+  "runs": [
+    {
+      "report": "TestResults/increment-7a-verified/miran_MIRANDA_2026-10-29_17_04_56_net10.0.trx",
+      "total": 64,
+      "passed": 64,
+      "failed": 0
+    },
+    {
+      "report": "TestResults/increment-7a-verified/miran_MIRANDA_2026-10-29_17_07_28_net10.0.trx",
+      "total": 161,
+      "passed": 161,
+      "failed": 0
+    }
+  ],
+  "supplementalRegressions": 2,
+  "remoteCI": false,
+  "cloudDeploy": false
+}

@@ -1,6 +1,6 @@
 # Acompanhamento da implementação
 
-Atualizado em 29/10/2026. **Ponto de retomada: núcleo e persistência concluídos; incrementos 5A/5B/6 implementados e validados localmente; homologação entre serviços e incremento 7 pendentes.** Os registros dos passos anteriores abaixo são históricos. Não confundir os três passos solicitados com os marcos P0-P8 do plano geral.
+Atualizado em 29/10/2026. **Retomada: incremento 7A concluído localmente; próxima etapa 7B, homologação coletiva e infraestrutura/deploy remotos.** Os registros anteriores são históricos; os três passos solicitados diferem dos marcos P0-P8.
 
 | Passo solicitado | Escopo | Situação | Evidência |
 |---|---|---|---|
@@ -122,3 +122,11 @@ Retomar no incremento 6: contratos públicos/broker e homologação com serviço
 Consumers RabbitMQ/MassTransit, inbox recuperável, dispatcher da outbox, contratos tipados/preview NuGet e schemas/exemplos gerados. **215 testes distintos aprovados** (159 unitários + 56 integração), sem falhas/ignorados; cobertura por assembly >=97,60%. Reexecução complementar do fluxo com autorização repetida também aprovada. [Evidências](evidence/increment-6/RESULTS.md), [ADR-011](../architecture/adr-011-mensageria-operation.md), [operação](../development/MESSAGING.md), [contratos ativos](../contracts/README.md).
 
 Retomar no 7: homologar topologia/envelope com infra-broker e serviços, confirmar owner OS/Saga e contratos/credenciais, executar BDD distribuído e preparar observabilidade/deploy. Pacote preview foi gerado localmente; nada publicado em registry e nenhum repositório externo alterado. Saga completa/CI remota/deploy ainda não validados.
+
+## Incremento 7A — concluído localmente
+
+Docker/Compose, migration CLI, probes, OpenTelemetry/logs/backlog, manifests Kustomize e workflows configuráveis. **225 testes distintos aprovados** (161 unitários + 64 integração), zero falhas/ignorados; cobertura mínima 93,52%. Duas regressões suplementares aprovadas. Imagem final com migrate exit 0/API healthy, smoke HTTP aprovado e 18 contratos preservados. [Evidências](evidence/increment-7a/RESULTS.md), [guia](../development/DELIVERY_AND_OBSERVABILITY.md), [ADR-012](../architecture/adr-012-observabilidade.md), [ADR-013](../architecture/adr-013-entrega-operation.md).
+
+Reexecução Docker identificou histórico EF ambíguo quando usuário e schema se chamam operation. Corrigido para public.__EFMigrationsHistory e validado com reaplicação; dados preservados. Infraestrutura fase 3 inspecionada sem alterações: PostgreSQL próprio ainda precisa ser provisionado.
+
+Retomar no 7B: alinhar OS/Saga/contratos/topologia/credenciais com o grupo, provisionar banco/secrets/rede, configurar CI/Sonar/GHCR/environment/OIDC, homologar deploy/telemetria e executar Saga/BDD distribuídos. Nenhuma publicação/deploy foi executada. 7A não encerra a fase 4.

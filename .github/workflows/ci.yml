@@ -42,11 +42,62 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -r scripts/contract_requirements.txt
       - run: dotnet restore GearFlow.Operation.slnx
+      - name: Prepare Sonar scanner when configured
+        if: vars.SONAR_PROJECT_KEY != ''
+        run: dotnet tool install --global dotnet-sonarscanner --version 12.0.0
+      - name: Begin Sonar analysis
+        id: sonar_begin
+        if: vars.SONAR_PROJECT_KEY != ''
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+        run: |
+          test -n "$SONAR_TOKEN" && test -n "$SONAR_HOST_URL" || { echo 'Configuração Sonar incompleta'; exit 1; }
+          sonar_args=("/k:$SONAR_PROJECT_KEY" "/d:sonar.host.url=$SONAR_HOST_URL" "/d:sonar.token=$SONAR_TOKEN" "/d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml" "/d:sonar.qualitygate.wait=true")
+          if test -n "$SONAR_ORGANIZATION"; then sonar_args+=("/o:$SONAR_ORGANIZATION"); fi
+          dotnet sonarscanner begin "${sonar_args[@]}"
       - run: dotnet build GearFlow.Operation.slnx --no-restore --configuration Release
       - run: dotnet run --project tools/Operation.ContractArtifacts --configuration Release --no-build -- "$RUNNER_TEMP/operation-contracts"
       - run: python scripts/validate_contracts.py docs/contracts/runtime-v1 --compare "$RUNNER_TEMP/operation-contracts"
       - run: dotnet test GearFlow.Operation.slnx --no-build --configuration Release --collect:"XPlat Code Coverage" --settings coverage.runsettings --results-directory TestResults
       - run: python scripts/check_coverage.py TestResults
+      - name: Complete Sonar quality gate
+        if: always() && steps.sonar_begin.outcome == 'success'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: dotnet sonarscanner end "/d:sonar.token=$SONAR_TOKEN"
+      - name: Record missing external quality backend
+        if: vars.SONAR_PROJECT_KEY == ''
+        run: echo 'Sonar não configurado; apenas testes/analyzers/gate local executados.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Validate Kubernetes rendering
+        run: |
+          kubectl kustomize k8s/base > "$RUNNER_TEMP/operation-base.yaml"
+          kubectl kustomize k8s/overlays/kong > "$RUNNER_TEMP/operation-kong.yaml"
+          python scripts/validate_delivery.py "$RUNNER_TEMP/operation-base.yaml" "$RUNNER_TEMP/operation-kong.yaml" k8s/migration-job.yaml
+      - name: Build and start local image
+        run: |
+          umask 077
+          operation_password=$(openssl rand -hex 24)
+          operation_jwt=$(openssl rand -hex 48)
+          printf 'OPERATION_POSTGRES_PASSWORD=%s\nOPERATION_JWT_SECRET=%s\n' "$operation_password" "$operation_jwt" > .env.local
+          docker compose --env-file .env.local -f compose.local.yml up --build -d api
+          for attempt in $(seq 1 45); do
+            if curl --silent --fail http://127.0.0.1:5085/health/ready > /dev/null; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - name: Verify container access and persistence
+        run: |
+          pwsh -NoProfile -File scripts/Test-LocalDelivery.ps1 > TestResults/docker-smoke.json
+          operation_user=$(docker inspect --format '{{.Config.User}}' gearflow-operation-local-api-1)
+          test -n "$operation_user" && test "$operation_user" != root && test "$operation_user" != 0
+          test "$(docker inspect --format '{{.HostConfig.ReadonlyRootfs}}' gearflow-operation-local-api-1)" = true
+      - name: Clean only this CI compose project
+        if: always()
+        run: |
+          if test -f .env.local; then docker compose --env-file .env.local -f compose.local.yml down --volumes; fi
       - run: dotnet pack src/Operation.Contracts/Operation.Contracts.csproj --no-build --configuration Release --output "$RUNNER_TEMP/operation-contract-package"
       - uses: actions/upload-artifact@v4
         if: always()

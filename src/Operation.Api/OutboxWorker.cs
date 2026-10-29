@@ -14,7 +14,7 @@ public sealed class OutboxWorker(IServiceScopeFactory scopes, ILogger<OutboxWork
                 await scope.ServiceProvider.GetRequiredService<OperationOutboxDispatcher>().Dispatch(ct: stoppingToken);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) { break; }
-            catch (Exception error) { logger.LogError(error, "Falha na entrega da outbox; mensagens permanecem pendentes."); }
+            catch (Exception error) { logger.LogError("Falha na entrega da outbox ({ErrorType}); mensagens permanecem pendentes.", error.GetType().Name); }
             try { await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken); }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested) { break; }
         }

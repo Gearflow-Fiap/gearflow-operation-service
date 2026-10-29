@@ -1,0 +1,16 @@
+.git
+.vs
+**/bin
+**/obj
+**/TestResults
+TestResults
+artifacts
+.env
+.env.*
+**/*.pfx
+**/*.p12
+**/*.key
+**/secrets.json
+
+tests/
+tools/Operation.ContractArtifacts/

@@ -1,0 +1,1 @@
+Validated isolated namespace resources, probes, secret references, migration job and optional routes

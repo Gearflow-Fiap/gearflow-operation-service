@@ -1,0 +1,5 @@
+GearFlow.Contracts.Operation: 26/26 (100.00%)
+Operation.Api: 303/324 (93.52%)
+Operation.Application: 345/345 (100.00%)
+Operation.Domain: 370/374 (98.93%)
+Operation.Infrastructure: 2511/2532 (99.17%)

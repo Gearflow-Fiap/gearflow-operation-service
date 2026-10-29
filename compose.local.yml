@@ -1,0 +1,55 @@
+name: gearflow-operation-local
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: gearflow_operation
+      POSTGRES_USER: operation
+      POSTGRES_PASSWORD: ${OPERATION_POSTGRES_PASSWORD:?configure .env.local}
+    volumes:
+      - operation_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U operation -d gearflow_operation"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+  migrate:
+    image: gearflow-operation-service:local
+    build: .
+    entrypoint: ["dotnet", "/app/migrate/Operation.Migrate.dll", "--apply"]
+    environment:
+      ConnectionStrings__Operation: Host=postgres;Port=5432;Database=gearflow_operation;Username=operation;Password=${OPERATION_POSTGRES_PASSWORD:?configure .env.local};GSS Encryption Mode=Disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+  api:
+    image: gearflow-operation-service:local
+    build: .
+    ports:
+      - "127.0.0.1:5085:8080"
+    environment:
+      ConnectionStrings__Operation: Host=postgres;Port=5432;Database=gearflow_operation;Username=operation;Password=${OPERATION_POSTGRES_PASSWORD:?configure .env.local};GSS Encryption Mode=Disable
+      Jwt__Secret: ${OPERATION_JWT_SECRET:?configure .env.local}
+      Jwt__Issuer: gearflow-local
+      Jwt__Audience: gearflow-operation
+      Authorization__StaffClaimType: actor_type
+      Authorization__StaffClaimValue: staff
+      Pricing__ConsumableMode: PerUnitV1
+      Messaging__Enabled: "false"
+      Messaging__DispatchEnabled: "false"
+      Telemetry__ExportEnabled: "false"
+      Inventory__BaseUrl: ${OPERATION_INVENTORY_URL:-}
+      Inventory__BearerToken: ${OPERATION_INVENTORY_TOKEN:-}
+      Inventory__AllowInsecureHttp: ${OPERATION_INVENTORY_HTTP:-false}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+volumes:
+  operation_data:
+

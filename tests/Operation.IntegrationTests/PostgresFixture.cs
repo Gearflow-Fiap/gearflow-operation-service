@@ -64,6 +64,7 @@ public sealed class PostgresFixture : IAsyncLifetime
         foreach (var name in databases)
         {
             await using var command = new NpgsqlCommand($"DROP DATABASE \"{name}\" WITH (FORCE);", connection);
+            command.CommandTimeout = 120; // DROP can wait for a filesystem checkpoint on the Windows test runtime.
             await command.ExecuteNonQueryAsync();
         }
     }

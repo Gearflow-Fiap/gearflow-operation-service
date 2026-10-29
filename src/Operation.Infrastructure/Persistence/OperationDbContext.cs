@@ -19,6 +19,8 @@ public sealed class OperationDbContext(DbContextOptions<OperationDbContext> opti
         inbox.HasKey(row => row.MessageId);
         inbox.Property(row => row.Fingerprint).HasMaxLength(64);
         inbox.Property(row => row.CommandName).HasMaxLength(100);
+        inbox.Property(row => row.TraceParent).HasMaxLength(55);
+        inbox.Property(row => row.TraceState).HasMaxLength(512);
         inbox.Property(row => row.ReplyType).HasMaxLength(100);
         inbox.Property(row => row.ReplyJson).HasColumnType("jsonb");
         inbox.HasIndex(row => new { row.IsCompleted, row.ReceivedAt });
