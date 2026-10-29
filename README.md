@@ -10,7 +10,7 @@ CLI/CI: use `GearFlow.Operation.CI.slnf` para build/test de todos os projetos .N
 
 ## Estado atual
 
-**Organização M2 concluída:** DI por camada e configuração tipada, com 273 testes .NET + 13 Python aprovados. [Guia de configuração](docs/development/CONFIGURATION.md), [evidências](docs/planning/evidence/quality-m2/RESULTS.md) e [plano M1–M5](docs/planning/CODE_QUALITY_PLAN.md). Próximo passo: M3, padronização da entrada HTTP.
+**Organização M3 concluída:** ator autenticado, ETag e validação/conversão de requests compartilhados, com 290 testes .NET + 13 Python aprovados. [Guia HTTP](docs/development/HTTP_INPUT.md), [evidências](docs/planning/evidence/quality-m3/RESULTS.md) e [plano M1–M5](docs/planning/CODE_QUALITY_PLAN.md). Próximo passo: M4, persistência e convenções. DI/configuração tipada do M2: [guia](docs/development/CONFIGURATION.md).
 
 Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 

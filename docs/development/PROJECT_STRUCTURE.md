@@ -18,7 +18,7 @@ src/
     Configuration/ Messaging/ Migrations/ Persistence/ Pricing/
     DependencyInjection.cs
   Operation.Api/
-    Authentication/ Composition/ Configuration/ Errors/ Health/ HostedServices/
+    Authentication/ Composition/ Configuration/ Errors/ Health/ HostedServices/ Http/
     Endpoints/Catalog/ Endpoints/Operations/ Observability/ OpenApi/
     Program.cs Dockerfile
   Operation.Contracts/                 # Wire público versionado
@@ -43,3 +43,5 @@ MediatR foi avaliado e não adicionado neste checkpoint. A API já separa comand
 [Execução Visual Studio](VISUAL_STUDIO.md) e [mapa dos testes](../../tests/README.md).
 
 [Composição DI e configuração tipada](CONFIGURATION.md): responsabilidades, lifetimes e condições de ativação das integrações.
+
+[Entrada HTTP](HTTP_INPUT.md): validação de requests, ator autenticado e ETag compartilhado, preservando as regras distintas de catálogo e comandos.

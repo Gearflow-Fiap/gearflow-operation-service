@@ -166,3 +166,11 @@ Composição explícita API/Application/Infrastructure e opções tipadas para a
 273 testes .NET distintos (164 unitários + 109 integração) e 13 Python aprovados, zero falhas/ignorados; API 95,12%, demais assemblies >=98,93%. [Evidências](evidence/quality-m2/RESULTS.md), [guia](../development/CONFIGURATION.md). F5/Compose não alterados; reconstruir para executar o código novo.
 
 Próximo passo: M3 — validação HTTP, ator e ETag reutilizáveis. Integração coletiva/OS/Saga e entrega remota continuam no 7B.
+
+## Evolução de código — M3 concluído
+
+Helpers de ator autenticado, ETag e contexto de comando HTTP; shape/conversão de requests organizados e regras preservadas na aplicação/domínio. Catálogo permanece sem Idempotency-Key obrigatório, e replay/transação permanecem no pipeline existente. [Guia](../development/HTTP_INPUT.md).
+
+290 testes .NET distintos (164 unitários + 126 no projeto de integração) e 13 Python aprovados; zero falhas/ignorados. API 95,79%; demais assemblies >=98,93%. Três cenários aprovados antes da refatoração e reexecutados depois; 17 casos novos incluídos no total final. [Evidências](evidence/quality-m3/RESULTS.md).
+
+Próximo passo: M4 — configurações EF por entidade, versões NuGet centralizadas e convenções incrementais. Migrations, handlers e configuração F5/Compose não alterados neste checkpoint; integração coletiva/OS/Saga e entrega remota continuam no 7B.

@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Security.Claims;
 using GearFlow.Operation.Application;
 using GearFlow.Operation.Domain;
 
@@ -27,8 +25,7 @@ public static class OperationEndpoints
         group.MapGet("/service-orders/{id:guid}", async (Guid id, HttpContext http, OperationQueries queries, CancellationToken ct) =>
         {
             var result = await queries.Get(id, ct);
-            http.Response.Headers.ETag = Tag(result.Version);
-            http.Response.Headers.CacheControl = "no-store";
+            StrongETag.Write(http.Response, result.Version);
             return result;
         })
             .WithSummary("Consultar operação por OS")
@@ -41,57 +38,38 @@ public static class OperationEndpoints
             .Produces<PageResult<HistoryDto>>().ProducesProblem(404);
         var commands = group.MapGroup("/service-orders/{id:guid}").WithOperationCommandResponses();
         commands.MapPost("/diagnostic/start", async (Guid id, HttpContext http, OperationService service, CancellationToken ct) =>
-            Reply(http, await service.StartDiagnostic(Context(http, id), ct)))
+            Reply(http, await service.StartDiagnostic(OperationCommandInput.Read(http, id), ct)))
             .WithSummary("Iniciar diagnóstico físico")
             .WithDescription("Ação do funcionário sobre operação já recebida por mensagem. Exige If-Match e Idempotency-Key. Replay exato devolve resultado e ETag originais; não recebe uma nova OS nem autoriza execução comercial.");
         commands.MapPost("/diagnostic/finish", async (Guid id, FinishDiagnosticRequest body, HttpContext http, OperationService service, CancellationToken ct) =>
         {
-            var context = Context(http, id);
-            if (body.Consumables is null || body.Consumables.Length > DiagnosticSnapshot.MaximumLines || body.Consumables.Any(item => item is null))
-                throw new HttpInputException(400, "invalid_consumables");
-            return Reply(http, await service.CompleteDiagnostic(context,
-                body.Consumables.Select(item => new DiagnosticConsumable(item.LineId, item.ConsumableId, item.Quantity)), ct));
+            var context = OperationCommandInput.Read(http, id);
+            return Reply(http, await service.CompleteDiagnostic(context, body.ToConsumables(), ct));
         })
             .WithSummary("Concluir diagnóstico e congelar preços")
             .WithDescription("Informa apenas os consumíveis; serviços e peças vêm do pedido original. Consulta preços do catálogo local/Inventory e persiste snapshot imutável. Quantidades usam a unidade do item e até três casas decimais; valores são centavos BRL. Sem consumíveis, enviar lista vazia. Cotação inválida/indisponível retorna 503 sem concluir parcialmente. Exige If-Match e Idempotency-Key.")
             .ProducesProblem(503);
         commands.MapPost("/diagnostic/fail", async (Guid id, FailDiagnosticRequest body, HttpContext http, OperationService service, CancellationToken ct) =>
-            Reply(http, await service.FailDiagnostic(Context(http, id), body.Reason, ct)))
+            Reply(http, await service.FailDiagnostic(OperationCommandInput.Read(http, id), body.Reason, ct)))
             .WithSummary("Registrar impossibilidade de diagnóstico")
             .WithDescription("Registra falha explícita com motivo obrigatório de até 2000 caracteres. A Saga decide as próximas ações a partir do evento; esta chamada não cancela orçamento/pagamento. Exige If-Match e Idempotency-Key.");
         commands.MapPost("/execution/start", async (Guid id, HttpContext http, OperationService service, CancellationToken ct) =>
-            Reply(http, await service.StartExecution(Context(http, id), ct)))
+            Reply(http, await service.StartExecution(OperationCommandInput.Read(http, id), ct)))
             .WithSummary("Iniciar reparo físico")
             .WithDescription("Inicia o trabalho humano somente após autorização de execução já persistida por comando do coordenador. Não recebe PaymentConfirmed diretamente nem verifica bancos de outros serviços. Exige If-Match e Idempotency-Key; estado incompatível retorna 409.");
         commands.MapPost("/execution/jobs/{budgetJobId:guid}/done", async (Guid id, Guid budgetJobId, HttpContext http, OperationService service, CancellationToken ct) =>
-            Reply(http, await service.ExecuteJob(Context(http, id), budgetJobId, ct)))
+            Reply(http, await service.ExecuteJob(OperationCommandInput.Read(http, id), budgetJobId, ct)))
             .WithSummary("Marcar linha aprovada como executada")
             .WithDescription("Identifica a linha pelo BudgetJobId aprovado, não pelo ID do catálogo nem pelo DiagnosticLineId. Mantém o vínculo e registra ator/horário. Não baixa estoque. Exige If-Match e Idempotency-Key.");
         commands.MapPost("/execution/finish", async (Guid id, HttpContext http, OperationService service, CancellationToken ct) =>
-            Reply(http, await service.FinalizeExecution(Context(http, id), ct)))
+            Reply(http, await service.FinalizeExecution(OperationCommandInput.Read(http, id), ct)))
             .WithSummary("Concluir execução local")
             .WithDescription("Conclui o reparo somente quando todas as linhas aprovadas foram executadas. Publica o fato para o coordenador; não marca a OS global como entregue nem consome estoque diretamente. Exige If-Match e Idempotency-Key; linhas pendentes retornam 409.");
     }
 
-    private static CommandContext Context(HttpContext http, Guid id)
-    {
-        var key = http.Request.Headers["Idempotency-Key"];
-        if (key.Count != 1 || !Guid.TryParse(key[0], out var intent) || intent == Guid.Empty)
-            throw new HttpInputException(400, "invalid_idempotency_key");
-        var match = http.Request.Headers.IfMatch;
-        if (match.Count == 0) throw new HttpInputException(428, "if_match_required");
-        var tag = match.Count == 1 ? match[0] : null;
-        if (tag is null || tag.Length < 3 || tag[0] != '"' || tag[^1] != '"' ||
-            !long.TryParse(tag.AsSpan(1, tag.Length - 2), NumberStyles.None, CultureInfo.InvariantCulture, out var version) || version < 1 || Tag(version) != tag)
-            throw new HttpInputException(400, "invalid_if_match");
-        return new(intent, id, "staff:" + http.User.FindFirstValue("sub"), version);
-    }
-
     private static IResult Reply(HttpContext http, CommandResult result)
     {
-        http.Response.Headers.ETag = Tag(result.Version);
-        http.Response.Headers.CacheControl = "no-store";
+        StrongETag.Write(http.Response, result.Version);
         return Results.Ok(result);
     }
-    private static string Tag(long version) => "\"" + version.ToString(CultureInfo.InvariantCulture) + "\"";
 }

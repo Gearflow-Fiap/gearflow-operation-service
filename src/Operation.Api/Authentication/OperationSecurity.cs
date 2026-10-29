@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -34,7 +33,7 @@ public static class OperationSecurity
         });
         services.AddAuthorizationBuilder().AddPolicy("Staff", policy => policy.RequireAuthenticatedUser()
             .RequireClaim(claim, value).RequireAssertion(context =>
-                context.User.FindAll("sub").Count() == 1 && Guid.TryParse(context.User.FindFirstValue("sub"), out var id) && id != Guid.Empty));
+                StaffActor.HasValidSubject(context.User)));
         return services;
     }
 }
