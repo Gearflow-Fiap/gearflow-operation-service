@@ -102,8 +102,8 @@
       "id": "INT-02",
       "area": "Broker transport",
       "status": "incompatible-defaults",
-      "observed": "Infra-broker defines topic gearflow.events, os.order-created.v1 and an eventType/data wrapper. Operation/Inventory use native MassTransit envelope and type exchanges.",
-      "next": "Agree envelope, URNs, topology, subscribers and ACL before connecting shared services."
+      "observed": "Infra-broker proposes gearflow.events topic and eventType/data wrapper. Operation retains the native MassTransit envelope but now maps its 13 published events to operation.<fact> fanout exchanges without version suffix. Command queues and wire URNs remain unchanged; Inventory was not modified.",
+      "next": "Agree envelope, explicit event entity names, durable subscriber bindings and ACL; update consumer configuration before enabling the Operation dispatcher. No shared infrastructure was modified."
     },
     {
       "id": "INT-03",
@@ -147,5 +147,6 @@
       "observed": "Database infrastructure targets phase-3 SQL Server; Operation needs exclusive PostgreSQL. Budget MongoDB is a documented plan, not a verified runtime.",
       "next": "Prepare reviewed infrastructure, secrets and connectivity changes. No cloud apply is included in this kit."
     }
-  ]
+  ],
+  "operationEventTopologyUpdatedAt": "2026-10-30"
 }

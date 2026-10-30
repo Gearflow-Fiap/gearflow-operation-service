@@ -10,7 +10,7 @@ CLI/CI: use `GearFlow.Operation.CI.slnf` para build/test de todos os projetos .N
 
 ## Estado atual
 
-**Organização M1–M5 concluída localmente.** A avaliação M5 mantém casos de uso explícitos e pipeline único; [ADR-014](docs/architecture/adr-014-casos-de-uso-e-handlers.md) registra a decisão e critérios para reavaliar handlers/MediatR. [Mapa de casos de uso](docs/development/APPLICATION_USE_CASES.md), [evidências M5](docs/planning/evidence/quality-m5/RESULTS.md) e [plano](docs/planning/CODE_QUALITY_PLAN.md). No M5: build e 168 testes unitários reexecutados, sem mudança de produção. Última regressão completa: M4, 294 .NET + 13 Python aprovados, cobertura mínima 95,79%. Próximo foco: integração/entrega 7B.
+**Organização M1–M5 concluída localmente.** A avaliação M5 mantém casos de uso explícitos e pipeline único; [ADR-014](docs/architecture/adr-014-casos-de-uso-e-handlers.md) registra a decisão e critérios para reavaliar handlers/MediatR. [Mapa de casos de uso](docs/development/APPLICATION_USE_CASES.md), [evidências M5](docs/planning/evidence/quality-m5/RESULTS.md) e [plano](docs/planning/CODE_QUALITY_PLAN.md). No M5: build e 168 testes unitários reexecutados, sem mudança de produção. Última regressão completa: atualização dos exchanges de eventos, 297 .NET + 13 Python aprovados, cobertura mínima 95,79%. Próximo foco: integração/entrega 7B.
 
 Implementados localmente: domínio/casos de uso, PostgreSQL/EF/migrations, journal idempotente e concorrência, API JWT/Staff, catálogo próprio, adapter HTTP de preços Inventory, contratos tipados e consumers/outbox RabbitMQ/MassTransit.
 
@@ -21,6 +21,8 @@ Incremento 7A acrescenta imagem/Compose, migration CLI, probes, logs JSON, trace
 Pendente (7B): homologação com OS/Budget/Inventory, owner OS/Saga, contratos/topologia/credenciais, BDD distribuído, PostgreSQL/telemetria/Sonar e deploy remotos. Identidade/claims dependem do emissor. Testes locais não encerram a fase 4.
 
 **7B.1 — kit para revisão do grupo:** [guia de integração](docs/integration/README.md), matriz de compatibilidade, decisões pendentes e cenários conjuntos. Gerador de ZIP validado por oito testes Python; CI prepara o artifact com contratos/exemplos e NuGet, sem publicação. O dono da OS/Saga continua sem confirmação do grupo. [Evidências](docs/planning/evidence/increment-7b1/RESULTS.md).
+
+**Eventos publicados:** 13 exchanges `operation.<fato>` sem sufixo `.v1`, como `operation.diagnostic-finished` e `operation.execution-finished`. Contratos/URN e filas de comandos preservados. Consumidores devem configurar os mesmos nomes e seus bindings antes de habilitar o dispatcher. [Mapa e transição](docs/development/MESSAGING.md#exchanges-dos-eventos-publicados), [evidências](docs/planning/evidence/event-exchanges/RESULTS.md).
 
 ## Responsabilidades
 

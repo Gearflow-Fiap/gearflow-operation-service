@@ -8,4 +8,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Testcontainers.PostgreSql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/contracts/runtime-v1/examples/*.json" Link="Contracts/Examples/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

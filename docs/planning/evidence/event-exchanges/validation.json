@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-30",
+  "status": "complete-local",
+  "eventExchanges": {
+    "DiagnosticFailed": "operation.diagnostic-failed",
+    "DiagnosticFinished": "operation.diagnostic-finished",
+    "DiagnosticQueued": "operation.diagnostic-queued",
+    "DiagnosticStarted": "operation.diagnostic-started",
+    "ExecutionAuthorized": "operation.execution-authorized",
+    "ExecutionFinished": "operation.execution-finished",
+    "ExecutionStarted": "operation.execution-started",
+    "JobExecuted": "operation.job-executed",
+    "OperationCanceled": "operation.canceled",
+    "OperationCancellationRejected": "operation.cancellation-rejected",
+    "OperationCommandRejected": "operation.command-rejected",
+    "OperationDeactivated": "operation.deactivated",
+    "VehicleUpdated": "operation.vehicle-updated"
+  },
+  "suffixVersionInExchangeNames": false,
+  "wireNamespace": "GearFlow.Contracts.Operation.V1",
+  "commandQueuesChanged": false,
+  "payloadsAndSchemasChanged": false,
+  "dotnetCasesPassed": 297,
+  "unitCasesPassed": 170,
+  "integrationCasesPassed": 127,
+  "newCases": 3,
+  "pythonTestsPassed": 13,
+  "failed": 0,
+  "skipped": 0,
+  "runs": [
+    {
+      "report": "TestResults/event-exchanges/miran_MIRANDA_2026-10-30_15_22_57_net10.0.trx",
+      "passed": 127,
+      "total": 127,
+      "failed": 0
+    },
+    {
+      "report": "TestResults/event-exchanges/miran_MIRANDA_2026-10-30_15_26_48_net10.0.trx",
+      "passed": 170,
+      "total": 170,
+      "failed": 0
+    }
+  ],
+  "coverage": {
+    "GearFlow.Contracts.Operation": "42/42 (100.00%)",
+    "Operation.Api": "432/451 (95.79%)",
+    "Operation.Application": "351/351 (100.00%)",
+    "Operation.Domain": "370/374 (98.93%)",
+    "Operation.Infrastructure": "2569/2589 (99.23%)"
+  },
+  "realRabbitMqVerifiedEvents": 13,
+  "contractsExportValidated": 18,
+  "localPackageAndBundleVerified": true,
+  "sharedBrokerInfrastructureChanged": false,
+  "productionDeploy": false
+}

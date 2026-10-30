@@ -23,6 +23,7 @@ public static class OperationMessaging
             bus.AddConsumer<OperationCommandConsumer<W.CancelOperation>>(); bus.AddConsumer<OperationCommandConsumer<W.UpdateOperationVehicle>>(); bus.AddConsumer<OperationCommandConsumer<W.DeactivateOperation>>();
             bus.UsingRabbitMq((context, cfg) =>
             {
+                cfg.ConfigureOperationEventNames();
                 cfg.Host(options.Host, options.Port, options.VirtualHost, host => { host.Username(options.Username); host.Password(options.Password); });
                 cfg.ConfigureJsonSerializerOptions(json => { json.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false)); json.RespectRequiredConstructorParameters = true; json.NumberHandling = JsonNumberHandling.Strict; return json; });
                 Configure<W.StartDiagnostic>(cfg, context, "operation-start-diagnostic"); Configure<W.StartExecution>(cfg, context, "operation-start-execution");

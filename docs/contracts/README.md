@@ -51,3 +51,7 @@ O gerador exporta schemas a partir da metadata CLR e exemplos determinísticos. 
 A pasta v1 contém a proposta de 24/10, anterior à paridade e ao código. **Não usar aqueles schemas/exemplos para o runtime atual.** Esta baseline substitui requestedJobIds por linhas completas, adiciona peças/política e preserva identidade BudgetJobId; não aceita conclusão parcial. As incompatibilidades foram corrigidas antes da publicação do preview, mas ainda devem ser revisadas com o grupo.
 
 Infra-broker foi lido: ele propõe gearflow.events com topic/routing key e envelope próprio; Inventory já usa MassTransit. Testes Operation usam vhosts isolados e topologia MassTransit, sem modificar o infra-broker. A escolha coletiva de envelope/topologia/owner do pacote/ACL ainda precisa ser formalizada antes de conectar serviços no ambiente compartilhado.
+
+## Atualização de nomes dos eventos — 30/10/2026
+
+Os 13 eventos publicados usam exchanges operation.<fato> sem sufixo .v1. OperationEventNames.All é a fonte canônica dos nomes e o manifesto runtime-v1 possui o campo exchange; comandos usam null. Namespace/URN, schemas e payloads continuam iguais. Consumidores devem aplicar os nomes explicitamente antes de configurar os endpoints. [Mapa e transição de topologia](../development/MESSAGING.md#exchanges-dos-eventos-publicados).

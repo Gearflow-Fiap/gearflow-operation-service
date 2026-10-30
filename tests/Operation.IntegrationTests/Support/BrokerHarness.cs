@@ -11,7 +11,7 @@ using W = GearFlow.Contracts.Operation.V1;
 
 namespace Operation.IntegrationTests.Support;
 
-internal sealed record ReceivedWire(object Body, Guid? Id, Guid? Correlation, Guid? Cause, string? TraceId = null);
+internal sealed record ReceivedWire(object Body, Guid? Id, Guid? Correlation, Guid? Cause, string? TraceId = null, string? Exchange = null);
 internal sealed class BrokerHarness : IAsyncDisposable
 {
     private readonly HttpClient management;
@@ -48,6 +48,7 @@ internal sealed class BrokerHarness : IAsyncDisposable
         BrokerHarness? harness = null;
         var probe = Bus.Factory.CreateUsingRabbitMq(cfg =>
         {
+            cfg.ConfigureOperationEventNames();
             cfg.Host(options.Host, options.Port, options.VirtualHost, host => { host.Username(options.Username); host.Password(options.Password); });
             if (observeEvents) cfg.ReceiveEndpoint("operation-test-observer", endpoint =>
             {
@@ -57,7 +58,8 @@ internal sealed class BrokerHarness : IAsyncDisposable
                 Attach<W.OperationCommandRejected>(endpoint); Attach<W.OperationCancellationRejected>(endpoint);
                 void Attach<T>(IRabbitMqReceiveEndpointConfigurator receive) where T : class => receive.Handler<T>(context =>
                 {
-                    harness!.Events.Enqueue(new(context.Message, context.MessageId, context.CorrelationId, context.InitiatorId, System.Diagnostics.Activity.Current?.TraceId.ToString())); return Task.CompletedTask;
+                    harness!.Events.Enqueue(new(context.Message, context.MessageId, context.CorrelationId, context.InitiatorId, System.Diagnostics.Activity.Current?.TraceId.ToString(),
+                        context.ReceiveContext.GetPayload<RabbitMqBasicConsumeContext>().Exchange)); return Task.CompletedTask;
                 });
             });
         });
@@ -70,6 +72,11 @@ internal sealed class BrokerHarness : IAsyncDisposable
     {
         var endpoint = await probe.GetSendEndpoint(new Uri("queue:" + queue));
         await endpoint.Send(message, context => { context.MessageId = id; context.CorrelationId = order; });
+    }
+    public async Task PublishEvent(object message, Guid id, Guid order, Guid cause)
+    {
+        await using var scope = services.CreateAsyncScope();
+        await scope.ServiceProvider.GetRequiredService<IOperationPublisher>().Publish(message, id, order, cause, default);
     }
     public Task StopConsumers() => bus.StopAsync();
     public Task StartConsumers() => bus.StartAsync();
