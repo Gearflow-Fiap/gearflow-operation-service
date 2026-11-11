@@ -2,6 +2,40 @@
 
 Microsserviço de diagnóstico e execução extraído do gearflow-app para a fase 4 da FIAP.
 
+## Docker local integrado com a OS
+
+Com Docker Desktop Linux iniciado, pare as APIs que estiverem rodando por `dotnet run`
+(Ctrl+C) para liberar as portas. Não é necessário definir variáveis no terminal:
+
+```powershell
+cd C:\WS\gearflow-os-service
+docker compose up -d --build
+cd C:\WS\gearflow-operation-service
+docker compose up -d --build
+```
+
+O Compose padrão (`compose.yml`) inicia PostgreSQL na porta 5434, aplica migrations
+automaticamente e sobe a API em http://localhost:5085. Mensageria, despacho, claims
+Staff e Pricing__ConsumableMode=PerUnitV1 já estão habilitados. O JWT local usa
+GearFlow.Api/GearFlow.Client e o mesmo segredo de desenvolvimento da OS.
+
+A OS cria a rede `gearflow-local-integration` e mantém o único RabbitMQ; o Operation
+usa o DNS `rabbitmq` nessa rede. Subir a OS primeiro é obrigatório. Cada PostgreSQL
+fica na rede privada do próprio projeto; os volumes existentes são preservados.
+Somente portas no loopback são expostas. Defaults são exclusivos de desenvolvimento.
+
+```powershell
+docker compose ps
+docker compose logs --tail 100 api migrate
+curl.exe http://localhost:5085/health/ready
+```
+
+O perfil isolado/Visual Studio continua em `compose.local.yml`, com configuração
+própria. Para a integração use o Compose padrão acima. Inventory/Billing não estão
+incluídos; o teste de diagnóstico apenas com mão de obra funciona sem eles.
+Preços de peças/consumíveis exigem OPERATION_INVENTORY_URL/TOKEN/HTTP, configuráveis
+num `.env` local opcional. Nunca remover volumes para reiniciar o teste.
+
 ## Executar no Visual Studio
 
 Abra `GearFlow.Operation.slnx`, defina **docker-compose** como Startup Project e execute o perfil **Docker Compose** (F5/Ctrl+F5), com Docker Desktop Linux ativo. O Scalar abre em http://localhost:5085/scalar/v1; o health check continua em /health/ready. Credenciais locais são inicializadas apenas quando ausentes, sem substituir valores existentes. [Guia](docs/development/VISUAL_STUDIO.md).
