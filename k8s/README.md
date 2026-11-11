@@ -1,5 +1,15 @@
 # Operation no EKS existente
 
+## Perfil de integração OS–Operation
+
+`kubectl kustomize k8s/overlays/integration` renderiza o perfil com consumo e despacho
+habilitados, broker `rabbitmq.messaging.svc.cluster.local`, vhost `gearflow` e label
+de cliente RabbitMQ no pod. Não aplica recursos. Fornecer RabbitMq__Username e
+RabbitMq__Password individuais no Secret gearflow-operation-secret e conferir
+overrides desse Secret para host/vhost/flags. O namespace precisa da autorização
+prevista na NetworkPolicy real (`gearflow.io/messaging-access=true`). O perfil não
+cria credenciais nem altera políticas do broker. Preparar imagem e banco antes do deploy.
+
 Manifests preparados e renderizados offline; nenhum recurso aplicado. Namespace existente: gearflow. A infraestrutura SQL Server da fase 3 não atende o PostgreSQL do Operation.
 
 Pré-requisitos do grupo:
