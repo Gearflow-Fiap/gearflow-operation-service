@@ -29,7 +29,11 @@ Alterar DB_PASSWORD no GitHub NÃO altera senha em volume PostgreSQL já inicial
 coordenar rotação no banco antes de atualizar os Secrets. Nunca apagar PVC para corrigir senha.
 Não migra PVCs entre EKS convencional/Auto Mode; mudança de perfil exige migração planejada.
 JWT usa issuer GearFlow.Api e audience GearFlow.Client; confirmar compatibilidade com o emissor.
-Não habilita exportação New Relic adicional nem provisiona Inventory.
+Exporta traces, métricas e logs por OTLP para o New Relic (`https://otlp.nr-data.net:4317`, gRPC), com o header `api-key` montado a partir do
+Secret `newrelic-apm-secret` (chave `NEW_RELIC_LICENSE_KEY`) do namespace `gearflow`. O Secret não é criado aqui: o delivery do Inventory o grava
+a partir do secret `NEW_RELIC_LICENSE_KEY` do GitHub. O Pod lê o Secret só na subida: se ele surgir depois, reinicie o Deployment
+(`kubectl rollout restart deployment/gearflow-operation -n gearflow`). Sem o Secret a API sobe normalmente e o New Relic recusa a exportação.
+O `service.name` no New Relic é `GearFlow.Operation`. Não provisiona Inventory.
 
 ## Validação e operação
 
