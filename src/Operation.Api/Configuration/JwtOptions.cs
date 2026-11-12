@@ -7,10 +7,3 @@ public sealed class JwtOptions
     public string Issuer { get; set; } = "";
     public string Audience { get; set; } = "";
 }
-
-public sealed class StaffAuthorizationOptions
-{
-    public const string SectionName = "Authorization";
-    public string StaffClaimType { get; set; } = "";
-    public string StaffClaimValue { get; set; } = "";
-}

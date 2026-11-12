@@ -9,7 +9,7 @@ public sealed class OperationOpenApi : IOpenApiDocumentTransformer
     public Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
         document.Info.Title = "GearFlow Operation API";
-        document.Info.Description = "Diagnóstico, catálogo de mão de obra e execução física. Requer JWT Staff nas APIs de negócio. Autorizações comerciais e cancelamentos da Saga entram por mensageria, não por estas rotas.";
+        document.Info.Description = "Diagnóstico, catálogo de mão de obra e execução física. Requer JWT válido com sub único e não vazio nas APIs de negócio. Autorizações comerciais e cancelamentos da Saga entram por mensageria, não por estas rotas.";
         document.Components ??= new();
         document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
         document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme { Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT" };
@@ -94,7 +94,7 @@ public sealed class OperationOpenApi : IOpenApiDocumentTransformer
             {
                 "400" => ("Entrada, parâmetro ou header inválido.", "invalid_request"),
                 "401" => ("JWT ausente, inválido ou expirado.", "http_error"),
-                "403" => ("Identidade sem permissão Staff válida.", "http_error"),
+                "403" => ("Identidade sem sub único, não vazio e de até 194 caracteres.", "http_error"),
                 "404" => ("Recurso não encontrado neste serviço.", "operation_not_found"),
                 "409" => ("Estado incompatível ou intenção reutilizada com conteúdo divergente.", "state_conflict"),
                 "412" => ("Versão do If-Match diverge da versão persistida.", "version_conflict"),

@@ -37,8 +37,6 @@ services:
       Jwt__Secret: ${OPERATION_JWT_SECRET:?configure .env.local}
       Jwt__Issuer: gearflow-local
       Jwt__Audience: gearflow-operation
-      Authorization__StaffClaimType: actor_type
-      Authorization__StaffClaimValue: staff
       Pricing__ConsumableMode: PerUnitV1
       Messaging__Enabled: "false"
       Messaging__DispatchEnabled: "false"

@@ -40,9 +40,9 @@ public class HttpTests(PostgresFixture postgres)
     }
 
     [Theory]
-    [InlineData("missing", 401)] [InlineData("customer", 403)] [InlineData("audience", 401)]
-    [InlineData("expired", 401)] [InlineData("signature", 401)] [InlineData("subject", 403)]
-    public async Task RealJwtValidationAndStaffPolicyRejectUnauthorizedRequests(string scenario, int status)
+    [InlineData("missing", 401)] [InlineData("audience", 401)]
+    [InlineData("expired", 401)] [InlineData("signature", 401)]
+    public async Task RealJwtValidationRejectUnauthorizedRequests(string scenario, int status)
     {
         var h = await postgres.Create(); await using var app = new ApiFactory(h);
         using var client = app.CreateClient();

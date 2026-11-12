@@ -1,5 +1,7 @@
 # GearFlow Operation Service
 
+> Atualização: removida a exigência de Staff e de sub GUID; configurada a consulta ao Inventory. Consulte [JWT e Inventory](docs/development/JWT_INVENTORY.md) para o contrato atual e a renovação da credencial.
+
 Microsserviço de diagnóstico e execução extraído do gearflow-app para a fase 4 da FIAP.
 
 ## Docker local integrado com a OS

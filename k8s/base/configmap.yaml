@@ -6,8 +6,6 @@ data:
   ASPNETCORE_HTTP_PORTS: "8080"
   ASPNETCORE_ENVIRONMENT: Production
   DOTNET_EnableDiagnostics: "0"
-  Authorization__StaffClaimType: actor_type
-  Authorization__StaffClaimValue: staff
   Pricing__ConsumableMode: PerUnitV1
   Messaging__Enabled: "false"
   Messaging__DispatchEnabled: "false"

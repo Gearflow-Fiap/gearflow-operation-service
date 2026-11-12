@@ -28,7 +28,7 @@ public class EndpointContractTests(PostgresFixture postgres)
         schema.GetProperty("paths").EnumerateObject().Single(path => path.Name.TrimEnd('/') == SchemaPath(route)).Value.GetProperty(method.ToLowerInvariant());
 
     [Fact]
-    public async Task EveryBusinessRouteHasExplicitDocumentationAndStaffPolicy()
+    public async Task EveryBusinessRouteHasExplicitDocumentationAndAuthenticationPolicy()
     {
         var h = await postgres.Create(); await using var api = new ApiFactory(h); using var client = api.CreateClient();
         foreach (var route in BusinessRoutes(api.Services))
@@ -36,23 +36,21 @@ public class EndpointContractTests(PostgresFixture postgres)
             Assert.False(string.IsNullOrWhiteSpace(route.Metadata.GetMetadata<IEndpointSummaryMetadata>()?.Summary), route.RoutePattern.RawText);
             Assert.False(string.IsNullOrWhiteSpace(route.Metadata.GetMetadata<IEndpointDescriptionMetadata>()?.Description), route.RoutePattern.RawText);
             Assert.Null(route.Metadata.GetMetadata<IAllowAnonymous>());
-            Assert.Contains(route.Metadata.GetOrderedMetadata<IAuthorizeData>(), policy => policy.Policy == "Staff");
+            Assert.Contains(route.Metadata.GetOrderedMetadata<IAuthorizeData>(), policy => policy.Policy == "AuthenticatedUser");
         }
     }
 
     [Fact]
-    public async Task EveryBusinessRouteRejectsAnonymousAndCustomerBeforeAnyBusinessEffect()
+    public async Task EveryBusinessRouteRejectsAnonymousBeforeAnyBusinessEffect()
     {
         var h = await postgres.Create(); await using var api = new ApiFactory(h); using var client = api.CreateClient();
         foreach (var route in BusinessRoutes(api.Services))
         foreach (var method in route.Metadata.GetRequiredMetadata<HttpMethodMetadata>().HttpMethods)
-        foreach (var customer in new[] { false, true })
         {
             using var request = new HttpRequestMessage(new HttpMethod(method), RequestPath(route));
             if (method is "POST" or "PUT") request.Content = new StringContent("{}", Encoding.UTF8, "application/json");
-            if (customer) request.Headers.Authorization = new("Bearer", ApiFactory.Token("customer"));
             using var response = await client.SendAsync(request);
-            Assert.Equal(customer ? HttpStatusCode.Forbidden : HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
         Assert.Equal((0, 0, 0, 0), await h.Counts());
     }

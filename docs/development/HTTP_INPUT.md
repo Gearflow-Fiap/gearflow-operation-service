@@ -1,12 +1,14 @@
 # Entrada HTTP: ator, precondições e requests
 
+> Atualização: removida a exigência de Staff e de sub GUID; configurada a consulta ao Inventory. Consulte [JWT e Inventory](JWT_INVENTORY.md) para o contrato atual e a renovação da credencial.
+
 A API traduz entradas HTTP para os casos de uso. A aplicação e o domínio continuam responsáveis por regras de negócio e invariantes. Comandos recebidos por mensageria mantêm seu ator explícito e não dependem de HttpContext.
 
 ## Pontos compartilhados
 
 | Arquivo | Responsabilidade |
 |---|---|
-| Authentication/StaffActor.cs | Verifica sub GUID único e não vazio; lê o ator autenticado como staff:<sub>. A policy Staff continua exigindo autenticação e a claim de perfil configurada |
+| Authentication/AuthenticatedActor.cs | Verifica sub textual único, não vazio, de até 194 caracteres; lê o ator autenticado como staff:<sub>. A policy AuthenticatedUser exige JWT válido, sem claim de perfil |
 | Http/StrongETag.cs | Parser único de If-Match e escrita de ETag/Cache-Control para catálogo e operações |
 | Http/OperationCommandInput.cs | Lê Idempotency-Key, versão esperada e ator dos comandos HTTP de operação |
 | Endpoints/Operations/OperationRequests.cs | DTOs e validação de shape da lista de consumíveis; converte para objetos do domínio |

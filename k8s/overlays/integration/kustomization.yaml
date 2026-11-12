@@ -12,6 +12,8 @@ patches:
       metadata:
         name: gearflow-operation-config
       data:
+        Inventory__BaseUrl: http://gearflow-inventory.gearflow.svc.cluster.local:8080/
+        Inventory__AllowInsecureHttp: "true"
         Messaging__Enabled: "true"
         Messaging__DispatchEnabled: "true"
         RabbitMq__Host: rabbitmq.messaging.svc.cluster.local

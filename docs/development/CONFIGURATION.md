@@ -1,5 +1,7 @@
 # Composição e configuração
 
+> Atualização: removida a exigência de Staff e de sub GUID; configurada a consulta ao Inventory. Consulte [JWT e Inventory](JWT_INVENTORY.md) para o contrato atual e a renovação da credencial.
+
 O `Program.cs` combina três registros explícitos: `AddOperationApplication`, `AddOperationInfrastructure` e `AddOperationApi`. Mantém a ordem do pipeline HTTP e o probe de container. As camadas não criam um segundo service provider.
 
 | Registro | Responsabilidade |
@@ -16,7 +18,7 @@ As chaves existentes, inclusive variáveis com `__`, continuam válidas. Não h�
 
 | Grupo tipado | Regra |
 |---|---|
-| JwtOptions / StaffAuthorizationOptions | Obrigatórios na composição; segredo com ao menos 32 bytes UTF-8, issuer, audience e claim Staff explícitos. HS256, expiração, sub GUID único e policy Staff preservados |
+| JwtOptions | Obrigatórios na composição; segredo com ao menos 32 bytes UTF-8, issuer e audience explícitos. HS256, expiração e sub textual único são obrigatórios; sem claim Staff ou GUID |
 | DatabaseOptions | ConnectionStrings:Operation não vazio validado na inicialização. Essa antecipação é intencional: antes a ausência era detectada ao resolver a factory. Não abre conexão nem aplica migrations na inicialização; banco inacessível continua sendo problema de readiness |
 | InventoryOptions | URL e token podem faltar. URL configurada é validada ao resolver o cliente/opções: HTTPS, ou HTTP loopback/explicitamente permitido, sem credenciais/query/fragmento. Timeout 5s e redirects desativados |
 | PricingOptions | Política ausente/desconhecida resulta em modo nulo e erro de preço indisponível quando exigida. Nenhuma regra financeira é escolhida automaticamente |

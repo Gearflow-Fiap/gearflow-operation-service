@@ -28,22 +28,22 @@ public class HttpInputTests
     [InlineData("missing")]
     [InlineData("duplicate")]
     [InlineData("empty")]
-    [InlineData("zero")]
-    [InlineData("malformed")]
+    [InlineData("whitespace")]
+    [InlineData("long")]
     public void ActorReaderNeverFallsBackToSystemOrAcceptsAmbiguousIdentity(string scenario)
     {
         var claims = new List<Claim>();
-        if (scenario != "missing") claims.Add(new("sub", scenario switch { "empty" => "", "zero" => Guid.Empty.ToString(), "malformed" => "not-a-guid", _ => Guid.NewGuid().ToString() }));
+        if (scenario != "missing") claims.Add(new("sub", scenario switch { "empty" => "", "whitespace" => "   ", "long" => new string('x', 195), "zero" => Guid.Empty.ToString(), "malformed" => "not-a-guid", _ => Guid.NewGuid().ToString() }));
         if (scenario == "duplicate") claims.Add(new("sub", Guid.NewGuid().ToString()));
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, scenario == "anonymous" ? null : "test"));
-        var error = Assert.Throws<HttpInputException>(() => StaffActor.Read(principal));
+        var error = Assert.Throws<HttpInputException>(() => AuthenticatedActor.Read(principal));
         Assert.Equal(401, error.Status); Assert.Equal("invalid_actor", error.Code);
     }
 
     [Fact]
     public void CommandReadsTrustedSubjectWithoutRewritingFingerprintIdentity()
     {
-        const string subject = "{AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE}";
+        const string subject = "os-dev";
         var intent = Guid.NewGuid(); var order = Guid.NewGuid(); var http = new DefaultHttpContext();
         http.User = new ClaimsPrincipal(new ClaimsIdentity([new Claim("sub", subject)], "test"));
         http.Request.Headers["Idempotency-Key"] = intent.ToString("B"); http.Request.Headers.IfMatch = "\"7\"";
@@ -54,14 +54,14 @@ public class HttpInputTests
     }
 
     [Fact]
-    public void ActorReaderUsesTheSameAuthenticatedIdentityRuleAsStaffPolicy()
+    public void ActorReaderUsesTheSameAuthenticatedIdentityRuleAsAuthenticatedPolicy()
     {
         var subject = Guid.NewGuid().ToString();
         var principal = new ClaimsPrincipal(new ClaimsIdentity[]
         {
             new(), new([new Claim("sub", subject)], "test")
         });
-        Assert.Equal("staff:" + subject, StaffActor.Read(principal));
+        Assert.Equal("staff:" + subject, AuthenticatedActor.Read(principal));
     }
 
     [Fact]
