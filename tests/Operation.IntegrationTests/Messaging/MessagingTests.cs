@@ -59,12 +59,33 @@ public class MessagingTests(PostgresFixture postgres)
     }
 
     [Fact]
-    public async Task UnroutablePublishRemainsPendingInsteadOfBeingMarkedDelivered()
+    public async Task UnroutableSagaFactRemainsPendingInsteadOfBeingMarkedDelivered()
+    {
+        var h = await postgres.Create(); await using var broker = await BrokerHarness.Start(h, observeEvents: false);
+        await h.Diagnosed();
+        var expected = Assert.Single(await h.Store.ReadPendingEvents(), row => row.Kind == OperationEventKind.DiagnosticFinished);
+
+        await Assert.ThrowsAsync<MassTransit.MessageReturnedException>(() => broker.Flush());
+        var pending = Assert.Single(await h.Store.ReadPendingEvents());
+        Assert.Equal(expected.EventId, pending.EventId);
+        Assert.Equal(OperationEventKind.DiagnosticFinished, pending.Kind);
+
+        // Retrying an unroutable Saga fact must preserve its original identity.
+        await Assert.ThrowsAsync<MassTransit.MessageReturnedException>(() => broker.Flush());
+        Assert.Equal(expected.EventId, Assert.Single(await h.Store.ReadPendingEvents()).EventId);
+    }
+
+    [Fact]
+    public async Task UnroutableInformationalFactsArePublishedWithoutRequiringSubscribers()
     {
         var h = await postgres.Create(); await using var broker = await BrokerHarness.Start(h, observeEvents: false);
         await h.Receive();
-        await Assert.ThrowsAsync<MassTransit.MessageReturnedException>(() => broker.Flush());
-        Assert.Single(await h.Store.ReadPendingEvents());
+        await broker.Flush();
+        Assert.Empty(await h.Store.ReadPendingEvents());
+
+        h.Clock.Advance(); await h.Service().StartDiagnostic(h.Context());
+        await broker.Flush();
+        Assert.Empty(await h.Store.ReadPendingEvents());
     }
 
     [Fact]

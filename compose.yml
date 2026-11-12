@@ -1,3 +1,8 @@
+# Desenvolvimento integrado: iniciar primeiro o Compose do gearflow-os-service.
+# Defaults exclusivamente locais. compose.local.yml mantém o perfil isolado/VS.
+x-operation-db: &operation-db
+  ConnectionStrings__Operation: Host=postgres;Port=5432;Database=gearflow_operation;Username=gearflow;Password=${OPERATION_POSTGRES_PASSWORD:-operation_local_only};GSS Encryption Mode=Disable
+
 services:
   postgres:
     image: postgres:17
@@ -14,5 +19,59 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+  migrate:
+    image: gearflow-operation-service:local
+    build:
+      context: .
+      dockerfile: src/Operation.Api/Dockerfile
+    entrypoint: ["dotnet", "/app/migrate/Operation.Migrate.dll", "--apply"]
+    environment:
+      <<: *operation-db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+  api:
+    image: gearflow-operation-service:local
+    build:
+      context: .
+      dockerfile: src/Operation.Api/Dockerfile
+    ports:
+      - "127.0.0.1:5085:8080"
+    environment:
+      <<: *operation-db
+      ASPNETCORE_ENVIRONMENT: Development
+      Jwt__Secret: ${OPERATION_JWT_SECRET:-dev-only-super-secret-change-me-32chars-minimum}
+      Jwt__Issuer: GearFlow.Api
+      Jwt__Audience: GearFlow.Client
+      Authorization__StaffClaimType: actor_type
+      Authorization__StaffClaimValue: staff
+      Pricing__ConsumableMode: PerUnitV1
+      Messaging__Enabled: "true"
+      Messaging__DispatchEnabled: "true"
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: "5672"
+      RabbitMq__VirtualHost: /
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+      Telemetry__ExportEnabled: "false"
+      Inventory__BaseUrl: ${OPERATION_INVENTORY_URL:-}
+      Inventory__BearerToken: ${OPERATION_INVENTORY_TOKEN:-}
+      Inventory__AllowInsecureHttp: ${OPERATION_INVENTORY_HTTP:-false}
+    networks:
+      - default
+      - integration
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+networks:
+  integration:
+    name: gearflow-local-integration
+    external: true
 volumes:
   operation_data:

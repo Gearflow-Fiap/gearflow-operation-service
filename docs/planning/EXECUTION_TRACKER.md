@@ -190,3 +190,11 @@ Avaliação fundamentada mantém os casos de uso explícitos e pipeline único. 
 M5 documental: build dos nove projetos aprovado sem erros/avisos; 168 testes unitários existentes reexecutados, zero falhas/ignorados. Nenhum código de produção, pacote ou teste modificado. Última regressão completa/cobertura permanece M4: 294 .NET + 13 Python, mínimo 95,79%. [Evidências M5](evidence/quality-m5/RESULTS.md).
 
 Sequência de organização M1–M5 encerrada localmente. Próximo foco: 7B, alinhamento coletivo/OS-Saga/contratos/topologia/credenciais, homologação integrada, testes distribuídos e entrega remota. Esta conclusão não confirma decisões ainda pendentes do grupo.
+
+## Eventos publicados — exchanges acordados sem .v1 (30/10/2026)
+
+13 eventos do Operation mapeados para exchanges operation.<fato> pelo formatador local do bus. Comandos/filas e namespace/URN/payloads preservados. Mapa canônico no pacote e manifesto atualizado; consumidores precisam aplicar o mesmo EntityName e provisionar bindings antes de ativar dispatcher. Não foi modificada infraestrutura compartilhada.
+
+297 testes .NET (170 unitários + 127 integração) e 13 Python aprovados, zero falhas/ignorados. Cenário RabbitMQ confirmou exchange e integridade dos 13 eventos. Cobertura mínima 95,79%; export de 18 contratos e pacote/kit local verificados. [Evidências](evidence/event-exchanges/RESULTS.md), [guia](../development/MESSAGING.md#exchanges-dos-eventos-publicados).
+
+Próximo foco continua 7B: acordar/atualizar assinantes e topologia compartilhada, responsável OS/Saga e homologação com serviços reais. Não habilitar dispatcher compartilhado antes dos bindings necessários.

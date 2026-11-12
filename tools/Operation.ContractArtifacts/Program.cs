@@ -43,6 +43,7 @@ foreach (var type in types)
 var manifest = new { status = "implemented-local-preview-not-published", package = "GearFlow.Contracts.Operation", version = "1.0.0-preview.1",
     messages = types.Select(type => new { name = type.Name, kind = queues.ContainsKey(type.Name) ? "command" : "event", @namespace = type.Namespace,
         urn = "urn:message:" + type.Namespace + ":" + type.Name, destinationQueue = queues.GetValueOrDefault(type.Name),
+        exchange = W.OperationEventNames.All.GetValueOrDefault(type),
         schema = "schemas/" + type.Name + ".schema.json", example = "examples/" + type.Name + ".json" }) };
 File.WriteAllText(Path.Combine(root, "manifest.json"), JsonSerializer.Serialize(manifest, options) + Environment.NewLine);
 Console.WriteLine($"{types.Length} contratos exportados para {root}");

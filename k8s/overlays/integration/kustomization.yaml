@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+patches:
+  - target:
+      kind: ConfigMap
+      name: gearflow-operation-config
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: gearflow-operation-config
+      data:
+        Messaging__Enabled: "true"
+        Messaging__DispatchEnabled: "true"
+        RabbitMq__Host: rabbitmq.messaging.svc.cluster.local
+        RabbitMq__Port: "5672"
+        RabbitMq__VirtualHost: gearflow
+  - target:
+      kind: Deployment
+      name: gearflow-operation
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gearflow-operation
+      spec:
+        template:
+          metadata:
+            labels:
+              gearflow.io/rabbitmq-client: "true"

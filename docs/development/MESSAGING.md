@@ -15,9 +15,58 @@ $env:RabbitMq__VirtualHost='gearflow'
 
 Messaging__Enabled ausente/false mantém API sem conexão ao broker. DispatchEnabled é separado e fica desligado por padrão: só ativar depois de migrations, compatibilidade e assinaturas duráveis provisionadas. Endpoint HTTP/JWT e configuração de preço continuam necessários para ações humanas. Em container, localhost aponta ao próprio container; usar nome de serviço/rede configurada.
 
-O runtime 8.5.11 segue MassTransit/RabbitMQ como Inventory, com filas de comandos descritas no [manifesto](../contracts/runtime-v1/manifest.json). Mensagens publicadas são persistentes e usam publisher confirms + Mandatory. Sem rota para alguma fila, o registro permanece pendente; isso não comprova que TODOS os interessados necessários assinaram. Provisionar todos os tipos produzidos e validar roteamento antes da liberação.
+O runtime 8.5.11 segue MassTransit/RabbitMQ como Inventory, com filas de comandos descritas no [manifesto](../contracts/runtime-v1/manifest.json). Mensagens publicadas são persistentes e usam publisher confirms. Mandatory é exigido para DiagnosticFinished, DiagnosticFailed, ExecutionFinished, OperationCanceled, OperationCommandRejected e OperationCancellationRejected; sem rota para alguma fila, esses fatos permanecem pendentes. Eventos informativos podem ser publicados sem assinante para não bloquear os fatos seguintes. Isso não comprova que TODOS os interessados necessários assinaram. Provisionar todos os tipos produzidos e validar roteamento antes da liberação.
 
 O worker usa transação por registro, limite de 5s por Publish, lotes até 100 e intervalo de 2s. Falha interrompe lote, registra erro e mantém pendências. Réplicas usam SKIP LOCKED. Ordenação global ou por OS entre réplicas não é prometida; consumidores devem considerar identidade, causa e versão. Mensagem interna inválida exige investigação e pode bloquear entrega do lote; não descartar/alterar silenciosamente eventos já identificados.
+
+## Exchanges dos eventos publicados
+
+Os 13 eventos usam exchanges próprios `operation.<fato>`, sem sufixo `.v1`, do tipo fanout durável do MassTransit. São nomes de exchanges, não routing keys de uma exchange topic compartilhada. O envelope, URN `GearFlow.Contracts.Operation.V1:<Tipo>`, propriedades e IDs permanecem iguais. Não remover V1 do namespace para adequar o nome no broker.
+
+| Contrato | Exchange RabbitMQ |
+|---|---|
+| `DiagnosticFailed` | `operation.diagnostic-failed` |
+| `DiagnosticFinished` | `operation.diagnostic-finished` |
+| `DiagnosticQueued` | `operation.diagnostic-queued` |
+| `DiagnosticStarted` | `operation.diagnostic-started` |
+| `ExecutionAuthorized` | `operation.execution-authorized` |
+| `ExecutionFinished` | `operation.execution-finished` |
+| `ExecutionStarted` | `operation.execution-started` |
+| `JobExecuted` | `operation.job-executed` |
+| `OperationCanceled` | `operation.canceled` |
+| `OperationCancellationRejected` | `operation.cancellation-rejected` |
+| `OperationCommandRejected` | `operation.command-rejected` |
+| `OperationDeactivated` | `operation.deactivated` |
+| `VehicleUpdated` | `operation.vehicle-updated` |
+
+Fonte canônica dos nomes: `GearFlow.Contracts.Operation.V1.OperationEventNames.All`, disponível no pacote puro de contratos, sem dependência MassTransit. O manifesto runtime-v1 registra `exchange` nos eventos e null nos comandos. O Operation aplica o mapeamento com ConfigureOperationEventNames; comandos e tipos do framework continuam com a formatação anterior.
+
+### Configuração do consumidor
+
+Receber o novo pacote/manifesto não renomeia a topologia automaticamente. O consumidor deve configurar o mesmo nome antes de registrar seus endpoints. Exemplo para DiagnosticFinished:
+
+```csharp
+using GearFlow.Contracts.Operation.V1;
+using MassTransit;
+
+// Dentro de UsingRabbitMq, antes de ConfigureEndpoints/ReceiveEndpoint:
+cfg.Message<DiagnosticFinished>(message =>
+    message.SetEntityName(OperationEventNames.All[typeof(DiagnosticFinished)]));
+// O endpoint usa o consumer tipado DiagnosticFinished normalmente.
+```
+
+Repetir para cada tipo consumido, usando o mapa compartilhado. Cada serviço interessado mantém sua própria fila durável; réplicas do mesmo consumidor compartilham essa fila. Fazer bind apenas pelo nome do exchange não substitui o contrato/envelope tipado. Não usar operação `operation.completed` como alias automático de ExecutionFinished.
+
+### Transição da topologia
+
+Esta alteração troca os exchanges anteriores baseados no nome CLR pelos nomes acima. Assinantes configurados somente para os nomes antigos não recebem os eventos novos. Antes de habilitar o dispatcher no ambiente compartilhado:
+
+1. Acordar nomes/envelope e permissões com os responsáveis e infra-broker.
+2. Configurar consumidores e provisionar filas/bindings duráveis para os novos exchanges.
+3. Validar publicação/recepção com MessageId e CorrelationId, então habilitar o produtor/dispatcher.
+4. Preservar filas e mensagens antigas para drenagem/reconciliação; não fazer purge ou excluir exchanges automaticamente.
+
+Não há dual publish, bridge automática nem alteração de definitions.json no infra-broker. Pendências de outbox mantêm IDs/contratos; após a atualização sua projeção utiliza os novos exchanges. Reentrega pode duplicar mensagem e exige a deduplicação existente. Publisher confirm/Mandatory não comprova assinatura de todos os participantes necessários.
 
 ## Uso pelos produtores
 
@@ -47,7 +96,7 @@ Monitorar filas _error/_skipped, idade/quantidade da outbox e inbox incompleta. 
 
 ## Infra-broker e homologação
 
-Repositório lido: C:\WS\gearflow-infra-broker. Ele propõe gearflow.events topic, routing key os.order-created.v1 e wrapper eventType/data. Operation/Inventory usam envelope nativo e exchanges por tipo MassTransit. Esses formatos não são intercambiáveis por copiar JSON para fila. Esta etapa não alterou definitions.json nem o infra-broker.
+Repositório lido: C:\WS\gearflow-infra-broker. Ele propõe gearflow.events topic, routing key os.order-created.v1 e wrapper eventType/data. Operation usa envelope nativo e exchanges operation.<fato> para seus 13 eventos; Inventory permanece com sua própria topologia MassTransit. Esses formatos não são intercambiáveis por copiar JSON para fila. Esta etapa não alterou definitions.json nem o infra-broker.
 
 Recomendação ao grupo: usar MassTransit/envelope/URN em todos os serviços e deixar aplicações declararem sua topologia inicialmente; infra mantém vhosts, usuários, permissões e operação. Se o grupo optar por topic/routing keys próprias, definir EntityName/bindings/serializer de forma coordenada e testar compatibilidade; não ativar dois masters conflitantes.
 

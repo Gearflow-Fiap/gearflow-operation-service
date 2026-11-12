@@ -22,6 +22,10 @@ root = Path(args.root)
 manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8-sig"))
 messages = manifest["messages"]
 assert messages and len({m["name"] for m in messages}) == len(messages), "Empty/duplicate manifest"
+event_exchanges = [m["exchange"] for m in messages if m["kind"] == "event"]
+assert len(set(event_exchanges)) == len(event_exchanges), "Duplicate event exchange"
+assert all(isinstance(name, str) and name.startswith("operation.") and not name.endswith(".v1") for name in event_exchanges), "Invalid event exchange"
+assert all(m["exchange"] is None for m in messages if m["kind"] == "command"), "Command topology changed"
 for message in messages:
     schema = json.loads((root / message["schema"]).read_text(encoding="utf-8-sig"))
     example = json.loads((root / message["example"]).read_text(encoding="utf-8-sig"))

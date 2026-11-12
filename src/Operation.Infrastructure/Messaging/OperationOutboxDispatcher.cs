@@ -15,8 +15,18 @@ public sealed class MassTransitOperationPublisher(IPublishEndpoint endpoint) : I
         {
             context.MessageId = messageId; context.CorrelationId = correlationId; context.InitiatorId = causationId;
             if (!context.TryGetPayload<RabbitMqSendContext>(out var rabbit)) throw new InvalidOperationException("Publicador requer contexto RabbitMQ.");
-            rabbit.Mandatory = true;
+            // Apenas fatos essenciais para a Saga exigem assinante. Um evento
+            // informativo sem binding não pode bloquear os fatos seguintes.
+            rabbit.Mandatory = RequiresSagaRoute(message);
         }, ct);
+
+    public static bool RequiresSagaRoute(object message) => message is
+        GearFlow.Contracts.Operation.V1.DiagnosticFinished or
+        GearFlow.Contracts.Operation.V1.DiagnosticFailed or
+        GearFlow.Contracts.Operation.V1.ExecutionFinished or
+        GearFlow.Contracts.Operation.V1.OperationCanceled or
+        GearFlow.Contracts.Operation.V1.OperationCommandRejected or
+        GearFlow.Contracts.Operation.V1.OperationCancellationRejected;
 }
 
 public sealed class OperationOutboxDispatcher(IDbContextFactory<OperationDbContext> factory, IOperationPublisher publisher, TimeProvider clock)

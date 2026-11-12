@@ -9,7 +9,7 @@ O ZIP contém este guia, matriz de compatibilidade, decisões pendentes, cenári
 ## Como o coordenador usa o Operation
 
 1. Adicionar a pasta packages do ZIP como feed NuGet local e referenciar GearFlow.Contracts.Operation na versão exata do manifesto. Requer .NET 10 e MassTransit 8.5.11 para reproduzir a baseline testada. Não copiar records para outro namespace: isso muda a identidade da mensagem.
-2. Obter vhost/credencial e acordar envelope/topologia. O runtime usa application/vnd.masstransit+json e exchanges por tipo. O wrapper eventType/data do infra-broker não é compatível automaticamente.
+2. Obter vhost/credencial e acordar envelope/topologia. O runtime usa application/vnd.masstransit+json e exchanges de eventos operation.<fato> sem sufixo de versão. O wrapper eventType/data do infra-broker não é compatível automaticamente.
 3. Provisionar assinaturas duráveis dos eventos ANTES de habilitar o dispatcher do Operation. Cada serviço interessado precisa de fila própria. Confirmação de Publish não prova que todos os interessados assinaram.
 4. Enviar StartDiagnostic à fila operation-start-diagnostic. Body e transporte devem ter MessageId/CorrelationId iguais; CorrelationId é ServiceOrderId e MessageId identifica a intenção. Usar OccurredOn UTC. O comando recebe o pedido e não inicia trabalho físico.
 5. Consumir DiagnosticFinished preservando Snapshot completo e imutável. Não recalcular preços no Budget. Cada linha mantém DiagnosticLineId/LineId; Budget deve devolver seu BudgetJobId associado à linha de mão de obra aprovada.
@@ -32,6 +32,55 @@ await endpoint.Send(command, context =>
 ```
 
 Os JSONs de examples são corpos independentes de mensagens, não envelopes RabbitMQ nem uma sequência correlacionada. Não publicar o corpo cru pelo painel do RabbitMQ como se fosse uma mensagem MassTransit. Manifesto informa URN e fila de cada comando; eventos não têm fila de destino única.
+
+## Exchanges dos eventos publicados
+
+Os 13 eventos usam exchanges próprios `operation.<fato>`, sem sufixo `.v1`, do tipo fanout durável do MassTransit. São nomes de exchanges, não routing keys de uma exchange topic compartilhada. O envelope, URN `GearFlow.Contracts.Operation.V1:<Tipo>`, propriedades e IDs permanecem iguais. Não remover V1 do namespace para adequar o nome no broker.
+
+| Contrato | Exchange RabbitMQ |
+|---|---|
+| `DiagnosticFailed` | `operation.diagnostic-failed` |
+| `DiagnosticFinished` | `operation.diagnostic-finished` |
+| `DiagnosticQueued` | `operation.diagnostic-queued` |
+| `DiagnosticStarted` | `operation.diagnostic-started` |
+| `ExecutionAuthorized` | `operation.execution-authorized` |
+| `ExecutionFinished` | `operation.execution-finished` |
+| `ExecutionStarted` | `operation.execution-started` |
+| `JobExecuted` | `operation.job-executed` |
+| `OperationCanceled` | `operation.canceled` |
+| `OperationCancellationRejected` | `operation.cancellation-rejected` |
+| `OperationCommandRejected` | `operation.command-rejected` |
+| `OperationDeactivated` | `operation.deactivated` |
+| `VehicleUpdated` | `operation.vehicle-updated` |
+
+Fonte canônica dos nomes: `GearFlow.Contracts.Operation.V1.OperationEventNames.All`, disponível no pacote puro de contratos, sem dependência MassTransit. O manifesto runtime-v1 registra `exchange` nos eventos e null nos comandos. O Operation aplica o mapeamento com ConfigureOperationEventNames; comandos e tipos do framework continuam com a formatação anterior.
+
+### Configuração do consumidor
+
+Receber o novo pacote/manifesto não renomeia a topologia automaticamente. O consumidor deve configurar o mesmo nome antes de registrar seus endpoints. Exemplo para DiagnosticFinished:
+
+```csharp
+using GearFlow.Contracts.Operation.V1;
+using MassTransit;
+
+// Dentro de UsingRabbitMq, antes de ConfigureEndpoints/ReceiveEndpoint:
+cfg.Message<DiagnosticFinished>(message =>
+    message.SetEntityName(OperationEventNames.All[typeof(DiagnosticFinished)]));
+// O endpoint usa o consumer tipado DiagnosticFinished normalmente.
+```
+
+Repetir para cada tipo consumido, usando o mapa compartilhado. Cada serviço interessado mantém sua própria fila durável; réplicas do mesmo consumidor compartilham essa fila. Fazer bind apenas pelo nome do exchange não substitui o contrato/envelope tipado. Não usar operação `operation.completed` como alias automático de ExecutionFinished.
+
+### Transição da topologia
+
+Esta alteração troca os exchanges anteriores baseados no nome CLR pelos nomes acima. Assinantes configurados somente para os nomes antigos não recebem os eventos novos. Antes de habilitar o dispatcher no ambiente compartilhado:
+
+1. Acordar nomes/envelope e permissões com os responsáveis e infra-broker.
+2. Configurar consumidores e provisionar filas/bindings duráveis para os novos exchanges.
+3. Validar publicação/recepção com MessageId e CorrelationId, então habilitar o produtor/dispatcher.
+4. Preservar filas e mensagens antigas para drenagem/reconciliação; não fazer purge ou excluir exchanges automaticamente.
+
+Não há dual publish, bridge automática nem alteração de definitions.json no infra-broker. Pendências de outbox mantêm IDs/contratos; após a atualização sua projeção utiliza os novos exchanges. Reentrega pode duplicar mensagem e exige a deduplicação existente. Publisher confirm/Mandatory não comprova assinatura de todos os participantes necessários.
 
 ## Eventos Budget e fronteiras
 

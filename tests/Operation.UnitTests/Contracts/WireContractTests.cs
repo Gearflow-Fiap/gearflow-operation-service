@@ -30,6 +30,7 @@ public class WireContractTests
         {
             var type = typeof(W.StartDiagnostic).Assembly.GetType(item.GetProperty("namespace").GetString() + "." + item.GetProperty("name").GetString())!;
             Assert.NotNull(type); Assert.Equal(item.GetProperty("urn").GetString(), MessageUrn.ForTypeString(type));
+            Assert.Equal(W.OperationEventNames.All.GetValueOrDefault(type), item.GetProperty("exchange").GetString());
             var original = File.ReadAllText(Path.Combine(root, item.GetProperty("example").GetString()!));
             var options = new JsonSerializerOptions(JsonSerializerDefaults.Web) { RespectRequiredConstructorParameters = true };
             var value = JsonSerializer.Deserialize(original, type, options)!;

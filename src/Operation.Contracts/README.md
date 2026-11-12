@@ -23,3 +23,25 @@ StartExecution inclui snapshot completo com pricingPolicyId e associação Budge
 Schemas, exemplos e manifesto estão em `contracts/runtime-v1/` dentro do nupkg e em `docs/contracts/runtime-v1` no repositório. Referem-se ao corpo lógico, não a um envelope JSON próprio: usar envelope/serializador MassTransit. O URN é definido pelo namespace e nome do tipo, não pelo nome da assembly.
 
 A topologia proposta no infra-broker (gearflow.events/envelope próprio) precisa de revisão coletiva para interoperar com esse padrão. Homologação com OS/Budget/Inventory completos ainda pendente. O pacote não implementa Saga nem pagamento/estoque.
+
+## Nomes dos exchanges de eventos
+
+OperationEventNames.All fornece o mapeamento tipado canônico abaixo, sem dependência de transporte. Configurar o mesmo SetEntityName no produtor e nos consumidores MassTransit. Apenas referenciar o pacote não altera a topologia.
+
+| Contrato | Exchange RabbitMQ |
+|---|---|
+| `DiagnosticFailed` | `operation.diagnostic-failed` |
+| `DiagnosticFinished` | `operation.diagnostic-finished` |
+| `DiagnosticQueued` | `operation.diagnostic-queued` |
+| `DiagnosticStarted` | `operation.diagnostic-started` |
+| `ExecutionAuthorized` | `operation.execution-authorized` |
+| `ExecutionFinished` | `operation.execution-finished` |
+| `ExecutionStarted` | `operation.execution-started` |
+| `JobExecuted` | `operation.job-executed` |
+| `OperationCanceled` | `operation.canceled` |
+| `OperationCancellationRejected` | `operation.cancellation-rejected` |
+| `OperationCommandRejected` | `operation.command-rejected` |
+| `OperationDeactivated` | `operation.deactivated` |
+| `VehicleUpdated` | `operation.vehicle-updated` |
+
+URN/namespace V1 e payloads permanecem iguais. Os comandos conservam suas filas atuais. Antes de ativar o produtor, provisionar os novos bindings dos assinantes; não há publicação paralela nos exchanges CLR antigos.
