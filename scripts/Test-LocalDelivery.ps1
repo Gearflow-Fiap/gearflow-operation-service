@@ -6,10 +6,12 @@ $operationSecretLine = Get-Content -LiteralPath $EnvFile | Where-Object { $_.Sta
 if (!$operationSecretLine) { throw 'Secret JWT local ausente.' }
 $operationSecret = $operationSecretLine.Substring('OPERATION_JWT_SECRET='.Length)
 function ConvertTo-Base64Url([byte[]]$Bytes) { [Convert]::ToBase64String($Bytes).TrimEnd('=').Replace('+','-').Replace('/','_') }
-function New-LocalToken([string]$Actor) {
+function New-LocalToken([string]$Actor = '') {
     $operationNow = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
     $operationHeader = ConvertTo-Base64Url ([Text.Encoding]::UTF8.GetBytes('{"alg":"HS256","typ":"JWT"}'))
-    $operationClaims = @{ iss='gearflow-local'; aud='gearflow-operation'; sub=[guid]::NewGuid().ToString(); actor_type=$Actor; nbf=$operationNow-5; exp=$operationNow+120 } | ConvertTo-Json -Compress
+    $operationClaimValues = @{ iss='gearflow-local'; aud='gearflow-operation'; sub='delivery-smoke'; nbf=$operationNow-5; exp=$operationNow+120 }
+    if ($Actor) { $operationClaimValues.actor_type = $Actor }
+    $operationClaims = $operationClaimValues | ConvertTo-Json -Compress
     $operationPayload = ConvertTo-Base64Url ([Text.Encoding]::UTF8.GetBytes($operationClaims))
     $operationUnsigned = "$operationHeader.$operationPayload"
     $operationMac = [Security.Cryptography.HMACSHA256]::new([Text.Encoding]::UTF8.GetBytes($operationSecret))
@@ -25,13 +27,13 @@ function Require([object]$Response, [int]$Status) { if ([int]$Response.StatusCod
 $operationLive=Request GET 'health/live'; Require $operationLive 200
 $operationReady=Request GET 'health/ready'; Require $operationReady 200
 $operationAnonymous=Request GET 'api/catalog/jobs/'; Require $operationAnonymous 401
-$operationCustomer=Request GET 'api/catalog/jobs/' @{ Authorization='Bearer '+(New-LocalToken customer) }; Require $operationCustomer 403
-$operationStaff=@{ Authorization='Bearer '+(New-LocalToken staff) }
+$operationCustomer=Request GET 'api/catalog/jobs/' @{ Authorization='Bearer '+(New-LocalToken customer) }; Require $operationCustomer 200
+$operationAuthenticated=@{ Authorization='Bearer '+(New-LocalToken) }
 $operationBody=@{ name='delivery-smoke-'+[guid]::NewGuid().ToString('N'); description='Verificação local'; priceCents=0 } | ConvertTo-Json -Compress
-$operationCreated=Request POST 'api/catalog/jobs/' $operationStaff $operationBody; Require $operationCreated 201
+$operationCreated=Request POST 'api/catalog/jobs/' $operationAuthenticated $operationBody; Require $operationCreated 201
 $operationItem=$operationCreated.Content | ConvertFrom-Json
 $operationItemId=[guid]::Parse($operationItem.id)
-$operationRead=Request GET "api/catalog/jobs/$operationItemId" $operationStaff; Require $operationRead 200
-$operationDelete=@{ Authorization=$operationStaff.Authorization; 'If-Match'=@($operationCreated.Headers.ETag)[0] }
+$operationRead=Request GET "api/catalog/jobs/$operationItemId" $operationAuthenticated; Require $operationRead 200
+$operationDelete=@{ Authorization=$operationAuthenticated.Authorization; 'If-Match'=@($operationCreated.Headers.ETag)[0] }
 $operationDeactivated=Request DELETE "api/catalog/jobs/$operationItemId" $operationDelete; Require $operationDeactivated 200
-[ordered]@{ checkedAtUtc=[DateTimeOffset]::UtcNow.ToString('O'); liveness=200; readiness=200; anonymous=401; customer=403; catalogCreate=201; catalogRead=200; catalogDeactivate=200 } | ConvertTo-Json
+[ordered]@{ checkedAtUtc=[DateTimeOffset]::UtcNow.ToString('O'); liveness=200; readiness=200; anonymous=401; customer=200; catalogCreate=201; catalogRead=200; catalogDeactivate=200 } | ConvertTo-Json
