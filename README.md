@@ -36,6 +36,43 @@ incluídos; o teste de diagnóstico apenas com mão de obra funciona sem eles.
 Preços de peças/consumíveis exigem OPERATION_INVENTORY_URL/TOKEN/HTTP, configuráveis
 num `.env` local opcional. Nunca remover volumes para reiniciar o teste.
 
+Com os dois serviços prontos, execute no PowerShell:
+
+```powershell
+. .\scripts\test-os-operation-local.ps1 -Scenario DiagnosticFailure
+```
+
+O cenário cria dados novos, registra uma falha de diagnóstico e verifica, por até
+30 segundos, a convergência OS=Cancelled, Operation=Canceled/inativa e confirmação
+do cancelamento no histórico da OS. Preserva o motivo da falha e exige a razão
+`diagnostic-failed` no Operation. Usa HTTP e RabbitMQ reais; não injeta eventos
+de desenvolvimento. Sem pagamento ou peças, não valida estorno/liberação de estoque.
+Sem `-Scenario`, mantém o teste de diagnóstico concluído.
+
+Para testar recuperacao (executar um cenario por vez, sem outros testes simultaneos):
+
+```powershell
+. .\scripts\test-os-operation-local.ps1 -Scenario BrokerRecovery
+. .\scripts\test-os-operation-local.ps1 -Scenario OperationRecovery
+. .\scripts\test-os-operation-local.ps1 -Scenario OsRecovery
+```
+
+BrokerRecovery para temporariamente o RabbitMQ, abre uma OS e verifica o comando
+pendente na outbox antes de religar o broker. OperationRecovery para apenas a API
+Operation, publica o comando e religa o consumidor. Ambos usam `try/finally` para
+tentar restaurar o container mesmo em falha; aguardam reconexao sem reiniciar as
+APIs restantes. Verificam ausencia da operacao antes de recuperar, uma operacao
+com versao/historico inicial unicos depois e retorno do diagnostico a OS. Cada
+espera de prontidao tem ate 120 tentativas, com timeout HTTP de 3s por tentativa.
+Esses testes usam Docker Compose e consultas somente de leitura nos bancos locais
+para conferir resultados; os servicos nao passam a acessar bancos alheios.
+Use apenas no ambiente local, pois o container indicado fica indisponivel durante
+o teste. Parametros OsComposeFile/OperationComposeFile permitem apontar outro
+ambiente Compose de testes; suas credenciais de banco devem ser as do perfil local.
+OsRecovery para apenas a API OS depois do inicio do diagnostico, conclui no
+Operation e verifica a publicacao do evento antes de religar a OS. Confirma que o
+snapshot so e persistido apos o consumidor voltar. Tambem restaura a API em finally.
+
 ## Executar no Visual Studio
 
 Abra `GearFlow.Operation.slnx`, defina **docker-compose** como Startup Project e execute o perfil **Docker Compose** (F5/Ctrl+F5), com Docker Desktop Linux ativo. O Scalar abre em http://localhost:5085/scalar/v1; o health check continua em /health/ready. Credenciais locais são inicializadas apenas quando ausentes, sem substituir valores existentes. [Guia](docs/development/VISUAL_STUDIO.md).

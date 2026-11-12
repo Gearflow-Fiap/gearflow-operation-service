@@ -1,9 +1,13 @@
 param(
+    [ValidateSet('DiagnosticSuccess', 'DiagnosticFailure', 'BrokerRecovery', 'OperationRecovery', 'OsRecovery')]
+    [string]$Scenario = 'DiagnosticSuccess',
     [string]$OsUrl = 'http://localhost:5080',
     [string]$OperationUrl = 'http://localhost:5085',
     [string]$JwtSecret = 'dev-only-super-secret-change-me-32chars-minimum',
     [string]$Issuer = 'GearFlow.Api',
-    [string]$Audience = 'GearFlow.Client'
+    [string]$Audience = 'GearFlow.Client',
+    [string]$OsComposeFile = (Join-Path $PSScriptRoot '../../gearflow-os-service/docker-compose.yml'),
+    [string]$OperationComposeFile = (Join-Path $PSScriptRoot '../compose.yml')
 )
 $ErrorActionPreference = 'Stop'
 
@@ -31,14 +35,31 @@ function New-TestCpf {
     $digits -join ''
 }
 function Wait-Operation([guid]$Id) {
-    for ($attempt = 0; $attempt -lt 30; $attempt++) {
+    for ($attempt = 0; $attempt -lt 120; $attempt++) {
         try { return Request 'Get' "$OperationUrl/api/operation/service-orders/$Id" }
         catch {
             if ($null -eq $_.Exception.Response -or [int]$_.Exception.Response.StatusCode -ne 404) { throw }
         }
         Start-Sleep -Seconds 1
     }
-    throw "Operation nao recebeu a OS $Id em 30s. Verifique outbox, logs e operation-start-diagnostic_error."
+    throw "Operation nao recebeu a OS $Id em 120s. Verifique outbox, logs e operation-start-diagnostic_error."
+}
+
+function Compose-Control([string]$File, [string]$Action, [string]$Service) {
+    & docker compose -f $File $Action $Service | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "Docker falhou: $Action $Service" }
+}
+function Read-Sql([string]$File, [string]$Database, [string]$Sql) {
+    $result = $Sql | & docker compose -f $File exec -T postgres psql -U gearflow -d $Database -v ON_ERROR_STOP=1 -At
+    if ($LASTEXITCODE -ne 0) { throw "Consulta de verificacao falhou: $Database" }
+    ($result -join "`n").Trim()
+}
+function Wait-Ready([string]$Url) {
+    for ($attempt = 0; $attempt -lt 120; $attempt++) {
+        try { Invoke-RestMethod "$Url/health/ready" -TimeoutSec 3 | Out-Null; return } catch { }
+        Start-Sleep -Seconds 1
+    }
+    throw "API nao recuperou readiness: $Url"
 }
 
 Write-Host '[1/6] Verificando saude das APIs...'
@@ -71,9 +92,49 @@ $plate = $letters + (Get-Random -Minimum 1000 -Maximum 10000).ToString()
 $vehicle = Request 'Post' "$OsUrl/api/veiculos/" @{ clientId = $client.id; plate = $plate; model = 'Veiculo de teste' }
 
 Write-Host '[4/6] Abrindo OS e aguardando entrega pelo RabbitMQ...'
+if ($Scenario -in @('BrokerRecovery', 'OperationRecovery')) {
+    $controlFile = if ($Scenario -eq 'BrokerRecovery') { $OsComposeFile } else { $OperationComposeFile }
+    $controlService = if ($Scenario -eq 'BrokerRecovery') { 'rabbitmq' } else { 'api' }
+    Write-Host "Parando temporariamente $controlService. O finally sempre tentara religa-lo."
+    try {
+        Compose-Control $controlFile 'stop' $controlService
+        $order = Request 'Post' "$OsUrl/api/ordens-servico/" @{ vehicleId = $vehicle.id; services = @(@{ catalogJobId = $job.id; description = $job.name }) }
+        $orderId = [guid]$order.id
+        $countSql = "SELECT count(*) FROM operation.operations WHERE service_order_id = '$orderId';"
+        $pendingSql = "SELECT count(*) FROM outbox_messages WHERE ""CorrelationId"" = '$orderId' AND ""Queue"" = 'operation-start-diagnostic' AND ""ProcessedOn"" IS NULL;"
+        if ($Scenario -eq 'BrokerRecovery') {
+            Start-Sleep -Seconds 3
+            if ((Read-Sql $OsComposeFile 'gearflow_os' $pendingSql) -ne '1') { throw 'Comando nao permaneceu pendente na outbox com RabbitMQ parado.' }
+            Write-Host 'OK: OS aberta com RabbitMQ parado; StartDiagnostic preservado na outbox.'
+        } else {
+            $sentSql = "SELECT count(*) FROM outbox_messages WHERE ""CorrelationId"" = '$orderId' AND ""Queue"" = 'operation-start-diagnostic' AND ""ProcessedOn"" IS NOT NULL;"
+            for ($attempt = 0; $attempt -lt 30; $attempt++) {
+                if ((Read-Sql $OsComposeFile 'gearflow_os' $sentSql) -eq '1') { break }
+                Start-Sleep -Seconds 1
+            }
+            if ((Read-Sql $OsComposeFile 'gearflow_os' $sentSql) -ne '1') { throw 'OS nao publicou o comando enquanto o Operation estava parado.' }
+            Write-Host 'OK: OS publicou o comando com consumidor Operation parado.'
+        }
+        if ((Read-Sql $OperationComposeFile 'gearflow_operation' $countSql) -ne '0') { throw 'Operation recebeu a OS antes da recuperacao esperada.' }
+    } finally {
+        Compose-Control $controlFile 'start' $controlService
+    }
+    Wait-Ready $OsUrl
+    Wait-Ready $OperationUrl
+} else {
 $order = Request 'Post' "$OsUrl/api/ordens-servico/" @{ vehicleId = $vehicle.id; services = @(@{ catalogJobId = $job.id; description = $job.name }) }
 $orderId = [guid]$order.id
+}
 $operation = Wait-Operation $orderId
+if ($Scenario -in @('BrokerRecovery', 'OperationRecovery')) {
+    Start-Sleep -Seconds 5
+    $operation = Request 'Get' "$OperationUrl/api/operation/service-orders/$orderId"
+    if ((Read-Sql $OperationComposeFile 'gearflow_operation' $countSql) -ne '1') { throw 'Contagem de operacoes apos recuperacao diferente de 1.' }
+    if ($operation.version -ne 1 -or @($operation.history).Count -ne 1 -or $operation.status -ne 'Received') {
+        throw 'Recuperacao produziu estado inicial inesperado ou efeitos repetidos.'
+    }
+    Write-Host 'OK: entrega apos recuperacao, versao inicial 1 e um unico registro de recebimento.'
+}
 Write-Host "OK: OS $orderId chegou ao Operation."
 $operation | ConvertTo-Json -Depth 15 | Out-Host
 
@@ -86,11 +147,63 @@ $replayed = Request 'Post' "$operationUri/diagnostic/start" $null $headers
 if ($started.version -ne $replayed.version) { throw 'Replay alterou a versao.' }
 Write-Host "OK: mesmo comando repetido manteve a versao $($started.version)."
 
-Write-Host '[6/6] Concluindo diagnostico sem dependencia de Inventory...'
+Write-Host "[6/6] Executando cenario $Scenario..."
 $read = Invoke-WebRequest -UseBasicParsing -Uri $operationUri -Headers @{ Authorization = "Bearer $script:token" } -TimeoutSec 15
 $headers = @{ 'If-Match' = [string]$read.Headers['ETag']; 'Idempotency-Key' = [guid]::NewGuid().ToString() }
-Request 'Post' "$operationUri/diagnostic/finish" @{ consumables = @() } $headers | Out-Host
-Write-Host 'Diagnostico concluido. Confira o retorno na OS com o comando SQL indicado no roteiro.'
+if ($Scenario -eq 'DiagnosticFailure') {
+    $reason = 'Teste de integracao: impossibilidade de concluir o diagnostico'
+    $failed = Request 'Post' "$operationUri/diagnostic/fail" @{ reason = $reason } $headers
+    if ($failed.status -ne 'DiagnosticFailed') { throw 'Operation nao registrou DiagnosticFailed.' }
+    for ($attempt = 0; $attempt -lt 30; $attempt++) {
+        $osState = Request 'Get' "$OsUrl/api/ordens-servico/$orderId"
+        $operationState = Request 'Get' $operationUri
+        $confirmed = @($osState.history | Where-Object { $_.message -match 'Cancelamento confirmado pelo Operation' }).Count -gt 0
+        if ($osState.status -eq 'Cancelled' -and $operationState.status -eq 'Canceled' -and $confirmed) { break }
+        Start-Sleep -Seconds 1
+    }
+    if ($osState.status -ne 'Cancelled' -or $operationState.status -ne 'Canceled' -or !$confirmed) {
+        throw "Falha nao convergiu em 30s: OS=$($osState.status), Operation=$($operationState.status), confirmacao=$confirmed. OS_ID=$orderId"
+    }
+    if ($operationState.isActive -ne $false -or $operationState.cancellationReason -ne 'diagnostic-failed' -or $operationState.diagnosticFailureReason -ne $reason) {
+        throw "Estado final nao corresponde a falha de diagnostico. OS_ID=$orderId"
+    }
+    Write-Host 'OK: DiagnosticFailed chegou a OS, que enviou CancelOperation e recebeu OperationCanceled.'
+    $osState | Select-Object id, status | Format-Table | Out-Host
+    $osState.history | Select-Object status, message | Format-Table -AutoSize -Wrap | Out-Host
+    $operationState | Select-Object serviceOrderId, status, isActive, diagnosticFailureReason, cancellationReason | Format-List | Out-Host
+} else {
+    if ($Scenario -eq 'OsRecovery') {
+        try {
+            Compose-Control $OsComposeFile 'stop' 'os-service'
+            Request 'Post' "$operationUri/diagnostic/finish" @{ consumables = @() } $headers | Out-Host
+            $publishedSql = "SELECT count(*) FROM operation.outbox_events WHERE service_order_id = '$orderId' AND version = 3 AND dispatched_at IS NOT NULL;"
+            for ($attempt = 0; $attempt -lt 30; $attempt++) {
+                if ((Read-Sql $OperationComposeFile 'gearflow_operation' $publishedSql) -eq '1') { break }
+                Start-Sleep -Seconds 1
+            }
+            if ((Read-Sql $OperationComposeFile 'gearflow_operation' $publishedSql) -ne '1') { throw 'Operation nao publicou DiagnosticFinished com OS parada.' }
+            $notReceivedSql = "SELECT count(*) FROM service_orders WHERE ""Id"" = '$orderId' AND ""DiagnosticSnapshotJson"" IS NULL;"
+            if ((Read-Sql $OsComposeFile 'gearflow_os' $notReceivedSql) -ne '1') { throw 'Snapshot foi gravado antes de recuperar a OS.' }
+            Write-Host 'OK: DiagnosticFinished publicado com consumidor OS parado; snapshot ainda nao recebido.'
+        } finally {
+            Compose-Control $OsComposeFile 'start' 'os-service'
+        }
+        Wait-Ready $OsUrl
+    } else {
+        Request 'Post' "$operationUri/diagnostic/finish" @{ consumables = @() } $headers | Out-Host
+    }
+    if ($Scenario -in @('BrokerRecovery', 'OperationRecovery', 'OsRecovery')) {
+        $receivedSql = "SELECT count(*) FROM service_orders WHERE ""Id"" = '$orderId' AND ""DiagnosticSnapshotJson"" IS NOT NULL;"
+        for ($attempt = 0; $attempt -lt 60; $attempt++) {
+            if ((Read-Sql $OsComposeFile 'gearflow_os' $receivedSql) -eq '1') { break }
+            Start-Sleep -Seconds 1
+        }
+        if ((Read-Sql $OsComposeFile 'gearflow_os' $receivedSql) -ne '1') { throw 'Diagnostico nao voltou a OS apos recuperacao.' }
+        Write-Host 'OK: DiagnosticFinished voltou a OS e foi persistido apos recuperacao.'
+    } else {
+        Write-Host 'Diagnostico concluido. Confira o retorno na OS com o comando SQL indicado no roteiro.'
+    }
+}
 Write-Host "OS_ID=$orderId"
 Write-Host "CATALOG_JOB_ID=$($job.id)"
 Write-Host 'O teste cria dados locais e nao simula aprovacao, pagamento ou execucao comercial.'
