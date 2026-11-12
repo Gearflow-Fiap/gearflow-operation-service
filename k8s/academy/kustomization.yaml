@@ -16,3 +16,41 @@ patches:
         template:
           spec:
             imagePullSecrets: null
+  # Traces, métricas e logs por OTLP para o New Relic (o mesmo da Fase 3 e do Inventory/OS). Ligado só no Academy: o base continua
+  # com a exportação desligada. A licença vem do Secret `newrelic-apm-secret` (chave NEW_RELIC_LICENSE_KEY) do namespace gearflow,
+  # que o delivery do Inventory grava; sem ele o Pod sobe normalmente e o New Relic apenas rejeita a exportação.
+  - target:
+      kind: ConfigMap
+      name: gearflow-operation-config
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: gearflow-operation-config
+      data:
+        Telemetry__ExportEnabled: "true"
+        Otlp__Endpoint: https://otlp.nr-data.net:4317
+        OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+  - target:
+      kind: Deployment
+      name: gearflow-operation
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gearflow-operation
+      spec:
+        template:
+          spec:
+            containers:
+              - name: api
+                env:
+                  # O $(...) é expandido pelo Kubernetes e exige que NEW_RELIC_LICENSE_KEY venha ANTES nesta lista.
+                  - name: NEW_RELIC_LICENSE_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        name: newrelic-apm-secret
+                        key: NEW_RELIC_LICENSE_KEY
+                        optional: true
+                  - name: OTEL_EXPORTER_OTLP_HEADERS
+                    value: "api-key=$(NEW_RELIC_LICENSE_KEY)"
