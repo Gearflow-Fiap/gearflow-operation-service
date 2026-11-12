@@ -30,6 +30,33 @@ def build_token(key, issuer, audience, ttl_minutes, now=None):
     return unsigned + '.' + encode(signature)
 
 
+def store_token(token, secret_name='gearflow-operation-secret', namespace='gearflow'):
+    # Read/replace with resourceVersion is a compare-and-swap. It preserves the
+    # entire Secret and fails on concurrent changes instead of overwriting them.
+    result = subprocess.run(
+        ['kubectl', '-n', namespace, 'get', 'secret', secret_name, '-o', 'json'],
+        text=True, capture_output=True)
+    if result.returncode:
+        raise SystemExit('Cannot read Operation Secret; no credential update was performed.')
+    try:
+        secret = json.loads(result.stdout)
+        data = secret['data']
+        if not secret['metadata']['resourceVersion']:
+            raise ValueError()
+        required = ('ConnectionStrings__Operation', 'Jwt__Secret', 'Jwt__Issuer',
+                    'Jwt__Audience', 'RabbitMq__Username', 'RabbitMq__Password')
+        if any(not data.get(key) for key in required):
+            raise ValueError()
+    except (ValueError, KeyError, TypeError):
+        raise SystemExit('Operation Secret is missing required database/JWT/RabbitMQ configuration; no update was performed.') from None
+    data['Inventory__BearerToken'] = base64.b64encode(token.encode()).decode()
+    # stdin keeps all credentials out of process arguments and log output.
+    result = subprocess.run(['kubectl', 'replace', '-f', '-'],
+                            input=json.dumps(secret), text=True, capture_output=True)
+    if result.returncode:
+        raise SystemExit('Inventory credential update failed; check permissions or concurrent Secret updates and retry.')
+
+
 def main():
     try:
         token = build_token(
@@ -39,16 +66,7 @@ def main():
             int(os.environ.get('INVENTORY_TOKEN_TTL_MINUTES', '10080')))
     except ValueError as error:
         raise SystemExit(str(error)) from None
-    # stdin avoids placing credentials in command-line arguments or log output.
-    patch = {'apiVersion': 'v1', 'kind': 'Secret',
-             'metadata': {'name': 'gearflow-operation-secret', 'namespace': 'gearflow'},
-             'data': {'Inventory__BearerToken': base64.b64encode(token.encode()).decode()}}
-    result = subprocess.run(
-        ['kubectl', 'apply', '--server-side', '--force-conflicts',
-         '--field-manager=operation-inventory-credential', '-f', '-'],
-        input=json.dumps(patch), text=True, capture_output=True)
-    if result.returncode:
-        raise SystemExit('Inventory credential configuration failed; check cluster access and the Operation Secret.')
+    store_token(token)
     print('Inventory service token configured; renew before TTL expires and restart Operation to load it.')
 
 
