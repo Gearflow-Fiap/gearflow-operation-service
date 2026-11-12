@@ -44,8 +44,6 @@ services:
       Jwt__Secret: ${OPERATION_JWT_SECRET:-dev-only-super-secret-change-me-32chars-minimum}
       Jwt__Issuer: GearFlow.Api
       Jwt__Audience: GearFlow.Client
-      Authorization__StaffClaimType: actor_type
-      Authorization__StaffClaimValue: staff
       Pricing__ConsumableMode: PerUnitV1
       Messaging__Enabled: "true"
       Messaging__DispatchEnabled: "true"

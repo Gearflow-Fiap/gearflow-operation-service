@@ -125,7 +125,7 @@ public class HttpInputContractTests(PostgresFixture postgres)
                 subjects.Append(new Claim("actor_type", profile)), now.AddMinutes(-1), now.AddMinutes(10),
                 new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ApiFactory.Secret)), SecurityAlgorithms.HmacSha256)));
         }
-        Claim[][] invalid = [[], [new("sub", "")], [new("sub", Guid.Empty.ToString())], [new("sub", "invalid")],
+        Claim[][] invalid = [[], [new("sub", "")], [new("sub", "   ")], [new("sub", new string('x', 195))],
             [new("sub", Guid.NewGuid().ToString()), new("sub", Guid.NewGuid().ToString())]];
         foreach (var subjects in invalid)
         {
@@ -135,9 +135,9 @@ public class HttpInputContractTests(PostgresFixture postgres)
             await Problem(await client.SendAsync(request), subjects.Length > 1 ? 401 : 403, "http_error");
         }
         Assert.Equal((1, 1, 1, 1), await h.Counts());
-        const string subject = "AAAAAAAA-BBBB-4CCC-8DDD-EEEEEEEEEEEE";
+        const string subject = "os-dev";
         client.DefaultRequestHeaders.Authorization = new("Bearer", Token([new("sub", subject)], "customer"));
-        await Problem(await client.GetAsync("/api/operation/queue"), 403, "http_error");
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/operation/queue")).StatusCode);
         client.DefaultRequestHeaders.Authorization = new("Bearer", Token([new("sub", subject)]));
         using var valid = new HttpRequestMessage(HttpMethod.Post, path);
         valid.Headers.Add("Idempotency-Key", Guid.NewGuid().ToString()); valid.Headers.TryAddWithoutValidation("If-Match", "\"1\"");

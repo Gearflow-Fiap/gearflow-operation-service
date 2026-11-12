@@ -1,8 +1,10 @@
 # ADR-009 — Host HTTP operacional
 
+> Atualização: removida a exigência de Staff e de sub GUID; configurada a consulta ao Inventory. Consulte [JWT e Inventory](../development/JWT_INVENTORY.md) para o contrato atual e a renovação da credencial.
+
 Status: implementado no incremento 5A; preços externos e catálogo aguardam 5B.
 
-ASP.NET Core 10 Minimal APIs reutiliza OperationService/OperationQueries e o storage PostgreSQL. O host não contém máquina de estados paralela. JWT valida assinatura/algoritmo HS256, emissor, audiência e expiração sem tolerância adicional; Staff exige claim/valor configurados e sub único GUID válido. Sem segredos ou claim de staff presumidos no repositório. Configuração ausente de identidade falha no boot.
+ASP.NET Core 10 Minimal APIs reutiliza OperationService/OperationQueries e o storage PostgreSQL. O host não contém máquina de estados paralela. JWT valida assinatura/algoritmo HS256, emissor, audiência e expiração sem tolerância adicional; A policy AuthenticatedUser exige sub único, não vazio e de até 194 caracteres; não exige Staff nem GUID. Sem segredos presumidos no repositório. Configuração ausente de identidade falha no boot.
 
 Comandos exigem intenção GUID e ETag forte de versão. Application consulta receipt antes de checar versão, portanto replay histórico continua funcionando. Erros técnicos e de domínio são traduzidos em ProblemDetails com códigos estáveis, sem mensagens internas. JSON rejeita propriedades desconhecidas e enums numéricos. Preço e ator do cliente não são aceitos.
 

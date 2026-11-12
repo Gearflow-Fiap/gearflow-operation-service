@@ -11,6 +11,6 @@ public static class OperationCommandInput
         if (key.Count != 1 || !Guid.TryParse(key[0], out var intent) || intent == Guid.Empty)
             throw new HttpInputException(400, "invalid_idempotency_key");
         var version = StrongETag.RequireIfMatch(http.Request);
-        return new(intent, serviceOrderId, StaffActor.Read(http.User), version);
+        return new(intent, serviceOrderId, AuthenticatedActor.Read(http.User), version);
     }
 }

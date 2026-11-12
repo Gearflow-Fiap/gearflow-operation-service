@@ -9,14 +9,14 @@ public static class OperationDocumentation
         if (app.Environment.IsDevelopment())
         {
             // The UI must load its schema before a user can enter a Bearer token.
-            // Business endpoints keep their Staff policy in every environment.
+            // Business endpoints require authenticated subjects in every environment.
             app.MapOpenApi().AllowAnonymous();
             app.MapScalarApiReference(options => options.WithTitle("GearFlow Operation API"))
                 .AllowAnonymous();
         }
         else
         {
-            app.MapOpenApi().RequireAuthorization("Staff");
+            app.MapOpenApi().RequireAuthorization("AuthenticatedUser");
         }
     }
 }

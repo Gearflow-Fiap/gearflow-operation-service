@@ -7,7 +7,7 @@ public static class OperationEndpoints
 {
     public static void MapOperationEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/api/operation").RequireAuthorization("Staff").WithTags("Operation").WithStaffErrorResponses();
+        var group = app.MapGroup("/api/operation").RequireAuthorization("AuthenticatedUser").WithTags("Operation").WithAuthenticationErrorResponses();
         group.MapGet("/queue", (int? page, int? pageSize, OperationStatus? status, OperationQueries queries, CancellationToken ct) =>
             queries.Queue(page ?? 1, pageSize ?? 20, status, ct))
             .WithSummary("Consultar fila acionável")

@@ -68,6 +68,13 @@ jobs:
           JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: python scripts/configure_academy.py
+      - name: Configure Inventory service credential
+        env:
+          INVENTORY_JWT_SIGNING_KEY: ${{ secrets.INVENTORY_JWT_SIGNING_KEY || secrets.JWT_SIGNING_KEY }}
+          INVENTORY_JWT_ISSUER: ${{ vars.INVENTORY_JWT_ISSUER || 'GearFlow.Api' }}
+          INVENTORY_JWT_AUDIENCE: ${{ vars.INVENTORY_JWT_AUDIENCE || 'GearFlow.Client' }}
+          INVENTORY_TOKEN_TTL_MINUTES: ${{ vars.INVENTORY_TOKEN_TTL_MINUTES || '10080' }}
+        run: python scripts/configure_inventory.py
       - name: Prepare ECR
         id: registry
         run: |

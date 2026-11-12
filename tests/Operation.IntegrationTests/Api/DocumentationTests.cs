@@ -10,7 +10,7 @@ namespace Operation.IntegrationTests.Api;
 public class DocumentationTests(PostgresFixture postgres)
 {
     [Fact]
-    public async Task DevelopmentShowsScalarAndSchemaButBusinessEndpointsStillRequireStaff()
+    public async Task DevelopmentShowsScalarAndSchemaButBusinessEndpointsStillRequireAuthentication()
     {
         var h = await postgres.Create();
         await using var baseApi = new ApiFactory(h);
@@ -28,7 +28,7 @@ public class DocumentationTests(PostgresFixture postgres)
         Assert.Equal("bearer", schema.GetProperty("components").GetProperty("securitySchemes").GetProperty("Bearer").GetProperty("scheme").GetString());
         Assert.Equal(HttpStatusCode.Unauthorized, (await client.GetAsync("/api/catalog/jobs/")).StatusCode);
         client.DefaultRequestHeaders.Authorization = new("Bearer", ApiFactory.Token("customer"));
-        Assert.Equal(HttpStatusCode.Forbidden, (await client.GetAsync("/api/catalog/jobs/")).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/catalog/jobs/")).StatusCode);
         client.DefaultRequestHeaders.Authorization = new("Bearer", ApiFactory.Token());
         Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/api/catalog/jobs/")).StatusCode);
     }
@@ -45,7 +45,7 @@ public class DocumentationTests(PostgresFixture postgres)
         Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync("/scalar/v1")).StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await client.GetAsync("/openapi/v1.json")).StatusCode);
         client.DefaultRequestHeaders.Authorization = new("Bearer", ApiFactory.Token("customer"));
-        Assert.Equal(HttpStatusCode.Forbidden, (await client.GetAsync("/openapi/v1.json")).StatusCode);
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/openapi/v1.json")).StatusCode);
         client.DefaultRequestHeaders.Authorization = new("Bearer", ApiFactory.Token());
         Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/openapi/v1.json")).StatusCode);
     }

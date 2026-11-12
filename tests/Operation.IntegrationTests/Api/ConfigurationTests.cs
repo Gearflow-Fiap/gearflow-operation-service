@@ -23,7 +23,6 @@ public class ConfigurationTests
     private static Dictionary<string, string?> Defaults() => new()
     {
         ["Jwt:Secret"] = ApiFactory.Secret, ["Jwt:Issuer"] = "operation-tests", ["Jwt:Audience"] = "operation-api",
-        ["Authorization:StaffClaimType"] = "actor_type", ["Authorization:StaffClaimValue"] = "staff",
         ["ConnectionStrings:Operation"] = "Host=127.0.0.1;Port=1;Database=unused;Username=unused;Password=unused;Timeout=1;Pooling=false",
         ["Telemetry:BacklogEnabled"] = "false", ["Telemetry:ExportEnabled"] = "false", ["Messaging:Enabled"] = "false"
     };
@@ -58,8 +57,6 @@ public class ConfigurationTests
     [InlineData("Jwt:Secret", "short", "Jwt:Secret")]
     [InlineData("Jwt:Issuer", "", "Jwt:Issuer")]
     [InlineData("Jwt:Audience", "", "Jwt:Audience")]
-    [InlineData("Authorization:StaffClaimType", "", "Authorization:StaffClaimType")]
-    [InlineData("Authorization:StaffClaimValue", "", "Authorization:StaffClaimValue")]
     [InlineData("ConnectionStrings:Operation", "", "ConnectionStrings:Operation")]
     public async Task MandatoryConfigurationFailsBeforeServingRequests(string key, string value, string expected)
     {
@@ -206,12 +203,44 @@ public class ConfigurationTests
     }
 
     [Fact]
-    public async Task JwtMinimumLengthCountsUtf8BytesAndStillEnforcesStaffPolicy()
+    public async Task JwtMinimumLengthCountsUtf8BytesAndStillEnforcesAuthentication()
     {
         var settings = Defaults(); settings["Jwt:Secret"] = new string('é', 16);
         await using var api = new ConfiguredApi(settings);
         using var client = api.CreateClient();
         Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/health/live")).StatusCode);
         Assert.Equal(HttpStatusCode.Unauthorized, (await client.GetAsync("/api/catalog/jobs/")).StatusCode);
+    }
+
+    [Theory]
+    [InlineData("os-dev", null)]
+    [InlineData("teste-e2e", "customer")]
+    [InlineData("00000000-0000-0000-0000-000000000000", null)]
+    public async Task ValidJwtAcceptsTextSubjectWithoutStaffClaim(string subject, string? profile)
+    {
+        await using var api = new ConfiguredApi(Defaults());
+        using var client = api.CreateClient();
+        var claims = new List<System.Security.Claims.Claim> { new("sub", subject) };
+        if (profile is not null) claims.Add(new("actor_type", profile));
+        var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken("operation-tests", "operation-api", claims,
+            expires: DateTime.UtcNow.AddMinutes(5), signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(ApiFactory.Secret)),
+                Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256));
+        client.DefaultRequestHeaders.Authorization = new("Bearer", new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(jwt));
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/openapi/v1.json")).StatusCode);
+    }
+
+    [Theory]
+    [InlineData("audience")]
+    [InlineData("signature")]
+    [InlineData("expired")]
+    public async Task RemovingStaffDoesNotBypassJwtValidation(string scenario)
+    {
+        await using var api = new ConfiguredApi(Defaults());
+        using var client = api.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new("Bearer", ApiFactory.Token(
+            subject: "os-dev", audience: scenario == "audience" ? "wrong" : "operation-api",
+            expired: scenario == "expired", wrongKey: scenario == "signature"));
+        Assert.Equal(HttpStatusCode.Unauthorized, (await client.GetAsync("/openapi/v1.json")).StatusCode);
     }
 }
