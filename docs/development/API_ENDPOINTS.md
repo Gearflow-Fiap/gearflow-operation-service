@@ -26,7 +26,7 @@ Não há endpoints HTTP para receber OS, autorizar execução, reservar estoque,
 
 Erros seguem application/problem+json com code e traceId, sem stack trace ou detalhe de JWT. 400 validação; 401 token ausente/inválido; 403 falta policy staff/sub; 404 ausência; 409 conflito; 412 versão; 428 precondição; 503 cotação indisponível; 500 erro interno.
 
-OpenAPI gerado: GET /openapi/v1.json (Staff fora de Development; público em Development para a UI). Scalar: GET /scalar/v1 apenas em Development. As APIs de negócio continuam exigindo Staff em todos os ambientes. Liveness público: GET /health/live, sem afirmar prontidão do banco/broker. Catálogo /api/catalog/jobs implementado: veja CATALOG_AND_PRICING.md.
+OpenAPI gerado: GET /openapi/v1.json. Scalar: GET /scalar/v1 em Development ou quando Documentation__Enabled=true. Nesses casos, a interface e o schema são públicos para permitir carregar a documentação e informar o Bearer token; as APIs de negócio continuam exigindo autenticação em todos os ambientes. Sem a opção fora de Development, o schema exige autenticação e o Scalar não é publicado. O ConfigMap Kubernetes habilita a interface para os testes de homologação. Liveness público: GET /health/live, sem afirmar prontidão do banco/broker. Catálogo /api/catalog/jobs implementado: veja CATALOG_AND_PRICING.md.
 
 ## Configurar e executar
 

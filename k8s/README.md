@@ -1,5 +1,18 @@
 # Operation no EKS existente
 
+## Interface para testes HTTP
+
+O ConfigMap base define `Documentation__Enabled=true`, habilitando o Scalar em
+`/scalar/v1` mesmo com ambiente Production. A interface e `/openapi/v1.json` ficam
+públicos; os endpoints de negócio continuam exigindo JWT válido. Informe o token
+Bearer no Scalar para executar as requisições. Comandos também exigem
+`Idempotency-Key` e `If-Match`, descritos na interface.
+
+Publicar uma nova imagem com essa funcionalidade e aplicar o overlay de release
+é necessário para atualizar o cluster. Alterações no ConfigMap exigem reinício
+dos pods existentes (ou o rollout da nova imagem). Para desabilitar a interface,
+defina `Documentation__Enabled=false` e reinicie os pods.
+
 ## Perfil de integraÃ§Ã£o OSâ€“Operation
 
 `kubectl kustomize k8s/overlays/integration` renderiza o perfil com consumo e despacho

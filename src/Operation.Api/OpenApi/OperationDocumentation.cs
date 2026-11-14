@@ -6,7 +6,7 @@ public static class OperationDocumentation
 {
     public static void MapOperationDocumentation(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Documentation:Enabled"))
         {
             // The UI must load its schema before a user can enter a Bearer token.
             // Business endpoints require authenticated subjects in every environment.
