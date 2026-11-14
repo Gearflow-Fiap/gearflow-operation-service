@@ -5,6 +5,7 @@ metadata:
 data:
   ASPNETCORE_HTTP_PORTS: "8080"
   ASPNETCORE_ENVIRONMENT: Production
+  Documentation__Enabled: "true"
   DOTNET_EnableDiagnostics: "0"
   Pricing__ConsumableMode: PerUnitV1
   Messaging__Enabled: "false"

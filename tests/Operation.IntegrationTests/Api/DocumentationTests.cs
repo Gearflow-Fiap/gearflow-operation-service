@@ -9,12 +9,14 @@ namespace Operation.IntegrationTests.Api;
 [Collection("Postgres")]
 public class DocumentationTests(PostgresFixture postgres)
 {
-    [Fact]
-    public async Task DevelopmentShowsScalarAndSchemaButBusinessEndpointsStillRequireAuthentication()
+    [Theory]
+    [InlineData("Development", false)]
+    [InlineData("Production", true)]
+    public async Task EnabledDocumentationShowsScalarAndSchemaButBusinessEndpointsStillRequireAuthentication(string environment, bool enabled)
     {
         var h = await postgres.Create();
         await using var baseApi = new ApiFactory(h);
-        await using var api = baseApi.WithWebHostBuilder(builder => builder.UseEnvironment("Development"));
+        await using var api = baseApi.WithWebHostBuilder(builder => builder.UseEnvironment(environment).UseSetting("Documentation:Enabled", enabled.ToString()));
         using var client = api.CreateClient();
         var page = await client.GetAsync("/scalar/v1");
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
